@@ -13,6 +13,7 @@
 		0678ED8A2C36D960005D13CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0678ED892C36D960005D13CC /* Assets.xcassets */; };
 		0678ED8D2C36D960005D13CC /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 0678ED8C2C36D960005D13CC /* Base */; };
 		06C807C62C3745B40052BB3A /* GameScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C807C52C3745B40052BB3A /* GameScenePresenter.swift */; };
+		06C807C92C374A1E0052BB3A /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C807C82C374A1E0052BB3A /* CameraManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		0678ED8C2C36D960005D13CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0678ED8E2C36D960005D13CC /* Life.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Life.entitlements; sourceTree = "<group>"; };
 		06C807C52C3745B40052BB3A /* GameScenePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScenePresenter.swift; sourceTree = "<group>"; };
+		06C807C82C374A1E0052BB3A /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,10 +71,19 @@
 		06C807C42C37458D0052BB3A /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				06C807C72C374A0B0052BB3A /* Managers */,
 				0678ED852C36D95E005D13CC /* GameScene.swift */,
 				06C807C52C3745B40052BB3A /* GameScenePresenter.swift */,
 			);
 			path = Scene;
+			sourceTree = "<group>";
+		};
+		06C807C72C374A0B0052BB3A /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				06C807C82C374A1E0052BB3A /* CameraManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -149,6 +160,7 @@
 				0678ED862C36D95E005D13CC /* GameScene.swift in Sources */,
 				0678ED802C36D95E005D13CC /* AppDelegate.swift in Sources */,
 				06C807C62C3745B40052BB3A /* GameScenePresenter.swift in Sources */,
+				06C807C92C374A1E0052BB3A /* CameraManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,13 +302,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Life/Life.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HV2A5T92ML;
+				DEVELOPMENT_TEAM = ZSTRAT4UQM;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -319,13 +332,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Life/Life.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HV2A5T92ML;
+				DEVELOPMENT_TEAM = ZSTRAT4UQM;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;

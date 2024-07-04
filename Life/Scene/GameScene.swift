@@ -8,8 +8,11 @@
 import SpriteKit
 import GameplayKit
 
+@MainActor
 protocol GameSceneProtocol: AnyObject {
-
+    func addGesture(_ gestureRecognizer: NSPanGestureRecognizer)
+    func addChildNode(_ childNode: SKNode)
+    func addCamera(_ cameraNode: SKCameraNode)
 }
 
 class GameScene: SKScene, GameSceneProtocol {
@@ -18,7 +21,7 @@ class GameScene: SKScene, GameSceneProtocol {
 
     init(presenter: GameScenePresenterProtocol) {
         self.presenter = presenter
-        super.init(size: CGSize(width: 100, height: 100))
+        super.init(size: CGSize(width: 1000, height: 1000))
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -28,10 +31,23 @@ class GameScene: SKScene, GameSceneProtocol {
         presenter.start()
 
         let node = SKSpriteNode(color: .red, size: CGSize(width: 50, height: 50))
+        node.position = .zero
         self.addChild(node)
     }
 
     override func update(_ currentTime: TimeInterval) {
+    }
 
+    func addGesture(_ gestureRecognizer: NSPanGestureRecognizer) {
+        self.view?.addGestureRecognizer(gestureRecognizer)
+    }
+
+    func addChildNode(_ childNode: SKNode) {
+        self.addChild(childNode)
+    }
+
+    func addCamera(_ cameraNode: SKCameraNode) {
+        self.camera = cameraNode
+        self.addChild(cameraNode)
     }
 }

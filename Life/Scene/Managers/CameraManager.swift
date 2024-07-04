@@ -52,39 +52,19 @@ final class CameraManager: CameraManagerProtocol {
         }
     }
 
-//    @objc func handleZoomGesture(_ gesture: NSPanGestureRecognizer) {
-//        let animationDuration = 0.1
-//
-//        gesture.numberOfTouchesRequired = 2
-//
-//        switch gesture.state {
-//        case .began, .changed:
-//            let newScale = cameraNode.xScale / scale
-//
-//            if newScale < scaleMinimum {
-//                let scaleAction = SKAction.scale(to: scaleMinimum, duration: animationDuration)
-//                cameraNode.run(scaleAction)
-//            } else if newScale > scaleMaximum {
-//                let scaleAction = SKAction.scale(to: scaleMaximum, duration: animationDuration)
-//                cameraNode.run(scaleAction)
-//            } else {
-//                cameraNode.setScale(newScale)
-//            }
-//
-//            gesture.scale = 1.0
-//
-//        case .ended:
-//            // Optional: Smooth transition back to within bounds if needed
-//            if cameraNode.xScale < scaleMinimum {
-//                let scaleAction = SKAction.scale(to: scaleMinimum, duration: animationDuration)
-//                cameraNode.run(scaleAction)
-//            } else if cameraNode.xScale > scaleMaximum {
-//                let scaleAction = SKAction.scale(to: scaleMaximum, duration: animationDuration)
-//                cameraNode.run(scaleAction)
-//            }
-//
-//        default:
-//            break
-//        }
-//    }
+    @objc func handleZoomGesture(_ gesture: NSMagnificationGestureRecognizer) {
+        // Применение экспоненциального масштабирования
+        let magnificationFactor = 1.0 - gesture.magnification
+
+        // Обновление масштаба камеры
+        cameraNode.xScale *= magnificationFactor
+        cameraNode.yScale *= magnificationFactor
+
+        // Ограничение масштаба камеры (можно изменить по необходимости)
+        cameraNode.xScale = max(0.5, min(20.0, cameraNode.xScale))
+        cameraNode.yScale = max(0.5, min(20.0, cameraNode.yScale))
+
+        // Сброс значения увеличения, чтобы учитывать только изменения
+        gesture.magnification = 0
+    }
 }

@@ -10,7 +10,7 @@ import GameplayKit
 
 @MainActor
 protocol GameSceneProtocol: AnyObject {
-    func addGesture(_ gestureRecognizer: NSPanGestureRecognizer)
+    func addGesture(_ gestureRecognizer: NSGestureRecognizer)
     func addChildNode(_ childNode: SKNode)
     func addCamera(_ cameraNode: SKCameraNode)
 }
@@ -38,7 +38,7 @@ class GameScene: SKScene, GameSceneProtocol {
     override func update(_ currentTime: TimeInterval) {
     }
 
-    func addGesture(_ gestureRecognizer: NSPanGestureRecognizer) {
+    func addGesture(_ gestureRecognizer: NSGestureRecognizer) {
         self.view?.addGestureRecognizer(gestureRecognizer)
     }
 

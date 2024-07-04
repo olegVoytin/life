@@ -35,5 +35,11 @@ final class GameScenePresenter: GameScenePresenterProtocol {
             action: #selector(CameraManager.handlePanGesture(_:))
         )
         scene.addGesture(panGesture)
+
+        let zoomGesture = NSMagnificationGestureRecognizer(
+            target: cameraManager,
+            action: #selector(CameraManager.handleZoomGesture(_:))
+        )
+        scene.addGesture(zoomGesture)
     }
 }

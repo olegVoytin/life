@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+protocol GameScenePresenterProtocol {
+
+}
+
+final class GameScenePresenter: GameScenePresenterProtocol {
+    
+}

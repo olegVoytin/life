@@ -7,10 +7,15 @@
 
 import Foundation
 
-protocol GameScenePresenterProtocol {
-
+protocol GameScenePresenterProtocol: AnyObject {
+    func start()
 }
 
 final class GameScenePresenter: GameScenePresenterProtocol {
     
+    weak var scene: GameSceneProtocol?
+
+    func start() {
+        
+    }
 }

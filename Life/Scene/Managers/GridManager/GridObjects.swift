@@ -46,7 +46,7 @@ final class SquareEntity: GKEntity {
                 return .gray
 
             case .cell:
-                return .green
+                return .white
             }
         }
     }

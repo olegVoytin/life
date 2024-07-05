@@ -10,9 +10,13 @@ import Foundation
 @ProcessingActor
 final class Cell: Equatable, Identifiable {
 
+    enum MovementDirection: Int, CaseIterable {
+        case up = 0, down, left, right
+    }
+
     private weak var cellPositionDelegate: CellPositionDelegate?
 
-    var squarePosition: CGPoint
+    private var squarePosition: CGPoint
 
     init(cellPositionDelegate: CellPositionDelegate?, squarePosition: CGPoint) {
         self.cellPositionDelegate = cellPositionDelegate
@@ -20,8 +24,28 @@ final class Cell: Equatable, Identifiable {
     }
 
     func update() {
-        if cellPositionDelegate?.moveRight(from: squarePosition) == true {
-            squarePosition = CGPoint(x: squarePosition.x + 1, y: squarePosition.y)
+        guard let direction = MovementDirection(rawValue: Int.random(in: 0..<4)) else { return }
+
+        switch direction {
+        case .up:
+            if cellPositionDelegate?.moveUp(from: squarePosition) == true {
+                squarePosition = CGPoint(x: squarePosition.x, y: squarePosition.y + 1)
+            }
+
+        case .down:
+            if cellPositionDelegate?.moveDown(from: squarePosition) == true {
+                squarePosition = CGPoint(x: squarePosition.x, y: squarePosition.y - 1)
+            }
+
+        case .left:
+            if cellPositionDelegate?.moveLeft(from: squarePosition) == true {
+                squarePosition = CGPoint(x: squarePosition.x - 1, y: squarePosition.y)
+            }
+
+        case .right:
+            if cellPositionDelegate?.moveRight(from: squarePosition) == true {
+                squarePosition = CGPoint(x: squarePosition.x + 1, y: squarePosition.y)
+            }
         }
     }
 

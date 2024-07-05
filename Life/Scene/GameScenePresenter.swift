@@ -8,6 +8,12 @@
 import Foundation
 import AppKit
 
+@globalActor
+actor ProcessingActor {
+    static let shared = ProcessingActor()
+    private init() {}
+}
+
 @MainActor
 protocol GameScenePresenterProtocol: AnyObject {
     func start()
@@ -18,9 +24,11 @@ final class GameScenePresenter: GameScenePresenterProtocol {
     
     weak var scene: GameSceneProtocol?
 
-    private let cameraManager = CameraManager()
+    private let cameraManager: CameraManagerProtocol = CameraManager()
+    @ProcessingActor private lazy var gridManager: GridManagerProtocol = GridManager()
 
     func start() {
+        setupGrid()
         setupCamera()
     }
 
@@ -41,5 +49,11 @@ final class GameScenePresenter: GameScenePresenterProtocol {
             action: #selector(CameraManager.handleZoomGesture(_:))
         )
         scene.addGesture(zoomGesture)
+    }
+
+    private func setupGrid() {
+        Task {
+            
+        }
     }
 }

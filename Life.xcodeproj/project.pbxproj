@@ -14,6 +14,8 @@
 		0678ED8D2C36D960005D13CC /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 0678ED8C2C36D960005D13CC /* Base */; };
 		06C807C62C3745B40052BB3A /* GameScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C807C52C3745B40052BB3A /* GameScenePresenter.swift */; };
 		06C807C92C374A1E0052BB3A /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C807C82C374A1E0052BB3A /* CameraManager.swift */; };
+		06C807EC2C37D9430052BB3A /* GridManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C807EB2C37D9430052BB3A /* GridManager.swift */; };
+		06C807EE2C37DB7A0052BB3A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C807ED2C37DB7A0052BB3A /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		0678ED8E2C36D960005D13CC /* Life.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Life.entitlements; sourceTree = "<group>"; };
 		06C807C52C3745B40052BB3A /* GameScenePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScenePresenter.swift; sourceTree = "<group>"; };
 		06C807C82C374A1E0052BB3A /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
+		06C807EB2C37D9430052BB3A /* GridManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridManager.swift; sourceTree = "<group>"; };
+		06C807ED2C37DB7A0052BB3A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +68,7 @@
 				0678ED892C36D960005D13CC /* Assets.xcassets */,
 				0678ED8B2C36D960005D13CC /* Main.storyboard */,
 				0678ED8E2C36D960005D13CC /* Life.entitlements */,
+				06C807ED2C37DB7A0052BB3A /* Constants.swift */,
 			);
 			path = Life;
 			sourceTree = "<group>";
@@ -82,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				06C807C82C374A1E0052BB3A /* CameraManager.swift */,
+				06C807EB2C37D9430052BB3A /* GridManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -157,8 +163,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0678ED882C36D95E005D13CC /* ViewController.swift in Sources */,
+				06C807EC2C37D9430052BB3A /* GridManager.swift in Sources */,
 				0678ED862C36D95E005D13CC /* GameScene.swift in Sources */,
 				0678ED802C36D95E005D13CC /* AppDelegate.swift in Sources */,
+				06C807EE2C37DB7A0052BB3A /* Constants.swift in Sources */,
 				06C807C62C3745B40052BB3A /* GameScenePresenter.swift in Sources */,
 				06C807C92C374A1E0052BB3A /* CameraManager.swift in Sources */,
 			);

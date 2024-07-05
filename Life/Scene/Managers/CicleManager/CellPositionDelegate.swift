@@ -50,7 +50,7 @@ extension CicleManager: CellPositionDelegate {
         guard
             grid.count - 1 >= y,
             grid[y].count - 1 >= x,
-            grid.count - 1 >= y - 1
+            y - 1 >= 0
         else { return false }
 
         let newSquare = grid[y - 1][x]
@@ -74,7 +74,7 @@ extension CicleManager: CellPositionDelegate {
         guard
             grid.count - 1 >= y,
             grid[y].count - 1 >= x,
-            grid[y].count - 1 >= x - 1
+            x - 1 >= 0
         else { return false }
 
         let newSquare = grid[y][x - 1]

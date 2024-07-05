@@ -11,33 +11,44 @@ import GameplayKit
 
 @ProcessingActor
 protocol GridManagerProtocol: Sendable {
-    var grid: [[SquareObject]] { get }
-    @MainActor func getSquareSpriteNodes() async -> [SKSpriteNode]
+    var gridSide: Int { get }
+    var grid: [[SquareEntity]] { get }
+    @MainActor var sprites: [SquareSpriteNode] { get async }
 }
 
 @ProcessingActor
 final class GridManager: GridManagerProtocol {
 
-    var grid: [[SquareObject]] = [[]]
+    var grid: [[SquareEntity]] = []
 
-    private let gridSide = 50
+    var sprites: [SquareSpriteNode] {
+        get async {
+            await spritesTask.value
+        }
+
+    }
+    private lazy var spritesTask = Task<[SquareSpriteNode], Never> {
+        await createSquareSpriteNodes()
+    }
+
+    let gridSide = 50
 
     init() {
         self.grid = createGrid()
     }
 
-    private func createGrid() -> [[SquareObject]] {
-        var grid: [[SquareObject]] = [[]]
+    private func createGrid() -> [[SquareEntity]] {
+        var grid: [[SquareEntity]] = []
 
         for rowIndex in 0..<gridSide {
-            var row: [SquareObject] = []
+            var row: [SquareEntity] = []
 
             for colIndex in 0..<gridSide {
                 let position = CGPoint(
                     x: (colIndex - (gridSide / 2)) * Constants.blockSide,
                     y: (rowIndex - (gridSide / 2)) * Constants.blockSide
                 )
-                let square = SquareObject(
+                let square = SquareEntity(
                     position:position ,
                     size: CGSize(width: Constants.blockSide, height: Constants.blockSide),
                     type: .empty
@@ -53,16 +64,17 @@ final class GridManager: GridManagerProtocol {
     }
 
     @MainActor
-    func getSquareSpriteNodes() async -> [SKSpriteNode] {
+    private func createSquareSpriteNodes() async -> [SquareSpriteNode] {
         let grid = await self.grid
-        var spriteNodes: [SKSpriteNode] = []
+        var spriteNodes: [SquareSpriteNode] = []
 
         for row in grid {
             for square in row {
-                let squareSpriteNode = SKSpriteNode(color: square.type.texture, size: square.size)
+                let squareSpriteNode = SquareSpriteNode(color: square.type.texture, size: square.size)
 
                 squareSpriteNode.position = square.position
                 squareSpriteNode.entity = square
+                squareSpriteNode.anchorPoint = CGPoint(x: 0, y: 0)
 
                 spriteNodes.append(squareSpriteNode)
             }
@@ -75,10 +87,19 @@ final class GridManager: GridManagerProtocol {
 
 // MARK: - Objects
 
-final class SquareObject: GKEntity {
+final class SquareSpriteNode: SKSpriteNode {
+
+    func update() {
+        let entity = self.entity as! SquareEntity
+        self.color = entity.type.texture
+    }
+}
+
+final class SquareEntity: GKEntity {
     let position: CGPoint
     let size: CGSize
     var type: SquareType
+    var isChanged = false
 
     init(position: CGPoint, size: CGSize, type: SquareType) {
         self.position = position

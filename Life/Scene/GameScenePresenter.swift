@@ -43,14 +43,21 @@ final class GameScenePresenter: GameScenePresenterProtocol {
         }
     }
 
-    func updateScene() async {
-        await gridManager.getSquareSpriteNodes()
+    func updateScene() {
+        Task { @MainActor in
+            let sprites = await gridManager.sprites
+            sprites.forEach {
+                $0.update()
+            }
+        }
     }
+
+
 
     func onTap(position: CGPoint) {
         Task { @ProcessingActor in
-            let row = Int(position.y) / Constants.blockSide
-            let col = Int(position.x) / Constants.blockSide
+            let row = Int(floor(position.y / CGFloat(Constants.blockSide))) + (gridManager.gridSide / 2)
+            let col = Int(floor(position.x / CGFloat(Constants.blockSide))) + (gridManager.gridSide / 2)
             let square = gridManager.grid[row][col]
             square.type = .cell
 
@@ -79,7 +86,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
     private func setupGrid() {
         Task {
-            let sprites = await gridManager.getSquareSpriteNodes()
+            let sprites = await gridManager.sprites
             sprites.forEach {
                 scene?.addChildNode($0)
             }

@@ -9,107 +9,107 @@ import Foundation
 
 @ProcessingActor
 protocol CellMovementDelegate: AnyObject {
-    func moveUp(from gridPosition: CGPoint) -> Bool
-    func moveDown(from gridPosition: CGPoint) -> Bool
-    func moveLeft(from gridPosition: CGPoint) -> Bool
-    func moveRight(from gridPosition: CGPoint) -> Bool
+    func moveUp(_ cell: Cell)
+    func moveDown(_ cell: Cell)
+    func moveLeft(_ cell: Cell)
+    func moveRight(_ cell: Cell)
 }
 
 extension CicleManager: CellMovementDelegate {
 
-    func moveUp(from gridPosition: CGPoint) -> Bool {
+    func moveUp(_ cell: Cell) {
         let grid = gridManager.grid
 
-        let x = Int(gridPosition.x)
-        let y = Int(gridPosition.y)
+        let x = Int(cell.gridPosition.x)
+        let y = Int(cell.gridPosition.y)
 
         guard
             grid.count - 1 >= y,
             grid[y].count - 1 >= x,
             grid.count - 1 >= y + 1
-        else { return false }
+        else { return }
 
         let newSquare = grid[y + 1][x]
 
-        guard newSquare.type == .empty else { return false }
+        guard newSquare.type == .empty else { return }
 
         let oldSquare = grid[y][x]
         oldSquare.type = .empty
 
-        newSquare.type = .cell
+        newSquare.type = .cell(type: .cell)
 
-        return true
+        cell.gridPosition = CGPoint(x: x, y: y + 1)
     }
 
-    func moveDown(from gridPosition: CGPoint) -> Bool {
+    func moveDown(_ cell: Cell) {
         let grid = gridManager.grid
 
-        let x = Int(gridPosition.x)
-        let y = Int(gridPosition.y)
+        let x = Int(cell.gridPosition.x)
+        let y = Int(cell.gridPosition.y)
 
         guard
             grid.count - 1 >= y,
             grid[y].count - 1 >= x,
             y - 1 >= 0
-        else { return false }
+        else { return }
 
         let newSquare = grid[y - 1][x]
 
-        guard newSquare.type == .empty else { return false }
+        guard newSquare.type == .empty else { return }
 
         let oldSquare = grid[y][x]
         oldSquare.type = .empty
 
-        newSquare.type = .cell
+        newSquare.type = .cell(type: .cell)
 
-        return true
+        cell.gridPosition = CGPoint(x: x, y: y - 1)
     }
 
-    func moveLeft(from gridPosition: CGPoint) -> Bool {
+    func moveLeft(_ cell: Cell) {
         let grid = gridManager.grid
 
-        let x = Int(gridPosition.x)
-        let y = Int(gridPosition.y)
+        let x = Int(cell.gridPosition.x)
+        let y = Int(cell.gridPosition.y)
 
         guard
             grid.count - 1 >= y,
             grid[y].count - 1 >= x,
             x - 1 >= 0
-        else { return false }
+        else { return }
 
         let newSquare = grid[y][x - 1]
 
-        guard newSquare.type == .empty else { return false }
+        guard newSquare.type == .empty else { return }
 
         let oldSquare = grid[y][x]
         oldSquare.type = .empty
 
-        newSquare.type = .cell
+        newSquare.type = .cell(type: .cell)
 
-        return true
+        cell.gridPosition = CGPoint(x: x - 1, y: y)
     }
 
-    func moveRight(from gridPosition: CGPoint) -> Bool {
+    func moveRight(_ cell: Cell) {
         let grid = gridManager.grid
 
-        let x = Int(gridPosition.x)
-        let y = Int(gridPosition.y)
+        let x = Int(cell.gridPosition.x)
+        let y = Int(cell.gridPosition.y)
 
         guard
             grid.count - 1 >= y,
             grid[y].count - 1 >= x,
             grid[y].count - 1 >= x + 1
-        else { return false }
+        else { return }
 
         let newSquare = grid[y][x + 1]
 
-        guard newSquare.type == .empty else { return false }
+        guard newSquare.type == .empty else { return }
 
         let oldSquare = grid[y][x]
         oldSquare.type = .empty
 
-        newSquare.type = .cell
+        newSquare.type = .cell(type: .cell)
 
-        return true
+        cell.gridPosition = CGPoint(x: x + 1, y: y)
     }
 }

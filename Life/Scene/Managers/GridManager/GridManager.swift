@@ -9,7 +9,6 @@ import Foundation
 
 @ProcessingActor
 protocol GridManagerProtocol: AnyObject, Sendable {
-    var gridSide: Int { get }
     var grid: [[SquareEntity]] { get }
     @MainActor var sprites: [SquareSpriteNode] { get async }
 }
@@ -29,8 +28,6 @@ final class GridManager: GridManagerProtocol {
         await createSquareSpriteNodes()
     }
 
-    let gridSide = 50
-
     init() {
         self.grid = createGrid()
     }
@@ -38,14 +35,11 @@ final class GridManager: GridManagerProtocol {
     private func createGrid() -> [[SquareEntity]] {
         var grid: [[SquareEntity]] = []
 
-        for rowIndex in 0..<gridSide {
+        for rowIndex in 0..<Constants.gridSide {
             var row: [SquareEntity] = []
 
-            for colIndex in 0..<gridSide {
-                let position = CGPoint(
-                    x: (colIndex - (gridSide / 2)) * Constants.blockSide,
-                    y: (rowIndex - (gridSide / 2)) * Constants.blockSide
-                )
+            for colIndex in 0..<Constants.gridSide {
+                let position = CGPoint(x: colIndex, y: rowIndex).fromGridPosition()
                 let square = SquareEntity(
                     position:position ,
                     size: CGSize(width: Constants.blockSide, height: Constants.blockSide),

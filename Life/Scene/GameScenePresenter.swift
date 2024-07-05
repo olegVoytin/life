@@ -86,12 +86,23 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
     func onTap(position: CGPoint) {
         Task { @ProcessingActor in
-            let row = Int(floor(position.y / CGFloat(Constants.blockSide))) + (gridManager.gridSide / 2)
-            let col = Int(floor(position.x / CGFloat(Constants.blockSide))) + (gridManager.gridSide / 2)
-            let square = gridManager.grid[row][col]
-            square.type = .cell
+            let grid = gridManager.grid
 
-            cellsManager.addCell(to: CGPoint(x: col, y: row))
+            let gridPosition = position.toGridPosition()
+            let x = Int(gridPosition.x)
+            let y = Int(gridPosition.y)
+
+            guard
+                x >= 0,
+                y >= 0,
+                grid.count - 1 >= y,
+                grid[y].count - 1 >= x
+            else { return }
+
+            let square = grid[y][x]
+            square.type = .cell(type: .cell)
+
+            cellsManager.addCell(to: gridPosition)
         }
     }
 }

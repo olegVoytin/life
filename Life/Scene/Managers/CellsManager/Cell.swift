@@ -10,28 +10,45 @@ import Foundation
 @ProcessingActor
 final class Cell: Equatable, Identifiable {
 
-    enum MovementDirection: Int, CaseIterable {
+    // удалить Int если не нужно генерить рандомное направление
+    enum Direction: Int {
         case up = 0, down, left, right
     }
 
     enum CellType {
         case cell
+        case transport
     }
 
     private weak var cellPositionDelegate: CellMovementDelegate?
-    private var gridPosition: CGPoint
+    private weak var cellBirthGivingDelegate: CellBirthGivingDelegate?
 
-    private var energy: Int
-    private var type: CellType = .cell
+    var gridPosition: CGPoint
+    var energy: Int
+    var type: CellType = .cell
+    var lookingDirection: Direction = .up
 
-    init(cellPositionDelegate: CellMovementDelegate?, gridPosition: CGPoint, energy: Int) {
+    init(
+        cellPositionDelegate: CellMovementDelegate?,
+        cellBirthGivingDelegate: CellBirthGivingDelegate?,
+        gridPosition: CGPoint,
+        energy: Int
+    ) {
         self.cellPositionDelegate = cellPositionDelegate
+        self.cellBirthGivingDelegate = cellBirthGivingDelegate
         self.gridPosition = gridPosition
         self.energy = energy
     }
 
     func update() {
+        switch type {
+        case .cell:
+            print("giving birth")
+            cellBirthGivingDelegate?.giveBirth(self)
 
+        case .transport:
+            break
+        }
     }
 
     nonisolated static func == (lhs: Cell, rhs: Cell) -> Bool {
@@ -39,28 +56,20 @@ final class Cell: Equatable, Identifiable {
     }
 
     private func moveRandomly() {
-        guard let direction = MovementDirection(rawValue: Int.random(in: 0..<4)) else { return }
+        guard let direction = Direction(rawValue: Int.random(in: 0..<4)) else { return }
 
         switch direction {
         case .up:
-            if cellPositionDelegate?.moveUp(from: gridPosition) == true {
-                gridPosition = CGPoint(x: gridPosition.x, y: gridPosition.y + 1)
-            }
+            cellPositionDelegate?.moveUp(self)
 
         case .down:
-            if cellPositionDelegate?.moveDown(from: gridPosition) == true {
-                gridPosition = CGPoint(x: gridPosition.x, y: gridPosition.y - 1)
-            }
+            cellPositionDelegate?.moveDown(self)
 
         case .left:
-            if cellPositionDelegate?.moveLeft(from: gridPosition) == true {
-                gridPosition = CGPoint(x: gridPosition.x - 1, y: gridPosition.y)
-            }
+            cellPositionDelegate?.moveLeft(self)
 
         case .right:
-            if cellPositionDelegate?.moveRight(from: gridPosition) == true {
-                gridPosition = CGPoint(x: gridPosition.x + 1, y: gridPosition.y)
-            }
+            cellPositionDelegate?.moveRight(self)
         }
     }
 }

@@ -23,6 +23,8 @@
 		06C807FA2C383F940052BB3A /* CellMovementDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C807F92C383F940052BB3A /* CellMovementDelegate.swift */; };
 		06C807FD2C3840230052BB3A /* GridObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C807FC2C3840230052BB3A /* GridObjects.swift */; };
 		06C807FF2C3854A10052BB3A /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C807FE2C3854A10052BB3A /* Cell.swift */; };
+		06C808012C385DF60052BB3A /* CellBirthGivingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C808002C385DF60052BB3A /* CellBirthGivingDelegate.swift */; };
+		06C808042C3862620052BB3A /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C808032C3862620052BB3A /* CGPoint.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +46,8 @@
 		06C807F92C383F940052BB3A /* CellMovementDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellMovementDelegate.swift; sourceTree = "<group>"; };
 		06C807FC2C3840230052BB3A /* GridObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridObjects.swift; sourceTree = "<group>"; };
 		06C807FE2C3854A10052BB3A /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
+		06C808002C385DF60052BB3A /* CellBirthGivingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellBirthGivingDelegate.swift; sourceTree = "<group>"; };
+		06C808032C3862620052BB3A /* CGPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +80,7 @@
 		0678ED7E2C36D95E005D13CC /* Life */ = {
 			isa = PBXGroup;
 			children = (
+				06C808022C3862560052BB3A /* Extensions */,
 				06C807C42C37458D0052BB3A /* Scene */,
 				0678ED7F2C36D95E005D13CC /* AppDelegate.swift */,
 				0678ED872C36D95E005D13CC /* ViewController.swift */,
@@ -124,6 +129,7 @@
 			children = (
 				06C807F62C3836C80052BB3A /* CicleManager.swift */,
 				06C807F92C383F940052BB3A /* CellMovementDelegate.swift */,
+				06C808002C385DF60052BB3A /* CellBirthGivingDelegate.swift */,
 			);
 			path = CicleManager;
 			sourceTree = "<group>";
@@ -135,6 +141,14 @@
 				06C807FC2C3840230052BB3A /* GridObjects.swift */,
 			);
 			path = GridManager;
+			sourceTree = "<group>";
+		};
+		06C808022C3862560052BB3A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				06C808032C3862620052BB3A /* CGPoint.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,9 +229,11 @@
 				06C807F02C37F4A60052BB3A /* DoublyLinkedList.swift in Sources */,
 				0678ED802C36D95E005D13CC /* AppDelegate.swift in Sources */,
 				06C807EE2C37DB7A0052BB3A /* Constants.swift in Sources */,
+				06C808012C385DF60052BB3A /* CellBirthGivingDelegate.swift in Sources */,
 				06C807C62C3745B40052BB3A /* GameScenePresenter.swift in Sources */,
 				06C807FF2C3854A10052BB3A /* Cell.swift in Sources */,
 				06C807C92C374A1E0052BB3A /* CameraManager.swift in Sources */,
+				06C808042C3862620052BB3A /* CGPoint.swift in Sources */,
 				06C807FA2C383F940052BB3A /* CellMovementDelegate.swift in Sources */,
 				06C807F22C37F54F0052BB3A /* CellsManager.swift in Sources */,
 				06C807F52C37F9FB0052BB3A /* CellsList.swift in Sources */,

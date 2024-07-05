@@ -11,6 +11,7 @@ import Foundation
 final class CellsList: DoublyLinkedList<Cell> {
 
     weak var cellPositionDelegate: CellMovementDelegate?
+    weak var cellBirthGivingDelegate: CellBirthGivingDelegate?
 
     func update() {
         var currentNode = first
@@ -25,17 +26,18 @@ final class CellsList: DoublyLinkedList<Cell> {
         let childNode = DoublyLinkedListNode(
             value: Cell(
                 cellPositionDelegate: cellPositionDelegate,
+                cellBirthGivingDelegate: cellBirthGivingDelegate,
                 gridPosition: gridPosition,
                 energy: 100
             )
         )
+
+        childNode.next = parentCellNode
 
         if let parentPrevious = parentCellNode.previous {
             parentPrevious.next = childNode
         } else {
             prepend(childNode)
         }
-
-        childNode.next = parentCellNode
     }
 }

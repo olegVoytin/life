@@ -36,17 +36,23 @@ final class SquareEntity: GKEntity {
         fatalError("init(coder:) has not been implemented")
     }
 
-    enum SquareType {
+    enum SquareType: Equatable {
         case empty
-        case cell
+        case cell(type: Cell.CellType)
 
         var texture: NSColor {
             switch self {
             case .empty:
                 return .gray
 
-            case .cell:
-                return .white
+            case .cell(let type):
+                switch type {
+                case .cell:
+                    return .white
+
+                case .transport:
+                    return .lightGray
+                }
             }
         }
     }

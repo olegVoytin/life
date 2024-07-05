@@ -22,13 +22,16 @@ final class CicleManager: CicleManagerProtocol {
         self.gridManager = gridManager
         self.cellsManager = cellsManager
 
-        cellsManager.cellPositionDelegate = self
+        cellsManager.setUpDelegates(
+            cellPositionDelegate: self,
+            cellBirthGivingDelegate: self
+        )
     }
 
     func startCicle() {
         Task { @ProcessingActor in
             while true {
-                async let limit: ()? = try? await Task.sleep(for: .seconds(1))
+                async let limit: ()? = try? await Task.sleep(for: .seconds(0.5))
 
                 async let work = Task { @ProcessingActor in
                     cellsManager.update()

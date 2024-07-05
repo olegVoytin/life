@@ -13,7 +13,7 @@ protocol CellsManagerProtocol: AnyObject {
         cellPositionDelegate: CellMovementDelegate?,
         cellBirthGivingDelegate: CellBirthGivingDelegate?
     )
-    func update()
+    func update() async
     func addCell(to gridPosition: CGPoint)
     func addChild(of cell: Cell, to gridPosition: CGPoint)
 }
@@ -37,8 +37,8 @@ final class CellsManager: CellsManagerProtocol {
         cellsLinkedList.cellBirthGivingDelegate = cellBirthGivingDelegate
     }
 
-    func update() {
-        cellsLinkedList.update()
+    func update() async {
+        await cellsLinkedList.update()
     }
 
     func addCell(to gridPosition: CGPoint) {

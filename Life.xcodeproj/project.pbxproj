@@ -25,6 +25,7 @@
 		06C807FF2C3854A10052BB3A /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C807FE2C3854A10052BB3A /* Cell.swift */; };
 		06C808012C385DF60052BB3A /* CellBirthGivingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C808002C385DF60052BB3A /* CellBirthGivingDelegate.swift */; };
 		06C808042C3862620052BB3A /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C808032C3862620052BB3A /* CGPoint.swift */; };
+		06C808082C388C720052BB3A /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C808072C388C720052BB3A /* Atomic.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		06C807FE2C3854A10052BB3A /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 		06C808002C385DF60052BB3A /* CellBirthGivingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellBirthGivingDelegate.swift; sourceTree = "<group>"; };
 		06C808032C3862620052BB3A /* CGPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
+		06C808072C388C720052BB3A /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,15 +82,13 @@
 		0678ED7E2C36D95E005D13CC /* Life */ = {
 			isa = PBXGroup;
 			children = (
+				06C808062C388C670052BB3A /* Utils */,
+				06C808052C388C4D0052BB3A /* Other */,
 				06C808022C3862560052BB3A /* Extensions */,
 				06C807C42C37458D0052BB3A /* Scene */,
-				0678ED7F2C36D95E005D13CC /* AppDelegate.swift */,
-				0678ED872C36D95E005D13CC /* ViewController.swift */,
-				0678ED892C36D960005D13CC /* Assets.xcassets */,
-				0678ED8B2C36D960005D13CC /* Main.storyboard */,
-				0678ED8E2C36D960005D13CC /* Life.entitlements */,
 				06C807ED2C37DB7A0052BB3A /* Constants.swift */,
 				06C807EF2C37F4A60052BB3A /* DoublyLinkedList.swift */,
+				0678ED8E2C36D960005D13CC /* Life.entitlements */,
 			);
 			path = Life;
 			sourceTree = "<group>";
@@ -149,6 +149,25 @@
 				06C808032C3862620052BB3A /* CGPoint.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		06C808052C388C4D0052BB3A /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				0678ED7F2C36D95E005D13CC /* AppDelegate.swift */,
+				0678ED872C36D95E005D13CC /* ViewController.swift */,
+				0678ED892C36D960005D13CC /* Assets.xcassets */,
+				0678ED8B2C36D960005D13CC /* Main.storyboard */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
+		06C808062C388C670052BB3A /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				06C808072C388C720052BB3A /* Atomic.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -225,6 +244,7 @@
 				06C807EC2C37D9430052BB3A /* GridManager.swift in Sources */,
 				06C807FD2C3840230052BB3A /* GridObjects.swift in Sources */,
 				06C807F72C3836C80052BB3A /* CicleManager.swift in Sources */,
+				06C808082C388C720052BB3A /* Atomic.swift in Sources */,
 				0678ED862C36D95E005D13CC /* GameScene.swift in Sources */,
 				06C807F02C37F4A60052BB3A /* DoublyLinkedList.swift in Sources */,
 				0678ED802C36D95E005D13CC /* AppDelegate.swift in Sources */,

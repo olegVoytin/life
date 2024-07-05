@@ -9,15 +9,15 @@ import Foundation
 
 @ProcessingActor
 protocol CellMovementDelegate: AnyObject {
-    func moveUp(_ cell: Cell)
-    func moveDown(_ cell: Cell)
-    func moveLeft(_ cell: Cell)
-    func moveRight(_ cell: Cell)
+    func moveUp(_ cell: Cell) async
+    func moveDown(_ cell: Cell) async
+    func moveLeft(_ cell: Cell) async
+    func moveRight(_ cell: Cell) async
 }
 
 extension CicleManager: CellMovementDelegate {
 
-    func moveUp(_ cell: Cell) {
+    func moveUp(_ cell: Cell) async {
         let grid = gridManager.grid
 
         let x = Int(cell.gridPosition.x)
@@ -31,17 +31,17 @@ extension CicleManager: CellMovementDelegate {
 
         let newSquare = grid[y + 1][x]
 
-        guard newSquare.type == .empty else { return }
+        guard await newSquare.type.read() == .empty else { return }
 
         let oldSquare = grid[y][x]
-        oldSquare.type = .empty
+        await oldSquare.type.write(.empty)
 
-        newSquare.type = .cell(type: .cell)
+        await newSquare.type.write(.cell(type: .cell))
 
         cell.gridPosition = CGPoint(x: x, y: y + 1)
     }
 
-    func moveDown(_ cell: Cell) {
+    func moveDown(_ cell: Cell) async {
         let grid = gridManager.grid
 
         let x = Int(cell.gridPosition.x)
@@ -55,17 +55,17 @@ extension CicleManager: CellMovementDelegate {
 
         let newSquare = grid[y - 1][x]
 
-        guard newSquare.type == .empty else { return }
+        guard await newSquare.type.read() == .empty else { return }
 
         let oldSquare = grid[y][x]
-        oldSquare.type = .empty
+        await oldSquare.type.write(.empty)
 
-        newSquare.type = .cell(type: .cell)
+        await newSquare.type.write(.cell(type: .cell))
 
         cell.gridPosition = CGPoint(x: x, y: y - 1)
     }
 
-    func moveLeft(_ cell: Cell) {
+    func moveLeft(_ cell: Cell) async {
         let grid = gridManager.grid
 
         let x = Int(cell.gridPosition.x)
@@ -79,17 +79,17 @@ extension CicleManager: CellMovementDelegate {
 
         let newSquare = grid[y][x - 1]
 
-        guard newSquare.type == .empty else { return }
+        guard await newSquare.type.read() == .empty else { return }
 
         let oldSquare = grid[y][x]
-        oldSquare.type = .empty
+        await oldSquare.type.write(.empty)
 
-        newSquare.type = .cell(type: .cell)
+        await newSquare.type.write(.cell(type: .cell))
 
         cell.gridPosition = CGPoint(x: x - 1, y: y)
     }
 
-    func moveRight(_ cell: Cell) {
+    func moveRight(_ cell: Cell) async {
         let grid = gridManager.grid
 
         let x = Int(cell.gridPosition.x)
@@ -103,12 +103,12 @@ extension CicleManager: CellMovementDelegate {
 
         let newSquare = grid[y][x + 1]
 
-        guard newSquare.type == .empty else { return }
+        guard await newSquare.type.read() == .empty else { return }
 
         let oldSquare = grid[y][x]
-        oldSquare.type = .empty
+        await oldSquare.type.write(.empty)
 
-        newSquare.type = .cell(type: .cell)
+        await newSquare.type.write(.cell(type: .cell))
 
         cell.gridPosition = CGPoint(x: x + 1, y: y)
     }

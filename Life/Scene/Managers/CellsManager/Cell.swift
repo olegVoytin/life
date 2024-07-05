@@ -40,36 +40,39 @@ final class Cell: Equatable, Identifiable {
         self.energy = energy
     }
 
-    func update() {
-        switch type {
-        case .cell:
-            print("giving birth")
-            cellBirthGivingDelegate?.giveBirth(self)
-
-        case .transport:
-            break
-        }
+    func update() async {
+        await giveBirthToLookingDirection()
     }
 
     nonisolated static func == (lhs: Cell, rhs: Cell) -> Bool {
         lhs.id == rhs.id
     }
 
-    private func moveRandomly() {
+    private func giveBirthToLookingDirection() async {
+        switch type {
+        case .cell:
+            await cellBirthGivingDelegate?.giveBirth(self)
+
+        case .transport:
+            break
+        }
+    }
+
+    private func moveRandomly() async {
         guard let direction = Direction(rawValue: Int.random(in: 0..<4)) else { return }
 
         switch direction {
         case .up:
-            cellPositionDelegate?.moveUp(self)
+            await cellPositionDelegate?.moveUp(self)
 
         case .down:
-            cellPositionDelegate?.moveDown(self)
+            await cellPositionDelegate?.moveDown(self)
 
         case .left:
-            cellPositionDelegate?.moveLeft(self)
+            await cellPositionDelegate?.moveLeft(self)
 
         case .right:
-            cellPositionDelegate?.moveRight(self)
+            await cellPositionDelegate?.moveRight(self)
         }
     }
 }

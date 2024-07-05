@@ -62,10 +62,11 @@ final class GridManager: GridManagerProtocol {
 
         for row in grid {
             for square in row {
-                let squareSpriteNode = SquareSpriteNode(color: square.type.texture, size: square.size)
+                let texture = await square.type.read().texture
+                let squareSpriteNode = SquareSpriteNode(color: texture, size: square.size)
 
                 squareSpriteNode.position = square.position
-                squareSpriteNode.entity = square
+                squareSpriteNode.squareEntity = square
                 squareSpriteNode.anchorPoint = CGPoint(x: 0, y: 0)
 
                 spriteNodes.append(squareSpriteNode)

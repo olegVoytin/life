@@ -7,33 +7,33 @@
 
 import Foundation
 import SpriteKit
-import GameplayKit
 
 final class SquareSpriteNode: SKSpriteNode {
 
-    func update() {
-        let entity = self.entity as! SquareEntity
+    weak var squareEntity: SquareEntity?
 
-        if self.color != entity.type.texture {
-            self.color = entity.type.texture
+    func update() {
+        Task { @MainActor in
+            guard let entity = self.squareEntity else { return }
+
+            let texture = await entity.type.read().texture
+            if self.color != texture {
+                self.color = texture
+            }
         }
     }
 }
 
-final class SquareEntity: GKEntity {
+final class SquareEntity: @unchecked Sendable {
+
     let position: CGPoint
     let size: CGSize
-    var type: SquareType
+    var type: Atomic<SquareType>
 
     init(position: CGPoint, size: CGSize, type: SquareType) {
         self.position = position
         self.size = size
-        self.type = type
-        super.init()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        self.type = Atomic(type)
     }
 
     enum SquareType: Equatable {

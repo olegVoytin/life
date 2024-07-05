@@ -34,7 +34,7 @@ final class CicleManager: CicleManagerProtocol {
                 async let limit: ()? = try? await Task.sleep(for: .seconds(0.5))
 
                 async let work = Task { @ProcessingActor in
-                    cellsManager.update()
+                    await cellsManager.update()
                     await Task.yield()
                 }
 

@@ -13,10 +13,10 @@ final class CellsList: DoublyLinkedList<Cell> {
     weak var cellPositionDelegate: CellMovementDelegate?
     weak var cellBirthGivingDelegate: CellBirthGivingDelegate?
 
-    func update() {
+    func update() async {
         var currentNode = first
         while currentNode != nil {
-            currentNode?.value.update()
+            await currentNode?.value.update()
             currentNode = currentNode?.next
         }
     }

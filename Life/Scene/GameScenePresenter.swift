@@ -100,7 +100,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
             else { return }
 
             let square = grid[y][x]
-            square.type = .cell(type: .cell)
+            await square.type.write(.cell(type: .cell))
 
             cellsManager.addCell(to: gridPosition)
         }

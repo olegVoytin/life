@@ -26,10 +26,15 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
     private let cameraManager: CameraManagerProtocol = CameraManager()
     @ProcessingActor private lazy var gridManager: GridManagerProtocol = GridManager()
+    @ProcessingActor private lazy var cellsManager: CellsManagerProtocol = CellsManager()
 
     func start() {
         setupGrid()
         setupCamera()
+
+        Task { @ProcessingActor in
+            cellsManager.someFunc()
+        }
     }
 
     private func setupCamera() {

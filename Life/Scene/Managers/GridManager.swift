@@ -7,6 +7,7 @@
 
 import Foundation
 import SpriteKit
+import GameplayKit
 
 @ProcessingActor
 protocol GridManagerProtocol: Sendable {
@@ -39,14 +40,7 @@ final class GridManager: GridManagerProtocol {
                 let square = SquareObject(
                     position:position ,
                     size: CGSize(width: Constants.blockSide, height: Constants.blockSide),
-                    type: .some(
-                        color: NSColor(
-                            red: CGFloat(position.x.truncatingRemainder(dividingBy: 255)),
-                            green: CGFloat(position.y.truncatingRemainder(dividingBy: 255)),
-                            blue: 255,
-                            alpha: 1
-                        )
-                    )
+                    type: .empty
                 )
 
                 row.append(square)
@@ -68,6 +62,7 @@ final class GridManager: GridManagerProtocol {
                 let squareSpriteNode = SKSpriteNode(color: square.type.texture, size: square.size)
 
                 squareSpriteNode.position = square.position
+                squareSpriteNode.entity = square
 
                 spriteNodes.append(squareSpriteNode)
             }
@@ -80,22 +75,33 @@ final class GridManager: GridManagerProtocol {
 
 // MARK: - Objects
 
-struct SquareObject {
+final class SquareObject: GKEntity {
     let position: CGPoint
     let size: CGSize
-    let type: SquareType
+    var type: SquareType
 
+    init(position: CGPoint, size: CGSize, type: SquareType) {
+        self.position = position
+        self.size = size
+        self.type = type
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     enum SquareType {
         case empty
-        case some(color: NSColor)
+        case cell
 
         var texture: NSColor {
             switch self {
             case .empty:
                 return .gray
 
-            case .some(let color):
-                return color
+            case .cell:
+                return .green
             }
         }
     }

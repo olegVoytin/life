@@ -8,19 +8,25 @@
 import Foundation
 
 protocol CellsManagerProtocol: AnyObject {
-    func someFunc()
+    func newCicle()
+    func addCell(toPosition: CGPoint)
+    func addChild(of cell: Cell, toPosition: CGPoint)
 }
 
 final class CellsManager: CellsManagerProtocol {
+
     private let cellsLinkedList = CellsList()
 
-    init() {
-        cellsLinkedList.append(value: Cell())
-        cellsLinkedList.append(value: Cell())
-        cellsLinkedList.append(value: Cell())
+    func newCicle() {
+        
     }
 
-    func someFunc() {
-        print(1)
+    func addCell(toPosition: CGPoint) {
+        let newCell = Cell(position: toPosition)
+        cellsLinkedList.append(value: newCell)
+    }
+
+    func addChild(of cell: Cell, toPosition: CGPoint) {
+        cellsLinkedList.addChild(of: cell, toPosition: toPosition)
     }
 }

@@ -32,6 +32,12 @@ class GameScene: SKScene, GameSceneProtocol {
     }
 
     override func update(_ currentTime: TimeInterval) {
+        presenter.updateScene()
+    }
+
+    override func mouseDown(with event: NSEvent) {
+        let position = event.location(in: self)
+        presenter.onTap(position: position)
     }
 
     func addGesture(_ gestureRecognizer: NSGestureRecognizer) {

@@ -17,6 +17,8 @@ actor ProcessingActor {
 @MainActor
 protocol GameScenePresenterProtocol: AnyObject {
     func start()
+    func updateScene()
+    func onTap(position: CGPoint)
 }
 
 @MainActor
@@ -33,7 +35,26 @@ final class GameScenePresenter: GameScenePresenterProtocol {
         setupCamera()
 
         Task { @ProcessingActor in
-            cellsManager.someFunc()
+            while true {
+                cellsManager.newCicle()
+
+                await Task.yield()
+            }
+        }
+    }
+
+    func updateScene() async {
+        await gridManager.getSquareSpriteNodes()
+    }
+
+    func onTap(position: CGPoint) {
+        Task { @ProcessingActor in
+            let row = Int(position.y) / Constants.blockSide
+            let col = Int(position.x) / Constants.blockSide
+            let square = gridManager.grid[row][col]
+            square.type = .cell
+
+            cellsManager.addCell(toPosition: position)
         }
     }
 

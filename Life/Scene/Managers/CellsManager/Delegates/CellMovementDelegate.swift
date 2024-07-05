@@ -15,7 +15,7 @@ protocol CellMovementDelegate: AnyObject {
     func moveRight(_ cell: Cell) async
 }
 
-extension CicleManager: CellMovementDelegate {
+extension CellsManager: CellMovementDelegate {
 
     func moveUp(_ cell: Cell) async {
         let grid = gridManager.grid

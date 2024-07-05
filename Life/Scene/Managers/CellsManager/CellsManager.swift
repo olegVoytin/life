@@ -9,10 +9,6 @@ import Foundation
 
 @ProcessingActor
 protocol CellsManagerProtocol: AnyObject {
-    func setUpDelegates(
-        cellPositionDelegate: CellMovementDelegate?,
-        cellBirthGivingDelegate: CellBirthGivingDelegate?
-    )
     func update() async
     func addCell(to gridPosition: CGPoint)
     func addChild(of cell: Cell, to gridPosition: CGPoint)
@@ -21,20 +17,15 @@ protocol CellsManagerProtocol: AnyObject {
 @ProcessingActor
 final class CellsManager: CellsManagerProtocol {
 
-    weak var cellPositionDelegate: CellMovementDelegate?
-    weak var cellBirthGivingDelegate: CellBirthGivingDelegate?
+    let gridManager: GridManagerProtocol
 
-    private let cellsLinkedList = CellsList()
+    private lazy var cellsLinkedList = CellsList(
+        cellPositionDelegate: self,
+        cellBirthGivingDelegate: self
+    )
 
-    func setUpDelegates(
-        cellPositionDelegate: CellMovementDelegate?,
-        cellBirthGivingDelegate: CellBirthGivingDelegate?
-    ) {
-        self.cellPositionDelegate = cellPositionDelegate
-        self.cellBirthGivingDelegate = cellBirthGivingDelegate
-
-        cellsLinkedList.cellPositionDelegate = cellPositionDelegate
-        cellsLinkedList.cellBirthGivingDelegate = cellBirthGivingDelegate
+    init(gridManager: GridManagerProtocol) {
+        self.gridManager = gridManager
     }
 
     func update() async {
@@ -43,8 +34,8 @@ final class CellsManager: CellsManagerProtocol {
 
     func addCell(to gridPosition: CGPoint) {
         let newCell = Cell(
-            cellPositionDelegate: cellPositionDelegate, 
-            cellBirthGivingDelegate: cellBirthGivingDelegate,
+            cellPositionDelegate: self,
+            cellBirthGivingDelegate: self,
             gridPosition: gridPosition,
             energy: 100
         )

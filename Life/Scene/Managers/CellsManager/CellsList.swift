@@ -10,8 +10,16 @@ import Foundation
 @ProcessingActor
 final class CellsList: DoublyLinkedList<Cell> {
 
-    weak var cellPositionDelegate: CellMovementDelegate?
-    weak var cellBirthGivingDelegate: CellBirthGivingDelegate?
+    private weak var cellPositionDelegate: CellMovementDelegate?
+    private weak var cellBirthGivingDelegate: CellBirthGivingDelegate?
+
+    init(
+        cellPositionDelegate: CellMovementDelegate,
+        cellBirthGivingDelegate: CellBirthGivingDelegate
+    ) {
+        self.cellPositionDelegate = cellPositionDelegate
+        self.cellBirthGivingDelegate = cellBirthGivingDelegate
+    }
 
     func update() async {
         var currentNode = first

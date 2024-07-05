@@ -12,7 +12,7 @@ protocol CellBirthGivingDelegate: AnyObject {
     func giveBirth(_ cell: Cell) async
 }
 
-extension CicleManager: CellBirthGivingDelegate {
+extension CellsManager: CellBirthGivingDelegate {
 
     func giveBirth(_ cell: Cell) async {
         let grid = gridManager.grid
@@ -62,7 +62,7 @@ extension CicleManager: CellBirthGivingDelegate {
         await oldSquare.type.write(.cell(type: .transport))
         cell.type = .transport
 
-        cellsManager.addChild(of: cell, to: birthPosition)
+        self.addChild(of: cell, to: birthPosition)
 
         let square = gridManager.grid[Int(birthPosition.y)][Int(birthPosition.x)]
         await square.type.write(.cell(type: .cell))

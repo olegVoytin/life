@@ -42,14 +42,74 @@ extension CicleManager: CellPositionDelegate {
     }
 
     func moveDown(from squarePosition: CGPoint) -> Bool {
-        false
+        let grid = gridManager.grid
+
+        let x = Int(squarePosition.x)
+        let y = Int(squarePosition.y)
+
+        guard
+            grid.count - 1 >= y,
+            grid[y].count - 1 >= x,
+            grid.count - 1 >= y - 1
+        else { return false }
+
+        let newSquare = grid[y - 1][x]
+
+        guard newSquare.type == .empty else { return false }
+
+        let oldSquare = grid[y][x]
+        oldSquare.type = .empty
+
+        newSquare.type = .cell
+
+        return true
     }
 
     func moveLeft(from squarePosition: CGPoint) -> Bool {
-        false
+        let grid = gridManager.grid
+
+        let x = Int(squarePosition.x)
+        let y = Int(squarePosition.y)
+
+        guard
+            grid.count - 1 >= y,
+            grid[y].count - 1 >= x,
+            grid[y].count - 1 >= x - 1
+        else { return false }
+
+        let newSquare = grid[y][x - 1]
+
+        guard newSquare.type == .empty else { return false }
+
+        let oldSquare = grid[y][x]
+        oldSquare.type = .empty
+
+        newSquare.type = .cell
+
+        return true
     }
 
     func moveRight(from squarePosition: CGPoint) -> Bool {
-        false
+        let grid = gridManager.grid
+
+        let x = Int(squarePosition.x)
+        let y = Int(squarePosition.y)
+
+        guard
+            grid.count - 1 >= y,
+            grid[y].count - 1 >= x,
+            grid[y].count - 1 >= x + 1
+        else { return false }
+
+        let newSquare = grid[y][x + 1]
+
+        guard newSquare.type == .empty else { return false }
+
+        let oldSquare = grid[y][x]
+        oldSquare.type = .empty
+
+        newSquare.type = .cell
+
+        return true
     }
 }

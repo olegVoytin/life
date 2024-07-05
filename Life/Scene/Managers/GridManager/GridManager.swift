@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import SpriteKit
-import GameplayKit
 
 @ProcessingActor
 protocol GridManagerProtocol: AnyObject, Sendable {

@@ -34,6 +34,8 @@ final class GameScenePresenter: GameScenePresenterProtocol {
         cellsManager: cellsManager
     )
 
+    // MARK: - Setup
+
     func start() {
         setupGrid()
         setupCamera()
@@ -43,23 +45,12 @@ final class GameScenePresenter: GameScenePresenterProtocol {
         }
     }
 
-    func updateScene() {
-        Task { @MainActor in
+    private func setupGrid() {
+        Task {
             let sprites = await gridManager.sprites
             sprites.forEach {
-                $0.update()
+                scene?.addChildNode($0)
             }
-        }
-    }
-
-    func onTap(position: CGPoint) {
-        Task { @ProcessingActor in
-            let row = Int(floor(position.y / CGFloat(Constants.blockSide))) + (gridManager.gridSide / 2)
-            let col = Int(floor(position.x / CGFloat(Constants.blockSide))) + (gridManager.gridSide / 2)
-            let square = gridManager.grid[row][col]
-            square.type = .cell
-
-            cellsManager.addCell(to: CGPoint(x: col, y: row))
         }
     }
 
@@ -82,12 +73,25 @@ final class GameScenePresenter: GameScenePresenterProtocol {
         scene.addGesture(zoomGesture)
     }
 
-    private func setupGrid() {
-        Task {
+    // MARK: - Actions
+
+    func updateScene() {
+        Task { @MainActor in
             let sprites = await gridManager.sprites
             sprites.forEach {
-                scene?.addChildNode($0)
+                $0.update()
             }
+        }
+    }
+
+    func onTap(position: CGPoint) {
+        Task { @ProcessingActor in
+            let row = Int(floor(position.y / CGFloat(Constants.blockSide))) + (gridManager.gridSide / 2)
+            let col = Int(floor(position.x / CGFloat(Constants.blockSide))) + (gridManager.gridSide / 2)
+            let square = gridManager.grid[row][col]
+            square.type = .cell
+
+            cellsManager.addCell(to: CGPoint(x: col, y: row))
         }
     }
 }

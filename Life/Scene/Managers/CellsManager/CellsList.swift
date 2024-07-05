@@ -20,8 +20,8 @@ final class Cell: Equatable, Identifiable {
     }
 
     func update() {
-        if cellPositionDelegate?.moveUp(from: squarePosition) == true {
-            squarePosition = CGPoint(x: squarePosition.x, y: squarePosition.y + 1)
+        if cellPositionDelegate?.moveRight(from: squarePosition) == true {
+            squarePosition = CGPoint(x: squarePosition.x + 1, y: squarePosition.y)
         }
     }
 

@@ -61,8 +61,8 @@ final class CameraManager: CameraManagerProtocol {
         cameraNode.yScale *= magnificationFactor
 
         // Ограничение масштаба камеры (можно изменить по необходимости)
-        cameraNode.xScale = max(0.5, min(20.0, cameraNode.xScale))
-        cameraNode.yScale = max(0.5, min(20.0, cameraNode.yScale))
+        cameraNode.xScale = max(0.1, min(20.0, cameraNode.xScale))
+        cameraNode.yScale = max(0.1, min(20.0, cameraNode.yScale))
 
         // Сброс значения увеличения, чтобы учитывать только изменения
         gesture.magnification = 0

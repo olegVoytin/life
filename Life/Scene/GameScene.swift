@@ -29,10 +29,6 @@ class GameScene: SKScene, GameSceneProtocol {
 
     override func didMove(to view: SKView) {
         presenter.start()
-
-        let node = SKSpriteNode(color: .red, size: CGSize(width: 50, height: 50))
-        node.position = .zero
-        self.addChild(node)
     }
 
     override func update(_ currentTime: TimeInterval) {

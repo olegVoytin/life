@@ -53,7 +53,10 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
     private func setupGrid() {
         Task {
-            
+            let sprites = await gridManager.getSquareSpriteNodes()
+            sprites.forEach {
+                scene?.addChildNode($0)
+            }
         }
     }
 }

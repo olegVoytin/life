@@ -29,6 +29,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
     private let cameraManager: CameraManagerProtocol = CameraManager()
     @ProcessingActor private lazy var gridManager: GridManagerProtocol = GridManager()
     @ProcessingActor private lazy var cellsManager: CellsManagerProtocol = CellsManager(gridManager: gridManager)
+    @ProcessingActor private lazy var cicleManager: CicleManagerProtocol = CicleManager(cellsManager: cellsManager)
 
     // MARK: - Setup
 
@@ -37,19 +38,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
         setupCamera()
 
         Task { @ProcessingActor in
-            while true {
-                async let limit: ()? = try? await Task.sleep(for: .seconds(0.5))
-
-                async let work = Task { @ProcessingActor in
-                    await cellsManager.update()
-                    await Task.yield()
-                }
-
-                _ = await (
-                    limit,
-                    work
-                )
-            }
+            cicleManager.startCicle()
         }
     }
 
@@ -84,10 +73,19 @@ final class GameScenePresenter: GameScenePresenterProtocol {
     // MARK: - Actions
 
     func updateScene() {
+        Task { @ProcessingActor in
+            cicleManager.onNewFrame()
+        }
+
         Task { @MainActor in
             let sprites = await gridManager.sprites
-            sprites.forEach {
-                $0.update()
+
+            await withTaskGroup(of: Void.self) { taskGroup in
+                for sprite in sprites {
+                    taskGroup.addTask {
+                        await sprite.update()
+                    }
+                }
             }
         }
     }

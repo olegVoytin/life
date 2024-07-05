@@ -25,6 +25,7 @@
 		06C808012C385DF60052BB3A /* CellBirthGivingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C808002C385DF60052BB3A /* CellBirthGivingDelegate.swift */; };
 		06C808042C3862620052BB3A /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C808032C3862620052BB3A /* CGPoint.swift */; };
 		06C808082C388C720052BB3A /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C808072C388C720052BB3A /* Atomic.swift */; };
+		06DE736C2C3897BF006B45F2 /* CicleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DE736B2C3897BF006B45F2 /* CicleManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		06C808002C385DF60052BB3A /* CellBirthGivingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellBirthGivingDelegate.swift; sourceTree = "<group>"; };
 		06C808032C3862620052BB3A /* CGPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 		06C808072C388C720052BB3A /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
+		06DE736B2C3897BF006B45F2 /* CicleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CicleManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 				06C807FB2C3840120052BB3A /* GridManager */,
 				06C807F32C37F9EC0052BB3A /* CellsManager */,
 				06C807C82C374A1E0052BB3A /* CameraManager.swift */,
+				06DE736B2C3897BF006B45F2 /* CicleManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -245,6 +248,7 @@
 				06C807F02C37F4A60052BB3A /* DoublyLinkedList.swift in Sources */,
 				0678ED802C36D95E005D13CC /* AppDelegate.swift in Sources */,
 				06C807EE2C37DB7A0052BB3A /* Constants.swift in Sources */,
+				06DE736C2C3897BF006B45F2 /* CicleManager.swift in Sources */,
 				06C808012C385DF60052BB3A /* CellBirthGivingDelegate.swift in Sources */,
 				06C807C62C3745B40052BB3A /* GameScenePresenter.swift in Sources */,
 				06C807FF2C3854A10052BB3A /* Cell.swift in Sources */,

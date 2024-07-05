@@ -6,7 +6,6 @@
 //
 
 import SpriteKit
-import GameplayKit
 
 @MainActor
 protocol GameSceneProtocol: AnyObject {

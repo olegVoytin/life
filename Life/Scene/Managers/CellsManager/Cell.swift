@@ -41,7 +41,7 @@ final class Cell: Equatable, Identifiable {
     }
 
     func update() async {
-        await giveBirthToLookingDirection()
+        await moveRandomly()
     }
 
     nonisolated static func == (lhs: Cell, rhs: Cell) -> Bool {

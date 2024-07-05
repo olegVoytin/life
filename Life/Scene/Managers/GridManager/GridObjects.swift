@@ -11,15 +11,13 @@ import SpriteKit
 final class SquareSpriteNode: SKSpriteNode {
 
     weak var squareEntity: SquareEntity?
-
-    func update() {
-        Task { @MainActor in
-            guard let entity = self.squareEntity else { return }
-
-            let texture = await entity.type.read().texture
-            if self.color != texture {
-                self.color = texture
-            }
+    
+    func update() async {
+        guard let entity = self.squareEntity else { return }
+        
+        let texture = await entity.type.read().texture
+        if self.color != texture {
+            self.color = texture
         }
     }
 }

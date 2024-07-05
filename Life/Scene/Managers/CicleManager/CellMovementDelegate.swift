@@ -1,5 +1,5 @@
 //
-//  CellPositionDelegate.swift
+//  CellMovementDelegate.swift
 //  Life
 //
 //  Created by Олег Войтин on 05.07.2024.
@@ -8,20 +8,20 @@
 import Foundation
 
 @ProcessingActor
-protocol CellPositionDelegate: AnyObject {
-    func moveUp(from squarePosition: CGPoint) -> Bool
-    func moveDown(from squarePosition: CGPoint) -> Bool
-    func moveLeft(from squarePosition: CGPoint) -> Bool
-    func moveRight(from squarePosition: CGPoint) -> Bool
+protocol CellMovementDelegate: AnyObject {
+    func moveUp(from gridPosition: CGPoint) -> Bool
+    func moveDown(from gridPosition: CGPoint) -> Bool
+    func moveLeft(from gridPosition: CGPoint) -> Bool
+    func moveRight(from gridPosition: CGPoint) -> Bool
 }
 
-extension CicleManager: CellPositionDelegate {
+extension CicleManager: CellMovementDelegate {
 
-    func moveUp(from squarePosition: CGPoint) -> Bool {
+    func moveUp(from gridPosition: CGPoint) -> Bool {
         let grid = gridManager.grid
 
-        let x = Int(squarePosition.x)
-        let y = Int(squarePosition.y)
+        let x = Int(gridPosition.x)
+        let y = Int(gridPosition.y)
 
         guard
             grid.count - 1 >= y,
@@ -41,11 +41,11 @@ extension CicleManager: CellPositionDelegate {
         return true
     }
 
-    func moveDown(from squarePosition: CGPoint) -> Bool {
+    func moveDown(from gridPosition: CGPoint) -> Bool {
         let grid = gridManager.grid
 
-        let x = Int(squarePosition.x)
-        let y = Int(squarePosition.y)
+        let x = Int(gridPosition.x)
+        let y = Int(gridPosition.y)
 
         guard
             grid.count - 1 >= y,
@@ -65,11 +65,11 @@ extension CicleManager: CellPositionDelegate {
         return true
     }
 
-    func moveLeft(from squarePosition: CGPoint) -> Bool {
+    func moveLeft(from gridPosition: CGPoint) -> Bool {
         let grid = gridManager.grid
 
-        let x = Int(squarePosition.x)
-        let y = Int(squarePosition.y)
+        let x = Int(gridPosition.x)
+        let y = Int(gridPosition.y)
 
         guard
             grid.count - 1 >= y,
@@ -89,11 +89,11 @@ extension CicleManager: CellPositionDelegate {
         return true
     }
 
-    func moveRight(from squarePosition: CGPoint) -> Bool {
+    func moveRight(from gridPosition: CGPoint) -> Bool {
         let grid = gridManager.grid
 
-        let x = Int(squarePosition.x)
-        let y = Int(squarePosition.y)
+        let x = Int(gridPosition.x)
+        let y = Int(gridPosition.y)
 
         guard
             grid.count - 1 >= y,

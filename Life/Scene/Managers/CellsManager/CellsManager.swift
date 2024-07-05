@@ -9,17 +9,17 @@ import Foundation
 
 @ProcessingActor
 protocol CellsManagerProtocol: AnyObject {
-    var cellPositionDelegate: CellPositionDelegate? { get set }
+    var cellPositionDelegate: CellMovementDelegate? { get set }
 
     func update()
-    func addCell(to squarePosition: CGPoint)
-    func addChild(of cell: Cell, to squarePosition: CGPoint)
+    func addCell(to gridPosition: CGPoint)
+    func addChild(of cell: Cell, to gridPosition: CGPoint)
 }
 
 @ProcessingActor
 final class CellsManager: CellsManagerProtocol {
 
-    weak var cellPositionDelegate: CellPositionDelegate?
+    weak var cellPositionDelegate: CellMovementDelegate?
 
     private let cellsLinkedList = CellsList()
 
@@ -27,12 +27,16 @@ final class CellsManager: CellsManagerProtocol {
         cellsLinkedList.update()
     }
 
-    func addCell(to squarePosition: CGPoint) {
-        let newCell = Cell(cellPositionDelegate: cellPositionDelegate, squarePosition: squarePosition)
+    func addCell(to gridPosition: CGPoint) {
+        let newCell = Cell(
+            cellPositionDelegate: cellPositionDelegate,
+            gridPosition: gridPosition,
+            energy: 100
+        )
         cellsLinkedList.append(value: newCell)
     }
 
-    func addChild(of cell: Cell, to squarePosition: CGPoint) {
-        cellsLinkedList.addChild(of: cell, to: squarePosition)
+    func addChild(of cell: Cell, to gridPosition: CGPoint) {
+        cellsLinkedList.addChild(of: cell, to: gridPosition)
     }
 }

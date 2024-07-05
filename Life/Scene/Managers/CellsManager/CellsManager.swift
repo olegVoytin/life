@@ -7,26 +7,32 @@
 
 import Foundation
 
+@ProcessingActor
 protocol CellsManagerProtocol: AnyObject {
-    func newCicle()
-    func addCell(toPosition: CGPoint)
-    func addChild(of cell: Cell, toPosition: CGPoint)
+    var cellPositionDelegate: CellPositionDelegate? { get set }
+
+    func update()
+    func addCell(to squarePosition: CGPoint)
+    func addChild(of cell: Cell, to squarePosition: CGPoint)
 }
 
+@ProcessingActor
 final class CellsManager: CellsManagerProtocol {
+
+    weak var cellPositionDelegate: CellPositionDelegate?
 
     private let cellsLinkedList = CellsList()
 
-    func newCicle() {
-        
+    func update() {
+        cellsLinkedList.update()
     }
 
-    func addCell(toPosition: CGPoint) {
-        let newCell = Cell(position: toPosition)
+    func addCell(to squarePosition: CGPoint) {
+        let newCell = Cell(cellPositionDelegate: cellPositionDelegate, squarePosition: squarePosition)
         cellsLinkedList.append(value: newCell)
     }
 
-    func addChild(of cell: Cell, toPosition: CGPoint) {
-        cellsLinkedList.addChild(of: cell, toPosition: toPosition)
+    func addChild(of cell: Cell, to squarePosition: CGPoint) {
+        cellsLinkedList.addChild(of: cell, to: squarePosition)
     }
 }

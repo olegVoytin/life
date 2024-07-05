@@ -7,25 +7,57 @@
 
 import Foundation
 
+@ProcessingActor
 final class Cell: Equatable, Identifiable {
-    var position: CGPoint
 
-    init(position: CGPoint) {
-        self.position = position
+    private weak var cellPositionDelegate: CellPositionDelegate?
+
+    var squarePosition: CGPoint
+
+    init(cellPositionDelegate: CellPositionDelegate?, squarePosition: CGPoint) {
+        self.cellPositionDelegate = cellPositionDelegate
+        self.squarePosition = squarePosition
     }
 
-    static func == (lhs: Cell, rhs: Cell) -> Bool {
+    func update() {
+        if cellPositionDelegate?.moveUp(from: squarePosition) == true {
+            squarePosition = CGPoint(x: squarePosition.x, y: squarePosition.y + 1)
+        }
+    }
+
+    nonisolated static func == (lhs: Cell, rhs: Cell) -> Bool {
         lhs.id == rhs.id
     }
 }
 
-class CellsList: DoublyLinkedList<Cell> {
+@ProcessingActor
+final class CellsList: DoublyLinkedList<Cell> {
 
-    func addChild(of cell: Cell, toPosition: CGPoint) {
+    weak var cellPositionDelegate: CellPositionDelegate?
+
+    func update() {
+        var currentNode = first
+        while currentNode != nil {
+            currentNode?.value.update()
+            currentNode = currentNode?.next
+        }
+    }
+
+    func addChild(of cell: Cell, to squarePosition: CGPoint) {
         guard let parentCellNode = search(value: cell) else { return }
-        let childNode = DoublyLinkedListNode(value: Cell(position: toPosition))
+        let childNode = DoublyLinkedListNode(
+            value: Cell(
+                cellPositionDelegate: cellPositionDelegate,
+                squarePosition: squarePosition
+            )
+        )
 
-        parentCellNode.previous?.next = childNode
+        if let parentPrevious = parentCellNode.previous {
+            parentPrevious.next = childNode
+        } else {
+            prepend(childNode)
+        }
+
         childNode.next = parentCellNode
     }
 }

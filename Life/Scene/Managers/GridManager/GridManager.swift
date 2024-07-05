@@ -10,7 +10,7 @@ import SpriteKit
 import GameplayKit
 
 @ProcessingActor
-protocol GridManagerProtocol: Sendable {
+protocol GridManagerProtocol: AnyObject, Sendable {
     var gridSide: Int { get }
     var grid: [[SquareEntity]] { get }
     @MainActor var sprites: [SquareSpriteNode] { get async }
@@ -81,49 +81,5 @@ final class GridManager: GridManagerProtocol {
         }
 
         return spriteNodes
-    }
-}
-
-
-// MARK: - Objects
-
-final class SquareSpriteNode: SKSpriteNode {
-
-    func update() {
-        let entity = self.entity as! SquareEntity
-        self.color = entity.type.texture
-    }
-}
-
-final class SquareEntity: GKEntity {
-    let position: CGPoint
-    let size: CGSize
-    var type: SquareType
-    var isChanged = false
-
-    init(position: CGPoint, size: CGSize, type: SquareType) {
-        self.position = position
-        self.size = size
-        self.type = type
-        super.init()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    enum SquareType {
-        case empty
-        case cell
-
-        var texture: NSColor {
-            switch self {
-            case .empty:
-                return .gray
-
-            case .cell:
-                return .green
-            }
-        }
     }
 }

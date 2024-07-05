@@ -19,6 +19,7 @@ final class DoublyLinkedListNode<T> {
 }
 
 // Класс для двусвязного списка
+@ProcessingActor
 class DoublyLinkedList<T> {
     private var head: DoublyLinkedListNode<T>?
     private var tail: DoublyLinkedListNode<T>?
@@ -48,6 +49,17 @@ class DoublyLinkedList<T> {
             head = newNode
         }
         tail = newNode
+    }
+
+    // Добавление нового элемента в начало списка
+    func prepend(_ newNode: DoublyLinkedListNode<T>) {
+        if let headNode = head {
+            newNode.next = headNode
+            headNode.previous = newNode
+        } else {
+            tail = newNode
+        }
+        head = newNode
     }
 
     // Добавление нового элемента в начало списка

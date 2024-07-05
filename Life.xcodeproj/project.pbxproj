@@ -19,6 +19,9 @@
 		06C807F02C37F4A60052BB3A /* DoublyLinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C807EF2C37F4A60052BB3A /* DoublyLinkedList.swift */; };
 		06C807F22C37F54F0052BB3A /* CellsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C807F12C37F54F0052BB3A /* CellsManager.swift */; };
 		06C807F52C37F9FB0052BB3A /* CellsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C807F42C37F9FB0052BB3A /* CellsList.swift */; };
+		06C807F72C3836C80052BB3A /* CicleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C807F62C3836C80052BB3A /* CicleManager.swift */; };
+		06C807FA2C383F940052BB3A /* CellPositionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C807F92C383F940052BB3A /* CellPositionDelegate.swift */; };
+		06C807FD2C3840230052BB3A /* GridObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C807FC2C3840230052BB3A /* GridObjects.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +39,9 @@
 		06C807EF2C37F4A60052BB3A /* DoublyLinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoublyLinkedList.swift; sourceTree = "<group>"; };
 		06C807F12C37F54F0052BB3A /* CellsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellsManager.swift; sourceTree = "<group>"; };
 		06C807F42C37F9FB0052BB3A /* CellsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellsList.swift; sourceTree = "<group>"; };
+		06C807F62C3836C80052BB3A /* CicleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CicleManager.swift; sourceTree = "<group>"; };
+		06C807F92C383F940052BB3A /* CellPositionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellPositionDelegate.swift; sourceTree = "<group>"; };
+		06C807FC2C3840230052BB3A /* GridObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridObjects.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,9 +99,10 @@
 		06C807C72C374A0B0052BB3A /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				06C807FB2C3840120052BB3A /* GridManager */,
+				06C807F82C383F860052BB3A /* CicleManager */,
 				06C807F32C37F9EC0052BB3A /* CellsManager */,
 				06C807C82C374A1E0052BB3A /* CameraManager.swift */,
-				06C807EB2C37D9430052BB3A /* GridManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -107,6 +114,24 @@
 				06C807F42C37F9FB0052BB3A /* CellsList.swift */,
 			);
 			path = CellsManager;
+			sourceTree = "<group>";
+		};
+		06C807F82C383F860052BB3A /* CicleManager */ = {
+			isa = PBXGroup;
+			children = (
+				06C807F62C3836C80052BB3A /* CicleManager.swift */,
+				06C807F92C383F940052BB3A /* CellPositionDelegate.swift */,
+			);
+			path = CicleManager;
+			sourceTree = "<group>";
+		};
+		06C807FB2C3840120052BB3A /* GridManager */ = {
+			isa = PBXGroup;
+			children = (
+				06C807EB2C37D9430052BB3A /* GridManager.swift */,
+				06C807FC2C3840230052BB3A /* GridObjects.swift */,
+			);
+			path = GridManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -181,12 +206,15 @@
 			files = (
 				0678ED882C36D95E005D13CC /* ViewController.swift in Sources */,
 				06C807EC2C37D9430052BB3A /* GridManager.swift in Sources */,
+				06C807FD2C3840230052BB3A /* GridObjects.swift in Sources */,
+				06C807F72C3836C80052BB3A /* CicleManager.swift in Sources */,
 				0678ED862C36D95E005D13CC /* GameScene.swift in Sources */,
 				06C807F02C37F4A60052BB3A /* DoublyLinkedList.swift in Sources */,
 				0678ED802C36D95E005D13CC /* AppDelegate.swift in Sources */,
 				06C807EE2C37DB7A0052BB3A /* Constants.swift in Sources */,
 				06C807C62C3745B40052BB3A /* GameScenePresenter.swift in Sources */,
 				06C807C92C374A1E0052BB3A /* CameraManager.swift in Sources */,
+				06C807FA2C383F940052BB3A /* CellPositionDelegate.swift in Sources */,
 				06C807F22C37F54F0052BB3A /* CellsManager.swift in Sources */,
 				06C807F52C37F9FB0052BB3A /* CellsList.swift in Sources */,
 			);

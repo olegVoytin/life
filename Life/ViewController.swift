@@ -34,7 +34,7 @@ class ViewController: NSViewController {
         let scene = GameScene(presenter: presenter)
 
         scene.scaleMode = .aspectFill
-        scene.anchorPoint = CGPoint(x: 50, y: 50)
+        scene.anchorPoint = CGPoint(x: 0, y: 0)
 
         presenter.scene = scene
 

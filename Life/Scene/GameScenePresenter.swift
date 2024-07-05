@@ -29,17 +29,17 @@ final class GameScenePresenter: GameScenePresenterProtocol {
     private let cameraManager: CameraManagerProtocol = CameraManager()
     @ProcessingActor private lazy var gridManager: GridManagerProtocol = GridManager()
     @ProcessingActor private lazy var cellsManager: CellsManagerProtocol = CellsManager()
+    @ProcessingActor private lazy var cicleManager: CicleManagerProtocol = CicleManager(
+        gridManager: gridManager,
+        cellsManager: cellsManager
+    )
 
     func start() {
         setupGrid()
         setupCamera()
 
         Task { @ProcessingActor in
-            while true {
-                cellsManager.newCicle()
-
-                await Task.yield()
-            }
+            cicleManager.startCicle()
         }
     }
 
@@ -52,8 +52,6 @@ final class GameScenePresenter: GameScenePresenterProtocol {
         }
     }
 
-
-
     func onTap(position: CGPoint) {
         Task { @ProcessingActor in
             let row = Int(floor(position.y / CGFloat(Constants.blockSide))) + (gridManager.gridSide / 2)
@@ -61,7 +59,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
             let square = gridManager.grid[row][col]
             square.type = .cell
 
-            cellsManager.addCell(toPosition: position)
+            cellsManager.addCell(to: CGPoint(x: col, y: row))
         }
     }
 

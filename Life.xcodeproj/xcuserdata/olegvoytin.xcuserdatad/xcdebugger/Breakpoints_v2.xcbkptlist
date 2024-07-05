@@ -7,32 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "4C42942E-C782-446A-9D20-FB24D3FC30DC"
+            uuid = "4C09A2B8-8CCC-4801-B117-9302D2FBBA13"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Life/Scene/GameScenePresenter.swift"
+            filePath = "Life/Scene/Managers/CicleManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "61"
-            endingLineNumber = "61"
-            landmarkName = "onTap(position:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "2888BB79-06C7-4824-946D-55C50FFF929B"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Life/Scene/Managers/GridManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
-            landmarkName = "createGrid()"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "moveUp(from:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

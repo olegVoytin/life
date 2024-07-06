@@ -29,7 +29,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
     private let cameraManager: CameraManagerProtocol = CameraManager()
     @ProcessingActor private lazy var gridManager: GridManagerProtocol = GridManager()
     @ProcessingActor private lazy var cellsManager: CellsManagerProtocol = CellsManager(gridManager: gridManager)
-    @ProcessingActor private lazy var cicleManager: CicleManagerProtocol = CicleManager(cellsManager: cellsManager)
+    @ProcessingActor private lazy var cycleManager: CycleManagerProtocol = CycleManager(cellsManager: cellsManager)
 
     // MARK: - Setup
 
@@ -38,7 +38,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
         setupCamera()
 
         Task { @ProcessingActor in
-            cicleManager.startCicle()
+            cycleManager.startCycle()
         }
     }
 
@@ -74,7 +74,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
     func updateScene() {
         Task { @ProcessingActor in
-            cicleManager.onNewFrame()
+            cycleManager.onNewFrame()
         }
 
         Task { @MainActor in

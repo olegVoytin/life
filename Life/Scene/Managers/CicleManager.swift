@@ -1,5 +1,5 @@
 //
-//  CicleManager.swift
+//  CycleManager.swift
 //  Life
 //
 //  Created by Олег Войтин on 05.07.2024.
@@ -8,14 +8,14 @@
 import Foundation
 
 @ProcessingActor
-protocol CicleManagerProtocol {
-    func startCicle()
-    func setCicleSpeed(_ newSpeed: CicleManager.Speed)
+protocol CycleManagerProtocol {
+    func startCycle()
+    func setCycleSpeed(_ newSpeed: CycleManager.Speed)
     func onNewFrame()
 }
 
 @ProcessingActor
-final class CicleManager: CicleManagerProtocol {
+final class CycleManager: CycleManagerProtocol {
 
     enum Speed {
         case pause
@@ -52,7 +52,10 @@ final class CicleManager: CicleManagerProtocol {
         }
     }
 
-    private var speed: Speed = .slow
+    private var speed: Speed = .pause
+    private var isRunning = false
+
+    private var frameCicle: Task<Void, Never>?
 
     private let cellsManager: CellsManagerProtocol
 
@@ -60,36 +63,34 @@ final class CicleManager: CicleManagerProtocol {
         self.cellsManager = cellsManager
     }
 
-    func startCicle() {
+    func startCycle() {
         Task { @ProcessingActor in
-            while speed != .pause, speed != .screenRate {
-                async let limit: ()? = speed.isLimitNeeded ? try? await Task.sleep(for: speed.limitDuration) : nil
-                async let cicle: () = doCicle()
+            while isRunning {
+                async let limit: ()? = speed == .max ? nil : try? await Task.sleep(for: speed.limitDuration)
+                async let cycle: () = doCycle()
 
                 _ = await (
                     limit,
-                    cicle
+                    cycle
                 )
             }
         }
     }
 
-    private func doCicle() {
-        Task { @ProcessingActor in
-            await cellsManager.update()
-            await Task.yield()
-        }
+    private func doCycle() async {
+        await cellsManager.update()
+        await Task.yield()
     }
 
-    func setCicleSpeed(_ newSpeed: Speed) {
+    func setCycleSpeed(_ newSpeed: Speed) {
+        let oldSpeed = speed
+
         switch newSpeed {
         case .slow, .medium, .fast, .max:
-            switch speed {
-            case .pause:
-                startCicle()
-
-            case .screenRate:
-                startCicle()
+            switch oldSpeed {
+            case .pause, .screenRate:
+                isRunning = true
+                startCycle()
 
             default:
                 break
@@ -103,7 +104,15 @@ final class CicleManager: CicleManagerProtocol {
     }
 
     func onNewFrame() {
-        guard speed == .screenRate else { return }
-        doCicle()
+        guard
+            speed == .screenRate,
+            frameCicle == nil
+        else { return }
+
+        frameCicle = Task { @ProcessingActor [weak self] in
+            guard let self else { return }
+            await self.doCycle()
+            self.frameCicle = nil
+        }
     }
 }

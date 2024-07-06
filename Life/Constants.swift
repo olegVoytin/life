@@ -9,5 +9,5 @@ import Foundation
 
 enum Constants {
     static let blockSide = 10
-    static let gridSide = 50
+    static let gridSide = 200
 }

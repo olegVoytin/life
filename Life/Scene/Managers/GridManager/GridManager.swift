@@ -62,7 +62,7 @@ final class GridManager: GridManagerProtocol {
 
         for row in grid {
             for square in row {
-                let texture = await square.type.read().texture
+                let texture = square.type.texture
                 let squareSpriteNode = SquareSpriteNode(color: texture, size: square.size)
 
                 squareSpriteNode.position = square.position

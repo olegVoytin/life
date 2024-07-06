@@ -12,10 +12,10 @@ final class SquareSpriteNode: SKSpriteNode {
 
     weak var squareEntity: SquareEntity?
     
-    func update() async {
+    func update() {
         guard let entity = self.squareEntity else { return }
         
-        let texture = await entity.type.read().texture
+        let texture = entity.type.texture
         if self.color != texture {
             self.color = texture
         }
@@ -26,12 +26,17 @@ final class SquareEntity: @unchecked Sendable {
 
     let position: CGPoint
     let size: CGSize
-    var type: Atomic<SquareType>
+    @MainActor var type: SquareType
 
     init(position: CGPoint, size: CGSize, type: SquareType) {
         self.position = position
         self.size = size
-        self.type = Atomic(type)
+        self.type = type
+    }
+
+    @MainActor
+    func setType(_ newType: SquareType) {
+        self.type = newType
     }
 
     enum SquareType: Equatable {

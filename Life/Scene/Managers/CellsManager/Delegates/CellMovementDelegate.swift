@@ -31,12 +31,12 @@ extension CellsManager: CellMovementDelegate {
 
         let newSquare = grid[y + 1][x]
 
-        guard await newSquare.type.read() == .empty else { return }
+        guard await newSquare.type == .empty else { return }
 
         let oldSquare = grid[y][x]
-        await oldSquare.type.write(.empty)
+        await oldSquare.setType(.empty)
 
-        await newSquare.type.write(.cell(type: .cell))
+        await newSquare.setType(.cell(type: .cell))
 
         cell.gridPosition = CGPoint(x: x, y: y + 1)
     }
@@ -55,12 +55,12 @@ extension CellsManager: CellMovementDelegate {
 
         let newSquare = grid[y - 1][x]
 
-        guard await newSquare.type.read() == .empty else { return }
+        guard await newSquare.type == .empty else { return }
 
         let oldSquare = grid[y][x]
-        await oldSquare.type.write(.empty)
+        await oldSquare.setType(.empty)
 
-        await newSquare.type.write(.cell(type: .cell))
+        await newSquare.setType(.cell(type: .cell))
 
         cell.gridPosition = CGPoint(x: x, y: y - 1)
     }
@@ -79,12 +79,12 @@ extension CellsManager: CellMovementDelegate {
 
         let newSquare = grid[y][x - 1]
 
-        guard await newSquare.type.read() == .empty else { return }
+        guard await newSquare.type == .empty else { return }
 
         let oldSquare = grid[y][x]
-        await oldSquare.type.write(.empty)
+        await oldSquare.setType(.empty)
 
-        await newSquare.type.write(.cell(type: .cell))
+        await newSquare.setType(.cell(type: .cell))
 
         cell.gridPosition = CGPoint(x: x - 1, y: y)
     }
@@ -103,12 +103,12 @@ extension CellsManager: CellMovementDelegate {
 
         let newSquare = grid[y][x + 1]
 
-        guard await newSquare.type.read() == .empty else { return }
+        guard await newSquare.type == .empty else { return }
 
         let oldSquare = grid[y][x]
-        await oldSquare.type.write(.empty)
+        await oldSquare.setType(.empty)
 
-        await newSquare.type.write(.cell(type: .cell))
+        await newSquare.setType(.cell(type: .cell))
 
         cell.gridPosition = CGPoint(x: x + 1, y: y)
     }

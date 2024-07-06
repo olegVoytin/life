@@ -26,6 +26,8 @@ final class GameScenePresenter: GameScenePresenterProtocol {
     
     weak var scene: GameSceneProtocol?
 
+    private var sprites: [SquareSpriteNode] = []
+
     private let cameraManager: CameraManagerProtocol = CameraManager()
     @ProcessingActor private lazy var gridManager: GridManagerProtocol = GridManager()
     @ProcessingActor private lazy var cellsManager: CellsManagerProtocol = CellsManager(gridManager: gridManager)
@@ -44,7 +46,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
     private func setupGrid() {
         Task {
-            let sprites = await gridManager.sprites
+            self.sprites = await gridManager.sprites
             sprites.forEach {
                 scene?.addChildNode($0)
             }
@@ -77,16 +79,8 @@ final class GameScenePresenter: GameScenePresenterProtocol {
             cycleManager.onNewFrame()
         }
 
-        Task { @MainActor in
-            let sprites = await gridManager.sprites
-
-            await withTaskGroup(of: Void.self) { taskGroup in
-                for sprite in sprites {
-                    taskGroup.addTask {
-                        await sprite.update()
-                    }
-                }
-            }
+        for sprite in sprites {
+            sprite.update()
         }
     }
 
@@ -106,7 +100,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
             else { return }
 
             let square = grid[y][x]
-            await square.type.write(.cell(type: .cell))
+            await square.setType(.cell(type: .cell))
 
             cellsManager.addCell(to: gridPosition)
         }

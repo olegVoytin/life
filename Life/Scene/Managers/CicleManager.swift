@@ -52,8 +52,8 @@ final class CycleManager: CycleManagerProtocol {
         }
     }
 
-    private var speed: Speed = .pause
-    private var isRunning = false
+    private var speed: Speed = .slow
+    private var isRunning = true
 
     private var frameCicle: Task<Void, Never>?
 
@@ -97,7 +97,7 @@ final class CycleManager: CycleManagerProtocol {
             }
 
         default:
-            break
+            isRunning = false
         }
 
         speed = newSpeed

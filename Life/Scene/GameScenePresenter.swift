@@ -17,7 +17,7 @@ actor ProcessingActor {
 @MainActor
 protocol GameScenePresenterProtocol: AnyObject {
     func start()
-    func updateScene()
+    func updateScene() async
     func onTap(position: CGPoint)
 }
 
@@ -25,8 +25,6 @@ protocol GameScenePresenterProtocol: AnyObject {
 final class GameScenePresenter: GameScenePresenterProtocol {
     
     weak var scene: GameSceneProtocol?
-
-    private var sprites: [SquareSpriteNode] = []
 
     @ProcessingActor private lazy var gridManager: GridManagerProtocol = GridManager()
     @ProcessingActor private lazy var cellsManager: CellsManagerProtocol = CellsManager(gridManager: gridManager)
@@ -44,22 +42,23 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
     private func setupGrid() {
         Task {
-            self.sprites = await gridManager.sprites
-            sprites.forEach {
-                scene?.addChildNode($0)
+            let layers = await gridManager.layers
+            layers.forEach {
+                scene?.addSublayer($0.layer)
             }
         }
     }
 
     // MARK: - Actions
 
-    func updateScene() {
+    func updateScene() async {
         Task { @ProcessingActor in
             cycleManager.onNewFrame()
         }
 
-        for sprite in sprites {
-            sprite.update()
+        let layers = await gridManager.layers
+        for layer in layers {
+            await layer.update()
         }
     }
 
@@ -79,7 +78,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
             else { return }
 
             let square = grid[y][x]
-            await square.setType(.cell(type: .cell))
+            square.type = .cell(type: .cell)
 
             cellsManager.addCell(to: gridPosition)
         }

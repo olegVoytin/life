@@ -10,7 +10,7 @@ import Foundation
 @ProcessingActor
 protocol GridManagerProtocol: AnyObject, Sendable {
     var grid: [[SquareEntity]] { get }
-    @MainActor var sprites: [SquareSpriteNode] { get async }
+    @MainActor var layers: [SquareLayer] { get async }
 }
 
 @ProcessingActor
@@ -18,14 +18,14 @@ final class GridManager: GridManagerProtocol {
 
     var grid: [[SquareEntity]] = []
 
-    var sprites: [SquareSpriteNode] {
+    var layers: [SquareLayer] {
         get async {
-            await spritesTask.value
+            await layersTask.value
         }
 
     }
-    private lazy var spritesTask = Task<[SquareSpriteNode], Never> {
-        await createSquareSpriteNodes()
+    private lazy var layersTask = Task<[SquareLayer], Never> {
+        await createSquareLayers()
     }
 
     init() {
@@ -56,23 +56,29 @@ final class GridManager: GridManagerProtocol {
     }
 
     @MainActor
-    private func createSquareSpriteNodes() async -> [SquareSpriteNode] {
+    private func createSquareLayers() async -> [SquareLayer] {
         let grid = await self.grid
-        var spriteNodes: [SquareSpriteNode] = []
+        var squareLayers: [SquareLayer] = []
 
         for row in grid {
             for square in row {
-                let texture = square.type.texture
-                let squareSpriteNode = SquareSpriteNode(color: texture, size: square.size)
+                let squareLayer = SquareLayer()
 
-                squareSpriteNode.position = square.position
-                squareSpriteNode.squareEntity = square
-                squareSpriteNode.anchorPoint = CGPoint(x: 0, y: 0)
+                squareLayer.layer.frame = CGRect(
+                    x: 0,
+                    y: 0,
+                    width: Constants.blockSide,
+                    height: Constants.blockSide
+                )
+                squareLayer.layer.backgroundColor = await square.type.texture
+                squareLayer.layer.position = square.position
+                squareLayer.squareEntity = square
+                squareLayer.layer.anchorPoint = CGPoint(x: 0, y: 0)
 
-                spriteNodes.append(squareSpriteNode)
+                squareLayers.append(squareLayer)
             }
         }
 
-        return spriteNodes
+        return squareLayers
     }
 }

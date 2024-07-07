@@ -6,27 +6,28 @@
 //
 
 import Foundation
-import SpriteKit
+import Cocoa
 
-final class SquareSpriteNode: SKSpriteNode {
+@MainActor
+final class SquareLayer {
 
     weak var squareEntity: SquareEntity?
-    
-    func update() {
-        guard let entity = self.squareEntity else { return }
-        
-        let texture = entity.type.texture
-        if self.color != texture {
-            self.color = texture
+    let layer = CALayer()
+
+    func update() async {
+        let texture = await self.squareEntity?.type.texture
+        if layer.backgroundColor != texture {
+            layer.backgroundColor = texture
         }
     }
 }
 
-final class SquareEntity: @unchecked Sendable {
+@ProcessingActor
+final class SquareEntity {
 
     let position: CGPoint
     let size: CGSize
-    @MainActor var type: SquareType
+    var type: SquareType
 
     init(position: CGPoint, size: CGSize, type: SquareType) {
         self.position = position
@@ -34,19 +35,14 @@ final class SquareEntity: @unchecked Sendable {
         self.type = type
     }
 
-    @MainActor
-    func setType(_ newType: SquareType) {
-        self.type = newType
-    }
-
     enum SquareType: Equatable {
         case empty
         case cell(type: Cell.CellType)
 
-        var texture: NSColor {
+        var texture: CGColor {
             switch self {
             case .empty:
-                return .gray
+                return NSColor.gray.cgColor
 
             case .cell(let type):
                 switch type {
@@ -54,7 +50,7 @@ final class SquareEntity: @unchecked Sendable {
                     return .white
 
                 case .transport:
-                    return .lightGray
+                    return NSColor.lightGray.cgColor
                 }
             }
         }

@@ -28,7 +28,6 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
     private var sprites: [SquareSpriteNode] = []
 
-    private let cameraManager: CameraManagerProtocol = CameraManager()
     @ProcessingActor private lazy var gridManager: GridManagerProtocol = GridManager()
     @ProcessingActor private lazy var cellsManager: CellsManagerProtocol = CellsManager(gridManager: gridManager)
     @ProcessingActor private lazy var cycleManager: CycleManagerProtocol = CycleManager(cellsManager: cellsManager)
@@ -37,7 +36,6 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
     func start() {
         setupGrid()
-        setupCamera()
 
         Task { @ProcessingActor in
             cycleManager.startCycle()
@@ -51,25 +49,6 @@ final class GameScenePresenter: GameScenePresenterProtocol {
                 scene?.addChildNode($0)
             }
         }
-    }
-
-    private func setupCamera() {
-        guard let scene else { return }
-
-        let cameraNode = cameraManager.cameraNode
-        scene.addCamera(cameraNode)
-
-        let panGesture = NSPanGestureRecognizer(
-            target: cameraManager,
-            action: #selector(CameraManager.handlePanGesture(_:))
-        )
-        scene.addGesture(panGesture)
-
-        let zoomGesture = NSMagnificationGestureRecognizer(
-            target: cameraManager,
-            action: #selector(CameraManager.handleZoomGesture(_:))
-        )
-        scene.addGesture(zoomGesture)
     }
 
     // MARK: - Actions

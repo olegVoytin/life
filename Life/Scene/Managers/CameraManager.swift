@@ -9,17 +9,16 @@ import Foundation
 import SpriteKit
 
 @MainActor
-protocol CameraManagerProtocol: AnyObject {
-    var cameraNode: SKCameraNode { get }
-}
-
-@MainActor
-final class CameraManager: CameraManagerProtocol {
-
-    let cameraNode = SKCameraNode()
+final class CameraManager {
 
     private var lastPanTranslation: CGPoint?
     private var lastScale: CGFloat = 0
+
+    let view: NSView
+
+    init(view: NSView) {
+        self.view = view
+    }
 
     @objc func handlePanGesture(_ gesture: NSPanGestureRecognizer) {
         let translation = gesture.translation(in: nil)
@@ -30,15 +29,13 @@ final class CameraManager: CameraManagerProtocol {
 
         case .changed:
             if let lastTranslation = lastPanTranslation {
-                // Учитываем масштаб камеры при вычислении дельты
-                let scaleAdjustment = 1.0 / cameraNode.xScale
                 let delta = CGPoint(
-                    x: (translation.x - lastTranslation.x) / scaleAdjustment,
-                    y: -(translation.y - lastTranslation.y) / scaleAdjustment
+                    x: translation.x - lastTranslation.x,
+                    y: translation.y - lastTranslation.y
                 )
-                cameraNode.position = CGPoint(
-                    x: cameraNode.position.x - delta.x,
-                    y: cameraNode.position.y + delta.y
+                view.frame.origin = CGPoint(
+                    x: view.frame.origin.x + delta.x,
+                    y: view.frame.origin.y + delta.y
                 )
 
                 lastPanTranslation = translation
@@ -53,18 +50,16 @@ final class CameraManager: CameraManagerProtocol {
     }
 
     @objc func handleZoomGesture(_ gesture: NSMagnificationGestureRecognizer) {
-        // Применение экспоненциального масштабирования
-        let magnificationFactor = 1.0 - gesture.magnification
+        let magnificationFactor = 1.0 + gesture.magnification
 
-        // Обновление масштаба камеры
-        cameraNode.xScale *= magnificationFactor
-        cameraNode.yScale *= magnificationFactor
+        view.scaleUnitSquare(to: CGSize(width: magnificationFactor, height: magnificationFactor))
 
-        // Ограничение масштаба камеры (можно изменить по необходимости)
-        cameraNode.xScale = max(0.1, min(20.0, cameraNode.xScale))
-        cameraNode.yScale = max(0.1, min(20.0, cameraNode.yScale))
+        // Ограничение масштаба
+        let scale = view.bounds.size.width / view.frame.size.width
+        if scale < 0.1 || scale > 20.0 {
+            view.scaleUnitSquare(to: CGSize(width: 1.0 / magnificationFactor, height: 1.0 / magnificationFactor))
+        }
 
-        // Сброс значения увеличения, чтобы учитывать только изменения
         gesture.magnification = 0
     }
 }

@@ -18,6 +18,36 @@
             endingLineNumber = "60"
             landmarkName = "updateScene()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "64DA3CF8-2BB8-4285-987A-6684881A9F85 - 854a2d54752a0351"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for Life.GameScenePresenter.updateScene() async -&gt; ()"
+                  moduleName = "Life"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/olegvoytin/Life/Life/Scene/GameScenePresenter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "60"
+                  endingLineNumber = "60">
+               </Location>
+               <Location
+                  uuid = "64DA3CF8-2BB8-4285-987A-6684881A9F85 - 9c35a311aaf75d57"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(6) suspend resume partial function for Life.GameScenePresenter.updateScene() async -&gt; ()"
+                  moduleName = "Life"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/olegvoytin/Life/Life/Scene/GameScenePresenter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "60"
+                  endingLineNumber = "60">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -34,6 +64,36 @@
             endingLineNumber = "19"
             landmarkName = "update()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "11C73924-AC5B-4BC5-95AE-38449DDAEDD7 - 48e79b4241299acc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Life.SquareLayer.update() async -&gt; ()"
+                  moduleName = "Life"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/olegvoytin/Life/Life/Scene/Managers/GridManager/GridObjects.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19">
+               </Location>
+               <Location
+                  uuid = "11C73924-AC5B-4BC5-95AE-38449DDAEDD7 - 86f5a9dfd3c670ce"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Life.SquareLayer.update() async -&gt; ()"
+                  moduleName = "Life"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/olegvoytin/Life/Life/Scene/Managers/GridManager/GridObjects.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -50,6 +110,22 @@
             endingLineNumber = "45"
             landmarkName = "texture"
             landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DE458F8C-B0C9-4ED2-834B-B6EFAE26B34C"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Life/Scene/GameViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

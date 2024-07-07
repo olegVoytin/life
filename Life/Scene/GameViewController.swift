@@ -16,13 +16,19 @@ protocol GameSceneProtocol: AnyObject {
 
 class GameViewController: NSViewController, GameSceneProtocol {
 
-    @IBOutlet var gameView: NSView!
+    private let gameView = NSView()
 
     private let presenter = GameScenePresenter()
-    private lazy var cameraManager = CameraManager(view: gameView)
+    private lazy var cameraManager = CameraManager(view: self.gameView)
+
+    override func loadView() {
+        self.view = NSView()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        self.view.addSubview(gameView)
 
         presenter.scene = self
         presenter.start()
@@ -30,10 +36,10 @@ class GameViewController: NSViewController, GameSceneProtocol {
         setupGestureRecognizers()
 
         Task { @MainActor in
-            while true {
+//            while true {
                 await presenter.updateScene()
                 await Task.yield()
-            }
+//            }
         }
     }
 
@@ -57,7 +63,7 @@ class GameViewController: NSViewController, GameSceneProtocol {
     }
 
     func addGesture(_ gestureRecognizer: NSGestureRecognizer) {
-        self.gameView.addGestureRecognizer(gestureRecognizer)
+        self.view.addGestureRecognizer(gestureRecognizer)
     }
 
     func addSublayer(_ sublayer: CALayer) {

@@ -88,7 +88,7 @@ extension GameViewController: MTKViewDelegate {
                 // Defining the vertices for two triangles forming a square
                 vertexData.append(contentsOf: [topLeft, bottomLeft, topRight, topRight, bottomLeft, bottomRight])
 
-                let randomColor = vector_float4(Float.random(in: 0...1), Float.random(in: 0...1), Float.random(in: 0...1), 1.0)
+                let randomColor = vector_float4(0, 0, 0, 1.0)
                 // Repeat the same color for all six vertices of the square
                 colorData.append(contentsOf: [randomColor, randomColor, randomColor, randomColor, randomColor, randomColor])
             }

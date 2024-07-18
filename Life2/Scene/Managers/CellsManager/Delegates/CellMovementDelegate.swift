@@ -31,7 +31,7 @@ extension CellsManager: CellMovementDelegate {
 
         let newSquare = grid[y + 1][x]
 
-        guard newSquare.getType() == .empty else { return }
+        guard newSquare.type == .empty else { return }
 
         let oldSquare = grid[y][x]
         oldSquare.setType(.empty)
@@ -55,7 +55,7 @@ extension CellsManager: CellMovementDelegate {
 
         let newSquare = grid[y - 1][x]
 
-        guard newSquare.getType() == .empty else { return }
+        guard newSquare.type == .empty else { return }
 
         let oldSquare = grid[y][x]
         oldSquare.setType(.empty)
@@ -79,7 +79,7 @@ extension CellsManager: CellMovementDelegate {
 
         let newSquare = grid[y][x - 1]
 
-        guard newSquare.getType() == .empty else { return }
+        guard newSquare.type == .empty else { return }
 
         let oldSquare = grid[y][x]
         oldSquare.setType(.empty)
@@ -103,7 +103,7 @@ extension CellsManager: CellMovementDelegate {
 
         let newSquare = grid[y][x + 1]
 
-        guard newSquare.getType() == .empty else { return }
+        guard newSquare.type == .empty else { return }
 
         let oldSquare = grid[y][x]
         oldSquare.setType(.empty)

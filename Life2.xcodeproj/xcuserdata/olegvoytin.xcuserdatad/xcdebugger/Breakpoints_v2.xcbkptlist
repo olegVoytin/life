@@ -7,16 +7,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "ECAA03F4-8407-44DC-86B3-D7349717A926"
+            uuid = "5D878CAE-45A9-44C9-AFF6-2373BA71D043"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Life2/Scene/GameViewController.swift"
+            filePath = "Life2/Scene/GameScenePresenter.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
-            landmarkName = "handleZoomGesture(_:)"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "updateChangedSquares()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "49366DF7-8919-45FD-A5C3-1B928987AEBC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Life2/Scene/Controller/GameViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "changeColorOfSquare(atRow:column:toColor:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -27,7 +27,6 @@ class GameViewController: NSViewController, GameSceneProtocol {
     var colorBuffer: MTLBuffer!
     var uniformBuffer: MTLBuffer!
 
-//    let cellCount = 4
     let vertexSize = MemoryLayout<vector_float2>.size
     let colorSize = MemoryLayout<vector_float4>.size
 
@@ -44,27 +43,13 @@ class GameViewController: NSViewController, GameSceneProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        presenter.scene = self
+
         setupMetalView()
         generateGrid()
         setupGestureRecognizers()
 
         presenter.start()
-
-        Task { @MainActor in
-            while true {
-                async let limit: ()? = try? await Task.sleep(for: .seconds(1))
-                async let cycle: () = update()
-
-                _ = await (
-                    limit,
-                    cycle
-                )
-            }
-        }
-    }
-
-    func update() async {
-        
     }
 
     func changeColorOfSquare(atRow row: Int, column: Int, toColor color: vector_float4) {
@@ -89,9 +74,4 @@ class GameViewController: NSViewController, GameSceneProtocol {
         // Update the color buffer
         colorBuffer.contents().copyMemory(from: colorData, byteCount: colorData.count * colorSize)
     }
-
-//    func update() {
-//        let randomColor = vector_float4(Float.random(in: 0...1), Float.random(in: 0...1), Float.random(in: 0...1), 1.0)
-//        changeColorOfSquare(atRow: 3, column: 3, toColor: randomColor)
-//    }
 }

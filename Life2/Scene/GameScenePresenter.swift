@@ -17,7 +17,6 @@ actor ProcessingActor {
 @MainActor
 protocol GameScenePresenterProtocol: AnyObject {
     func start()
-    func updateScene() async
     func onTap(position: CGPoint)
 }
 
@@ -28,7 +27,12 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
     @ProcessingActor private lazy var gridManager: GridManagerProtocol = GridManager()
     @ProcessingActor private lazy var cellsManager: CellsManagerProtocol = CellsManager(gridManager: gridManager)
-    @ProcessingActor private lazy var cycleManager: CycleManagerProtocol = CycleManager(cellsManager: cellsManager)
+    @ProcessingActor private lazy var cycleManager: CycleManagerProtocol = CycleManager(
+        cellsManager: cellsManager,
+        onCycleFinished: { [weak self] in
+            await self?.updateChangedSquares()
+        }
+    )
 
     // MARK: - Setup
 
@@ -38,24 +42,27 @@ final class GameScenePresenter: GameScenePresenterProtocol {
         }
     }
 
-    private func updateGrid() {
-        Task { @MainActor in
-            let squares = await gridManager.changedSquares
+    @ProcessingActor
+    private func updateChangedSquares() async {
+        let changedSquaresFootprints = gridManager.grid
+            .flatMap { $0 }
+            .filter { $0.changed }
+            .map { $0.read() }
+
+        guard !changedSquaresFootprints.isEmpty else { return }
+
+        await MainActor.run {
+            changedSquaresFootprints.forEach {
+                scene?.changeColorOfSquare(
+                    atRow: Int($0.position.y),
+                    column: Int($0.position.x),
+                    toColor: $0.color.vector
+                )
+            }
         }
     }
 
     // MARK: - Actions
-
-    func updateScene() async {
-        Task { @ProcessingActor in
-            cycleManager.onNewFrame()
-        }
-
-        let layers = await gridManager.layers
-        for layer in layers {
-            await layer.update()
-        }
-    }
 
     func onTap(position: CGPoint) {
         Task { @ProcessingActor in

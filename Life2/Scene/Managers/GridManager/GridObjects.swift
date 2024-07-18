@@ -9,34 +9,9 @@ import Foundation
 import Cocoa
 import MetalKit
 
-@MainActor
-final class SquareLayer {
-
-    weak var squareEntity: SquareEntity?
-
+struct SquareFootprint {
     let position: CGPoint
-    var color: CGColor
-
-    init(
-        squareEntity: SquareEntity?,
-        position: CGPoint,
-        color: CGColor = SquareEntity.SquareType.empty.texture
-    ) {
-        self.squareEntity = squareEntity
-        self.position = position
-        self.color = color
-    }
-
-    func update() async {
-        async let changed = await self.squareEntity!.changed
-        async let texture = await self.squareEntity!.getType().texture
-
-        guard await changed else { return }
-
-        if await color != texture {
-            color = await texture
-        }
-    }
+    let color: NSColor
 }
 
 @ProcessingActor
@@ -44,9 +19,9 @@ final class SquareEntity {
 
     let position: CGPoint
     let size: CGSize
-    private var type: SquareType
+    private(set) var type: SquareType
 
-    private(set) var changed = false
+    private(set) var changed = true
 
     init(position: CGPoint, size: CGSize, type: SquareType) {
         self.position = position
@@ -59,40 +34,40 @@ final class SquareEntity {
         changed = true
     }
 
-    func getType() -> SquareType {
+    func read() -> SquareFootprint {
         changed = false
-        return type
+        return SquareFootprint(position: position, color: type.texture)
     }
 
     enum SquareType: Equatable {
         case empty
         case cell(type: Cell.CellType)
 
-        var texture: CGColor {
+        var texture: NSColor {
             switch self {
             case .empty:
-                return NSColor.gray.cgColor
+                return .gray.usingColorSpace(.sRGB)!
 
             case .cell(let type):
                 switch type {
                 case .cell:
-                    return .white
+                    return .white.usingColorSpace(.sRGB)!
 
                 case .transport:
-                    return NSColor.lightGray.cgColor
+                    return .lightGray.usingColorSpace(.sRGB)!
                 }
             }
         }
     }
 }
 
-extension CGColor {
+extension NSColor {
     var vector: vector_float4 {
         vector_float4(
-            Float(self.components![0]),
-            Float(self.components![1]),
-            Float(self.components![2]),
-            Float(self.components![3])
+            Float(self.redComponent),
+            Float(self.greenComponent),
+            Float(self.blueComponent),
+            Float(self.alphaComponent)
         )
     }
 }

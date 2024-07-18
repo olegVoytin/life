@@ -8,6 +8,6 @@
 import Foundation
 
 enum Constants {
-    static let blockSide = 10
-    static let gridSide = 50
+    static let blockSide = 1
+    static let gridSide = 10
 }

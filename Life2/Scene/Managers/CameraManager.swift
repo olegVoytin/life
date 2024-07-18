@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import SpriteKit
+import MetalKit
 
 @MainActor
 final class CameraManager {
@@ -14,9 +14,9 @@ final class CameraManager {
     private var lastPanTranslation: CGPoint?
     private var lastScale: CGFloat = 0
 
-    let view: NSView
+    let view: MTKView
 
-    init(view: NSView) {
+    init(view: MTKView) {
         self.view = view
     }
 

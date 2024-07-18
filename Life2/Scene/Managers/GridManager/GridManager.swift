@@ -41,7 +41,7 @@ final class GridManager: GridManagerProtocol {
             for colIndex in 0..<Constants.gridSide {
                 let position = CGPoint(x: colIndex, y: rowIndex).fromGridPosition()
                 let square = SquareEntity(
-                    position:position ,
+                    position: position,
                     size: CGSize(width: Constants.blockSide, height: Constants.blockSide),
                     type: .empty
                 )
@@ -62,20 +62,24 @@ final class GridManager: GridManagerProtocol {
 
         for row in grid {
             for square in row {
-                let squareLayer = SquareLayer()
+//                let squareLayer = SquareLayer(
+//                    squareEntity: square,
+//                    position: square.position,
+//                    color: await square.type.texture
+//                )
 
-                squareLayer.layer.frame = CGRect(
-                    x: 0,
-                    y: 0,
-                    width: Constants.blockSide,
-                    height: Constants.blockSide
-                )
-                squareLayer.layer.backgroundColor = await square.type.texture
-                squareLayer.layer.position = square.position
-                squareLayer.squareEntity = square
-                squareLayer.layer.anchorPoint = CGPoint(x: 0, y: 0)
+//                squareLayer.layer.frame = CGRect(
+//                    x: 0,
+//                    y: 0,
+//                    width: Constants.blockSide,
+//                    height: Constants.blockSide
+//                )
+//                squareLayer.layer.backgroundColor = await square.type.texture
+//                squareLayer.layer.position = square.position
+//                squareLayer.squareEntity = square
+//                squareLayer.layer.anchorPoint = CGPoint(x: 0, y: 0)
 
-                squareLayers.append(squareLayer)
+//                squareLayers.append(squareLayer)
             }
         }
 

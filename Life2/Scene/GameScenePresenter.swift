@@ -33,19 +33,14 @@ final class GameScenePresenter: GameScenePresenterProtocol {
     // MARK: - Setup
 
     func start() {
-        setupGrid()
-
         Task { @ProcessingActor in
             cycleManager.startCycle()
         }
     }
 
-    private func setupGrid() {
-        Task {
-            let layers = await gridManager.layers
-            layers.forEach {
-                scene?.addSublayer($0.layer)
-            }
+    private func updateGrid() {
+        Task { @MainActor in
+            let squares = await gridManager.changedSquares
         }
     }
 
@@ -78,7 +73,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
             else { return }
 
             let square = grid[y][x]
-            square.type = .cell(type: .cell)
+            square.setType(.cell(type: .cell))
 
             cellsManager.addCell(to: gridPosition)
         }

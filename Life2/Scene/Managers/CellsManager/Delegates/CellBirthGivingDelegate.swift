@@ -30,28 +30,28 @@ extension CellsManager: CellBirthGivingDelegate {
         case .up:
             guard
                 grid.count - 1 >= y + 1,
-                grid[y + 1][x].type == .empty
+                grid[y + 1][x].getType() == .empty
             else { return }
             birthPosition = CGPoint(x: x, y: y + 1)
 
         case .down:
             guard
                 y - 1 >= 0,
-                grid[y - 1][x].type == .empty
+                grid[y - 1][x].getType() == .empty
             else { return }
             birthPosition = CGPoint(x: x, y: y - 1)
 
         case .left:
             guard
                 x - 1 >= 0,
-                grid[y][x - 1].type == .empty
+                grid[y][x - 1].getType() == .empty
             else { return }
             birthPosition = CGPoint(x: x - 1, y: y)
 
         case .right:
             guard
                 grid[y].count - 1 >= x + 1,
-                grid[y][x + 1].type == .empty
+                grid[y][x + 1].getType() == .empty
             else { return }
             birthPosition = CGPoint(x: x + 1, y: y)
         }
@@ -59,12 +59,12 @@ extension CellsManager: CellBirthGivingDelegate {
         guard let birthPosition else { return }
 
         let oldSquare = grid[y][x]
-        oldSquare.type = .cell(type: .transport)
+        oldSquare.setType(.cell(type: .transport))
         cell.type = .transport
 
         self.addChild(of: cell, to: birthPosition)
 
         let square = gridManager.grid[Int(birthPosition.y)][Int(birthPosition.x)]
-        square.type = .cell(type: .cell)
+        square.setType(.cell(type: .cell))
     }
 }

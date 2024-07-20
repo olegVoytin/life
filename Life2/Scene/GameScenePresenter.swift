@@ -43,13 +43,8 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
         Task { @MainActor in
             while true {
-                async let limit: ()? = nil//try? await Task.sleep(for: .seconds(0.5))
-                async let cycle: () = updateChangedSquares()
-
-                _ = await (
-                    limit,
-                    cycle
-                )
+                await updateChangedSquares()
+                try? await Task.sleep(for: .seconds(1))
             }
         }
     }
@@ -58,14 +53,12 @@ final class GameScenePresenter: GameScenePresenterProtocol {
         let changedSquaresFootprints = await gridManager.changedSquaresFootprints
         guard !changedSquaresFootprints.isEmpty else { return }
 
-        Task { @MainActor in
-            changedSquaresFootprints.forEach {
-                scene?.changeColorOfSquare(
-                    atRow: Int($0.position.y),
-                    column: Int($0.position.x),
-                    toColor: $0.color.vector
-                )
-            }
+        changedSquaresFootprints.forEach {
+            scene?.changeColorOfSquare(
+                atRow: Int($0.position.y),
+                column: Int($0.position.x),
+                toColor: $0.color.vector
+            )
         }
     }
 

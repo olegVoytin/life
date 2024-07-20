@@ -52,7 +52,7 @@ final class CycleManager: CycleManagerProtocol {
         }
     }
 
-    private var speed: Speed = .slow
+    private var speed: Speed = .max
     private var isRunning = true
 
     private var frameCicle: Task<Void, Never>?

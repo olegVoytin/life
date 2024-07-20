@@ -10,12 +10,19 @@ import Foundation
 @ProcessingActor
 protocol GridManagerProtocol: AnyObject, Sendable {
     var grid: [[SquareEntity]] { get }
+    var changedSquaresFootprints: [SquareFootprint] { get }
 }
 
 @ProcessingActor
 final class GridManager: GridManagerProtocol {
 
     var grid: [[SquareEntity]] = []
+    var changedSquaresFootprints: [SquareFootprint] {
+        grid
+            .flatMap { $0 }
+            .filter { $0.changed }
+            .map { $0.read() }
+    }
 
     init() {
         self.grid = createGrid()

@@ -6,10 +6,6 @@
 //
 
 import Foundation
-import AppKit
-import Cocoa
-import QuartzCore
-import CoreVideo
 
 @globalActor
 actor ProcessingActor {
@@ -27,15 +23,13 @@ protocol GameScenePresenterProtocol: AnyObject {
 final class GameScenePresenter: GameScenePresenterProtocol {
     
     weak var scene: GameSceneProtocol?
-    var displayLink: CVDisplayLink?
 
     @ProcessingActor private lazy var gridManager: GridManagerProtocol = GridManager()
     @ProcessingActor private lazy var cellsManager: CellsManagerProtocol = CellsManager(gridManager: gridManager)
-    @ProcessingActor private lazy var cycleManager: CycleManagerProtocol = CycleManager(
-        cellsManager: cellsManager,
-        onCycleFinished: { [weak self] in
-            self?.updateChangedSquares()
-        }
+    @ProcessingActor private lazy var cycleManager: CycleManagerProtocol = CycleManager(cellsManager: cellsManager)
+    private lazy var screenUpdateManager: ScreenUpdateManagerProtocol = ScreenUpdateManager(
+        scene: scene,
+        gridManager: gridManager
     )
 
     // MARK: - Setup
@@ -44,60 +38,16 @@ final class GameScenePresenter: GameScenePresenterProtocol {
         Task { @ProcessingActor in
             cycleManager.startCycle()
 
+
             for _ in 1...10000 {
                 let randomX = Int.random(in: 0..<Constants.gridSide)
                 let randomY = Int.random(in: 0..<Constants.gridSide)
                 cellsManager.addCell(to: CGPoint(x: randomX, y: randomY))
             }
         }
+
+        screenUpdateManager.startDisplayLink()
     }
-
-    @ProcessingActor
-    private func updateChangedSquares() {
-        let changedSquaresFootprints = gridManager.grid
-            .flatMap { $0 }
-            .filter { $0.changed }
-            .map { $0.read() }
-
-        guard !changedSquaresFootprints.isEmpty else { return }
-
-        Task { @MainActor in
-            changedSquaresFootprints.forEach {
-                scene?.changeColorOfSquare(
-                    atRow: Int($0.position.y),
-                    column: Int($0.position.x),
-                    toColor: $0.color.vector
-                )
-            }
-        }
-    }
-
-//    func setupDisplayLink() {
-//        CVDisplayLinkCreateWithActiveCGDisplays(&displayLink)
-//
-//        let displayLinkOutputCallback: CVDisplayLinkOutputCallback = { (
-//            displayLink: CVDisplayLink,
-//            inNow: UnsafePointer<CVTimeStamp>,
-//            inOutputTime: UnsafePointer<CVTimeStamp>,
-//            flagsIn: CVOptionFlags,
-//            flagsOut: UnsafeMutablePointer<CVOptionFlags>,
-//            displayLinkContext: UnsafeMutableRawPointer?) -> CVReturn in
-//
-//            let appDelegate = Unmanaged<AppDelegate>.fromOpaque(displayLinkContext!).takeUnretainedValue()
-//            DispatchQueue.main.async {
-//                self.displayLinkDidRefresh()
-//            }
-//            return kCVReturnSuccess
-//        }
-//
-//        CVDisplayLinkSetOutputCallback(displayLink!, displayLinkOutputCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
-//        CVDisplayLinkStart(displayLink!)
-//    }
-//
-//    func displayLinkDidRefresh() {
-//        // Your code to update the display goes here
-//        print("Display link refreshed")
-//    }
 
     // MARK: - Actions
 

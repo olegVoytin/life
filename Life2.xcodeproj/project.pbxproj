@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		063784322C4845DC006F7F88 /* MTKViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 063784312C4845DC006F7F88 /* MTKViewDelegate.swift */; };
 		063784342C484600006F7F88 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 063784332C484600006F7F88 /* Camera.swift */; };
+		067A60982C4C14370077D8B6 /* ScreenUpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067A60972C4C14370077D8B6 /* ScreenUpdateManager.swift */; };
 		06B14C122C3B2C68002049B6 /* DoublyLinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B14BF62C3B2C68002049B6 /* DoublyLinkedList.swift */; };
 		06B14C132C3B2C68002049B6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B14BF72C3B2C68002049B6 /* Constants.swift */; };
 		06B14C142C3B2C68002049B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B14BF82C3B2C68002049B6 /* AppDelegate.swift */; };
@@ -34,6 +35,7 @@
 /* Begin PBXFileReference section */
 		063784312C4845DC006F7F88 /* MTKViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTKViewDelegate.swift; sourceTree = "<group>"; };
 		063784332C484600006F7F88 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
+		067A60972C4C14370077D8B6 /* ScreenUpdateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenUpdateManager.swift; sourceTree = "<group>"; };
 		06B14BE42C3B2BE4002049B6 /* Life2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Life2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		06B14BF02C3B2BE5002049B6 /* Life2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Life2.entitlements; sourceTree = "<group>"; };
 		06B14BF62C3B2C68002049B6 /* DoublyLinkedList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoublyLinkedList.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 				06B14C082C3B2C68002049B6 /* GridManager */,
 				06B14C092C3B2C68002049B6 /* CameraManager.swift */,
 				06B14C0A2C3B2C68002049B6 /* CicleManager.swift */,
+				067A60972C4C14370077D8B6 /* ScreenUpdateManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				06B14C202C3B2C68002049B6 /* CicleManager.swift in Sources */,
 				06B14C192C3B2C68002049B6 /* CellMovementDelegate.swift in Sources */,
 				06B14C222C3B2C68002049B6 /* GameViewController.swift in Sources */,
+				067A60982C4C14370077D8B6 /* ScreenUpdateManager.swift in Sources */,
 				06B14C262C3B2D47002049B6 /* Shader.metal in Sources */,
 				06B14C182C3B2C68002049B6 /* CellBirthGivingDelegate.swift in Sources */,
 				06B14C242C3B2C68002049B6 /* CGPoint.swift in Sources */,

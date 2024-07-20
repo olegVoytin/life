@@ -52,7 +52,7 @@ final class CycleManager: CycleManagerProtocol {
         }
     }
 
-    private var speed: Speed = .max
+    private var speed: Speed = .slow
     private var isRunning = true
 
     private var frameCicle: Task<Void, Never>?
@@ -79,7 +79,7 @@ final class CycleManager: CycleManagerProtocol {
         }
 
         Task { @ProcessingActor in
-            while isRunning {
+            while true {
                 async let limit: ()? = try? await Task.sleep(for: .seconds(1))
                 async let cycle: () = countIterations()
 

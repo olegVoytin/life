@@ -43,7 +43,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
         Task { @MainActor in
             while true {
-                async let limit: ()? = try? await Task.sleep(for: .seconds(0.5))
+                async let limit: ()? = nil//try? await Task.sleep(for: .seconds(0.5))
                 async let cycle: () = updateChangedSquares()
 
                 _ = await (

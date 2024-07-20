@@ -23,7 +23,7 @@
 		06B14C1D2C3B2C68002049B6 /* GridManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B14C062C3B2C68002049B6 /* GridManager.swift */; };
 		06B14C1E2C3B2C68002049B6 /* GridObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B14C072C3B2C68002049B6 /* GridObjects.swift */; };
 		06B14C1F2C3B2C68002049B6 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B14C092C3B2C68002049B6 /* CameraManager.swift */; };
-		06B14C202C3B2C68002049B6 /* CicleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B14C0A2C3B2C68002049B6 /* CicleManager.swift */; };
+		06B14C202C3B2C68002049B6 /* CycleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B14C0A2C3B2C68002049B6 /* CycleManager.swift */; };
 		06B14C212C3B2C68002049B6 /* GameScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B14C0C2C3B2C68002049B6 /* GameScenePresenter.swift */; };
 		06B14C222C3B2C68002049B6 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B14C0D2C3B2C68002049B6 /* GameViewController.swift */; };
 		06B14C232C3B2C68002049B6 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B14C0F2C3B2C68002049B6 /* Array.swift */; };
@@ -50,7 +50,7 @@
 		06B14C062C3B2C68002049B6 /* GridManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridManager.swift; sourceTree = "<group>"; };
 		06B14C072C3B2C68002049B6 /* GridObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridObjects.swift; sourceTree = "<group>"; };
 		06B14C092C3B2C68002049B6 /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
-		06B14C0A2C3B2C68002049B6 /* CicleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CicleManager.swift; sourceTree = "<group>"; };
+		06B14C0A2C3B2C68002049B6 /* CycleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CycleManager.swift; sourceTree = "<group>"; };
 		06B14C0C2C3B2C68002049B6 /* GameScenePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScenePresenter.swift; sourceTree = "<group>"; };
 		06B14C0D2C3B2C68002049B6 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		06B14C0F2C3B2C68002049B6 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
@@ -163,7 +163,7 @@
 				06B14C052C3B2C68002049B6 /* CellsManager */,
 				06B14C082C3B2C68002049B6 /* GridManager */,
 				06B14C092C3B2C68002049B6 /* CameraManager.swift */,
-				06B14C0A2C3B2C68002049B6 /* CicleManager.swift */,
+				06B14C0A2C3B2C68002049B6 /* CycleManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -269,7 +269,7 @@
 				06B14C212C3B2C68002049B6 /* GameScenePresenter.swift in Sources */,
 				06B14C122C3B2C68002049B6 /* DoublyLinkedList.swift in Sources */,
 				06B14C1D2C3B2C68002049B6 /* GridManager.swift in Sources */,
-				06B14C202C3B2C68002049B6 /* CicleManager.swift in Sources */,
+				06B14C202C3B2C68002049B6 /* CycleManager.swift in Sources */,
 				06B14C192C3B2C68002049B6 /* CellMovementDelegate.swift in Sources */,
 				06B14C222C3B2C68002049B6 /* GameViewController.swift in Sources */,
 				06B14C262C3B2D47002049B6 /* Shader.metal in Sources */,

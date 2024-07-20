@@ -52,15 +52,15 @@ final class CycleManager: CycleManagerProtocol {
         }
     }
 
-    private var speed: Speed = .slow
+    private var speed: Speed = .medium
     private var isRunning = true
 
     private var frameCicle: Task<Void, Never>?
 
     private let cellsManager: CellsManagerProtocol
-    private let onCycleFinished: (() async -> Void)?
+    private let onCycleFinished: (() -> Void)?
 
-    init(cellsManager: CellsManagerProtocol, onCycleFinished: (() async -> Void)?) {
+    init(cellsManager: CellsManagerProtocol, onCycleFinished: (() -> Void)?) {
         self.cellsManager = cellsManager
         self.onCycleFinished = onCycleFinished
     }
@@ -81,7 +81,7 @@ final class CycleManager: CycleManagerProtocol {
 
     private func doCycle() async {
         await cellsManager.update()
-        await onCycleFinished?()
+        onCycleFinished?()
         await Task.yield()
     }
 

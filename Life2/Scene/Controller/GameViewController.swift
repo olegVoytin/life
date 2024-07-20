@@ -34,7 +34,7 @@ class GameViewController: NSViewController, GameSceneProtocol {
     var colorData: [vector_float4] = []
     var transformMatrix = matrix_identity_float4x4
 
-    var timer: Timer?
+    var displayLink: CADisplayLink?
 
     var cameraScale: Float = 1.0
     var cameraTranslation: vector_float2 = [0, 0]
@@ -68,10 +68,12 @@ class GameViewController: NSViewController, GameSceneProtocol {
         let squareIndex = (row * Constants.gridSide + column) * 6
 
         for i in 0..<6 {
-            colorData[squareIndex + i] = color
+            // Update the color buffer
+            colorBuffer.contents().storeBytes(
+                of: color,
+                toByteOffset: (squareIndex + i) * colorSize,
+                as: vector_float4.self
+            )
         }
-
-        // Update the color buffer
-        colorBuffer.contents().copyMemory(from: colorData, byteCount: colorData.count * colorSize)
     }
 }

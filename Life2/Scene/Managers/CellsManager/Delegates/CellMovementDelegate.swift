@@ -34,9 +34,9 @@ extension CellsManager: CellMovementDelegate {
         guard newSquare.type == .empty else { return }
 
         let oldSquare = grid[y][x]
-        oldSquare.setType(.empty)
+        oldSquare.type = .empty
 
-        newSquare.setType(.cell(type: .cell))
+        newSquare.type = .cell(type: .cell)
 
         cell.gridPosition = CGPoint(x: x, y: y + 1)
     }
@@ -58,9 +58,9 @@ extension CellsManager: CellMovementDelegate {
         guard newSquare.type == .empty else { return }
 
         let oldSquare = grid[y][x]
-        oldSquare.setType(.empty)
+        oldSquare.type = .empty
 
-        newSquare.setType(.cell(type: .cell))
+        newSquare.type = .cell(type: .cell)
 
         cell.gridPosition = CGPoint(x: x, y: y - 1)
     }
@@ -82,9 +82,9 @@ extension CellsManager: CellMovementDelegate {
         guard newSquare.type == .empty else { return }
 
         let oldSquare = grid[y][x]
-        oldSquare.setType(.empty)
+        oldSquare.type = .empty
 
-        newSquare.setType(.cell(type: .cell))
+        newSquare.type = .cell(type: .cell)
 
         cell.gridPosition = CGPoint(x: x - 1, y: y)
     }
@@ -106,9 +106,9 @@ extension CellsManager: CellMovementDelegate {
         guard newSquare.type == .empty else { return }
 
         let oldSquare = grid[y][x]
-        oldSquare.setType(.empty)
+        oldSquare.type = .empty
 
-        newSquare.setType(.cell(type: .cell))
+        newSquare.type = .cell(type: .cell)
 
         cell.gridPosition = CGPoint(x: x + 1, y: y)
     }

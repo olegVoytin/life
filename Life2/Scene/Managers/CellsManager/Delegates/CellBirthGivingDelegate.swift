@@ -59,12 +59,12 @@ extension CellsManager: CellBirthGivingDelegate {
         guard let birthPosition else { return }
 
         let oldSquare = grid[y][x]
-        oldSquare.setType(.cell(type: .transport))
+        oldSquare.type = .cell(type: .transport)
         cell.type = .transport
 
         self.addChild(of: cell, to: birthPosition)
 
         let square = gridManager.grid[Int(birthPosition.y)][Int(birthPosition.x)]
-        square.setType(.cell(type: .cell))
+        square.type = .cell(type: .cell)
     }
 }

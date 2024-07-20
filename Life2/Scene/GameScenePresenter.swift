@@ -87,7 +87,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
             else { return }
 
             let square = grid[y][x]
-            square.setType(.cell(type: .cell))
+            square.type = .cell(type: .cell)
 
             cellsManager.addCell(to: gridPosition)
         }

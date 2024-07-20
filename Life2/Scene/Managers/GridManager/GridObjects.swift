@@ -19,7 +19,7 @@ final class SquareEntity {
 
     let position: CGPoint
     let size: CGSize
-    private(set) var type: SquareType
+    var type: SquareType
 
     var changed: Bool {
         return self.type != self.lastReadedType
@@ -30,10 +30,6 @@ final class SquareEntity {
         self.position = position
         self.size = size
         self.type = type
-    }
-
-    func setType(_ newType: SquareType) {
-        type = newType
     }
 
     func read() -> SquareFootprint {

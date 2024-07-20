@@ -9,15 +9,15 @@ import Foundation
 
 @ProcessingActor
 protocol CellMovementDelegate: AnyObject {
-    func moveUp(_ cell: Cell) async
-    func moveDown(_ cell: Cell) async
-    func moveLeft(_ cell: Cell) async
-    func moveRight(_ cell: Cell) async
+    func moveUp(_ cell: Cell)
+    func moveDown(_ cell: Cell)
+    func moveLeft(_ cell: Cell)
+    func moveRight(_ cell: Cell)
 }
 
 extension CellsManager: CellMovementDelegate {
 
-    func moveUp(_ cell: Cell) async {
+    func moveUp(_ cell: Cell) {
         let grid = gridManager.grid
 
         let x = Int(cell.gridPosition.x)
@@ -41,7 +41,7 @@ extension CellsManager: CellMovementDelegate {
         cell.gridPosition = CGPoint(x: x, y: y + 1)
     }
 
-    func moveDown(_ cell: Cell) async {
+    func moveDown(_ cell: Cell) {
         let grid = gridManager.grid
 
         let x = Int(cell.gridPosition.x)
@@ -65,7 +65,7 @@ extension CellsManager: CellMovementDelegate {
         cell.gridPosition = CGPoint(x: x, y: y - 1)
     }
 
-    func moveLeft(_ cell: Cell) async {
+    func moveLeft(_ cell: Cell) {
         let grid = gridManager.grid
 
         let x = Int(cell.gridPosition.x)
@@ -89,7 +89,7 @@ extension CellsManager: CellMovementDelegate {
         cell.gridPosition = CGPoint(x: x - 1, y: y)
     }
 
-    func moveRight(_ cell: Cell) async {
+    func moveRight(_ cell: Cell) {
         let grid = gridManager.grid
 
         let x = Int(cell.gridPosition.x)

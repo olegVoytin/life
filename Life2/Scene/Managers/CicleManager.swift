@@ -52,12 +52,14 @@ final class CycleManager: CycleManagerProtocol {
         }
     }
 
-    private var speed: Speed = .medium
+    private var speed: Speed = .max
     private var isRunning = true
 
     private var frameCicle: Task<Void, Never>?
 
     private let cellsManager: CellsManagerProtocol
+
+    private var iterations = 0
 
     init(cellsManager: CellsManagerProtocol) {
         self.cellsManager = cellsManager
@@ -75,10 +77,29 @@ final class CycleManager: CycleManagerProtocol {
                 )
             }
         }
+
+        Task { @ProcessingActor in
+            while isRunning {
+                async let limit: ()? = try? await Task.sleep(for: .seconds(1))
+                async let cycle: () = countIterations()
+
+                _ = await (
+                    limit,
+                    cycle
+                )
+            }
+        }
+    }
+
+    private func countIterations() {
+        print(iterations)
+        iterations = 0
     }
 
     private func doCycle() async {
-        await cellsManager.update()
+        iterations += 1
+        
+        cellsManager.update()
         await Task.yield()
     }
 

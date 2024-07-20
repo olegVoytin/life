@@ -21,10 +21,10 @@ final class CellsList: DoublyLinkedList<Cell> {
         self.cellBirthGivingDelegate = cellBirthGivingDelegate
     }
 
-    func update() async {
+    func update() {
         var currentNode = first
         while currentNode != nil {
-            await currentNode?.value.update()
+            currentNode?.value.update()
             currentNode = currentNode?.next
         }
     }

@@ -40,8 +40,8 @@ final class Cell: Equatable, Identifiable {
         self.energy = energy
     }
 
-    func update() async {
-        await moveRandomly()
+    func update() {
+        moveRandomly()
     }
 
     nonisolated static func == (lhs: Cell, rhs: Cell) -> Bool {
@@ -58,21 +58,21 @@ final class Cell: Equatable, Identifiable {
         }
     }
 
-    private func moveRandomly() async {
+    private func moveRandomly() {
         guard let direction = Direction(rawValue: Int.random(in: 0..<4)) else { return }
 
         switch direction {
         case .up:
-            await cellPositionDelegate?.moveUp(self)
+            cellPositionDelegate?.moveUp(self)
 
         case .down:
-            await cellPositionDelegate?.moveDown(self)
+            cellPositionDelegate?.moveDown(self)
 
         case .left:
-            await cellPositionDelegate?.moveLeft(self)
+            cellPositionDelegate?.moveLeft(self)
 
         case .right:
-            await cellPositionDelegate?.moveRight(self)
+            cellPositionDelegate?.moveRight(self)
         }
     }
 }

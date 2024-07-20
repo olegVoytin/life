@@ -9,7 +9,7 @@ import Foundation
 
 @ProcessingActor
 protocol CellsManagerProtocol: AnyObject {
-    func update() async
+    func update()
     func addCell(to gridPosition: CGPoint)
     func addChild(of cell: Cell, to gridPosition: CGPoint)
 }
@@ -28,8 +28,8 @@ final class CellsManager: CellsManagerProtocol {
         self.gridManager = gridManager
     }
 
-    func update() async {
-        await cellsLinkedList.update()
+    func update() {
+        cellsLinkedList.update()
     }
 
     func addCell(to gridPosition: CGPoint) {

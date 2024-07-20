@@ -27,17 +27,12 @@ final class GameScenePresenter: GameScenePresenterProtocol {
     @ProcessingActor private lazy var gridManager: GridManagerProtocol = GridManager()
     @ProcessingActor private lazy var cellsManager: CellsManagerProtocol = CellsManager(gridManager: gridManager)
     @ProcessingActor private lazy var cycleManager: CycleManagerProtocol = CycleManager(cellsManager: cellsManager)
-    private lazy var screenUpdateManager: ScreenUpdateManagerProtocol = ScreenUpdateManager(
-        scene: scene,
-        gridManager: gridManager
-    )
 
     // MARK: - Setup
 
     func start() {
         Task { @ProcessingActor in
             cycleManager.startCycle()
-
 
             for _ in 1...10000 {
                 let randomX = Int.random(in: 0..<Constants.gridSide)
@@ -46,7 +41,32 @@ final class GameScenePresenter: GameScenePresenterProtocol {
             }
         }
 
-        screenUpdateManager.startDisplayLink()
+        Task { @MainActor in
+            while true {
+                async let limit: ()? = try? await Task.sleep(for: .seconds(0.5))
+                async let cycle: () = updateChangedSquares()
+
+                _ = await (
+                    limit,
+                    cycle
+                )
+            }
+        }
+    }
+
+    private func updateChangedSquares() async {
+        let changedSquaresFootprints = await gridManager.changedSquaresFootprints
+        guard !changedSquaresFootprints.isEmpty else { return }
+
+        Task { @MainActor in
+            changedSquaresFootprints.forEach {
+                scene?.changeColorOfSquare(
+                    atRow: Int($0.position.y),
+                    column: Int($0.position.x),
+                    toColor: $0.color.vector
+                )
+            }
+        }
     }
 
     // MARK: - Actions

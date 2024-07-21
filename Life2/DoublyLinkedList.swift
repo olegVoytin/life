@@ -20,9 +20,10 @@ final class DoublyLinkedListNode<T> {
 
 // Класс для двусвязного списка
 @ProcessingActor
-class DoublyLinkedList<T> {
+class DoublyLinkedList<T: Hashable> {
     private var head: DoublyLinkedListNode<T>?
     private var tail: DoublyLinkedListNode<T>?
+    var nodeMap = [T: DoublyLinkedListNode<T>]()
 
     // Проверка на пустоту списка
     var isEmpty: Bool {
@@ -42,35 +43,44 @@ class DoublyLinkedList<T> {
     // Добавление нового элемента в конец списка
     func append(value: T) {
         let newNode = DoublyLinkedListNode(value: value)
+        nodeMap[value] = newNode
+
         if let tailNode = tail {
             newNode.previous = tailNode
             tailNode.next = newNode
         } else {
             head = newNode
         }
+
         tail = newNode
     }
 
     // Добавление нового элемента в начало списка
     func prepend(_ newNode: DoublyLinkedListNode<T>) {
+        nodeMap[newNode.value] = newNode
+
         if let headNode = head {
             newNode.next = headNode
             headNode.previous = newNode
         } else {
             tail = newNode
         }
+        
         head = newNode
     }
 
     // Добавление нового элемента в начало списка
     func prepend(value: T) {
         let newNode = DoublyLinkedListNode(value: value)
+        nodeMap[value] = newNode
+
         if let headNode = head {
             newNode.next = headNode
             headNode.previous = newNode
         } else {
             tail = newNode
         }
+
         head = newNode
     }
 
@@ -78,10 +88,13 @@ class DoublyLinkedList<T> {
     func removeAll() {
         head = nil
         tail = nil
+        nodeMap = [:]
     }
 
     // Удаление узла
     func remove(node: DoublyLinkedListNode<T>) -> T {
+        nodeMap.removeValue(forKey: node.value)
+
         let prev = node.previous
         let next = node.next
 
@@ -105,13 +118,6 @@ class DoublyLinkedList<T> {
 
     // Функция поиска элемента по значению
     func search(value: T) -> DoublyLinkedListNode<T>? where T: Equatable {
-        var currentNode = head
-        while currentNode != nil {
-            if currentNode?.value == value {
-                return currentNode
-            }
-            currentNode = currentNode?.next
-        }
-        return nil
+        return nodeMap[value]
     }
 }

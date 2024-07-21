@@ -8,8 +8,7 @@
 import Foundation
 import GameplayKit
 
-@ProcessingActor
-final class Cell: Equatable, Identifiable {
+final class Cell: Equatable, Identifiable, Hashable {
 
     let reandomizer = GKRandomDistribution(lowestValue: 0, highestValue: 4)
 
@@ -52,6 +51,7 @@ final class Cell: Equatable, Identifiable {
         self.energy = energy
     }
 
+    @ProcessingActor
     func update() {
         let action = reandomizer.nextInt(upperBound: 2)
 
@@ -72,6 +72,11 @@ final class Cell: Equatable, Identifiable {
         lhs.id == rhs.id
     }
 
+    nonisolated func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    @ProcessingActor
     private func giveBirthRandomly() {
         switch type {
         case .cell:
@@ -96,6 +101,7 @@ final class Cell: Equatable, Identifiable {
         }
     }
 
+    @ProcessingActor
     private func moveRandomly() {
         guard let direction = Direction(rawValue: reandomizer.nextInt()) else { return }
 

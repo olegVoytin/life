@@ -43,6 +43,7 @@ final class CellsList: DoublyLinkedList<Cell> {
         childNode.next = parentCellNode
 
         if let parentPrevious = parentCellNode.previous {
+            nodeMap[childNode.value] = childNode
             parentPrevious.next = childNode
         } else {
             prepend(childNode)

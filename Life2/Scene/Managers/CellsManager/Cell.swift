@@ -108,29 +108,71 @@ final class Cell: Equatable, Identifiable, Hashable {
         case .transport:
             var childrenCount = 0
 
-            if let forwardChild {
+            if let forwardChild, forwardChild.type.wantEnergy {
                 childrenCount += 1
             }
 
-            if let leftChild {
+            if let leftChild, leftChild.type.wantEnergy {
                 childrenCount += 1
             }
 
-            if let rightChild {
+            if let rightChild, rightChild.type.wantEnergy {
                 childrenCount += 1
             }
 
-            let energyForChild = energy / childrenCount
-            forwardChild?.energy += energyForChild
-            leftChild?.energy += energyForChild
-            rightChild?.energy += energyForChild
+            if childrenCount > 0 {
+                let energyForChild = energy / childrenCount
+                forwardChild?.energy += energyForChild
+                leftChild?.energy += energyForChild
+                rightChild?.energy += energyForChild
+            } else if let parentCell {
+                parentCell.energy += energy
+                energy = 0
+            } else {
+                death()
+            }
 
         case .energyGetter, .leaf, .organicGetter:
-            parentCell?.energy += energy
+            guard let parentCell else {
+                death()
+                return
+            }
+            parentCell.energy += energy
             energy = 0
 
         case .cell:
             break
+        }
+    }
+
+    private func death() {
+        if let forwardChild {
+            forwardChild.parentCell = nil
+            self.forwardChild = nil
+        }
+
+        if let leftChild {
+            leftChild.parentCell = nil
+            self.leftChild = nil
+        }
+
+        if let rightChild {
+            rightChild.parentCell = nil
+            self.rightChild = nil
+        }
+
+        if let parentCell {
+            if parentCell.forwardChild == self {
+                parentCell.forwardChild = nil
+            }
+
+            if parentCell.leftChild == self {
+                parentCell.leftChild = nil
+            }
+
+            if parentCell.rightChild == self {
+                parentCell.rightChild = nil
+            }
         }
     }
 

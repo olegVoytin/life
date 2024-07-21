@@ -32,18 +32,19 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
     func start() {
         Task { @ProcessingActor in
-            cycleManager.startCycle()
-
-            for _ in 1...10000 {
+            for _ in 1...1000 {
                 let randomX = Int.random(in: 0..<Constants.gridSide)
                 let randomY = Int.random(in: 0..<Constants.gridSide)
                 cellsManager.addCell(to: CGPoint(x: randomX, y: randomY))
             }
+
+            cycleManager.startCycle()
         }
 
         Task { @MainActor in
             while true {
                 await updateChangedSquares()
+//                await Task.yield()
                 try? await Task.sleep(for: .seconds(1))
             }
         }
@@ -55,8 +56,8 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
         changedSquaresFootprints.forEach {
             scene?.changeColorOfSquare(
-                atRow: Int($0.position.y),
-                column: Int($0.position.x),
+                atRow: Int($0.gridPosition.y),
+                column: Int($0.gridPosition.x),
                 toColor: $0.color.vector
             )
         }

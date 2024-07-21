@@ -42,11 +42,13 @@ final class GridManager: GridManagerProtocol {
             var row: [SquareEntity] = []
 
             for colIndex in 0..<Constants.gridSide {
-                let position = CGPoint(x: colIndex, y: rowIndex)
+                let gridPosition = CGPoint(x: colIndex, y: rowIndex)
                 let square = SquareEntity(
-                    position: position,
+                    gridPosition: gridPosition,
                     size: CGSize(width: Constants.blockSide, height: Constants.blockSide),
-                    type: .empty
+                    type: .empty,
+                    energyLevel: 0,
+                    organicLevel: 0
                 )
 
                 row.append(square)

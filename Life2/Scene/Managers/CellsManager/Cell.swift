@@ -6,9 +6,12 @@
 //
 
 import Foundation
+import GameplayKit
 
 @ProcessingActor
 final class Cell: Equatable, Identifiable {
+
+    let reandomizer = GKRandomDistribution(lowestValue: 0, highestValue: 4)
 
     // удалить Int если не нужно генерить рандомное направление
     enum Direction: Int {
@@ -18,9 +21,18 @@ final class Cell: Equatable, Identifiable {
     enum CellType {
         case cell
         case transport
+        case energyGetter
+        case organicGetter
+        case leaf
     }
 
-    private weak var cellPositionDelegate: CellMovementDelegate?
+    enum Action {
+        case move
+        case giveBirth
+        case rotate
+    }
+
+    private weak var cellMovementDelegate: CellMovementDelegate?
     private weak var cellBirthGivingDelegate: CellBirthGivingDelegate?
 
     var gridPosition: CGPoint
@@ -29,50 +41,80 @@ final class Cell: Equatable, Identifiable {
     var lookingDirection: Direction = .up
 
     init(
-        cellPositionDelegate: CellMovementDelegate?,
+        cellMovementDelegate: CellMovementDelegate?,
         cellBirthGivingDelegate: CellBirthGivingDelegate?,
         gridPosition: CGPoint,
         energy: Int
     ) {
-        self.cellPositionDelegate = cellPositionDelegate
+        self.cellMovementDelegate = cellMovementDelegate
         self.cellBirthGivingDelegate = cellBirthGivingDelegate
         self.gridPosition = gridPosition
         self.energy = energy
     }
 
     func update() {
-        moveRandomly()
+        let action = reandomizer.nextInt(upperBound: 2)
+
+        switch action {
+        case 0:
+            guard let direction = Direction(rawValue: reandomizer.nextInt()) else { return }
+            rotate(to: direction)
+
+        case 1:
+            giveBirthRandomly()
+
+        default:
+            break
+        }
     }
 
     nonisolated static func == (lhs: Cell, rhs: Cell) -> Bool {
         lhs.id == rhs.id
     }
 
-    private func giveBirthToLookingDirection() async {
+    private func giveBirthRandomly() {
         switch type {
         case .cell:
-            await cellBirthGivingDelegate?.giveBirth(self)
+            let direction = reandomizer.nextInt(upperBound: 3)
 
-        case .transport:
+            switch direction {
+            case 0:
+                cellBirthGivingDelegate?.giveBirthForward(self)
+
+            case 1:
+                cellBirthGivingDelegate?.giveBirthLeft(self)
+
+            case 2:
+                cellBirthGivingDelegate?.giveBirthRight(self)
+
+            default:
+                break
+            }
+
+        default:
             break
         }
     }
 
     private func moveRandomly() {
-        guard let direction = Direction(rawValue: Int.random(in: 0..<4)) else { return }
+        guard let direction = Direction(rawValue: reandomizer.nextInt()) else { return }
 
         switch direction {
         case .up:
-            cellPositionDelegate?.moveUp(self)
+            cellMovementDelegate?.moveUp(self)
 
         case .down:
-            cellPositionDelegate?.moveDown(self)
+            cellMovementDelegate?.moveDown(self)
 
         case .left:
-            cellPositionDelegate?.moveLeft(self)
+            cellMovementDelegate?.moveLeft(self)
 
         case .right:
-            cellPositionDelegate?.moveRight(self)
+            cellMovementDelegate?.moveRight(self)
         }
+    }
+
+    private func rotate(to newDirection: Direction) {
+        lookingDirection = newDirection
     }
 }

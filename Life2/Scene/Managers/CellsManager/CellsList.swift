@@ -10,14 +10,14 @@ import Foundation
 @ProcessingActor
 final class CellsList: DoublyLinkedList<Cell> {
 
-    private weak var cellPositionDelegate: CellMovementDelegate?
+    private weak var cellMovementDelegate: CellMovementDelegate?
     private weak var cellBirthGivingDelegate: CellBirthGivingDelegate?
 
     init(
-        cellPositionDelegate: CellMovementDelegate,
+        cellMovementDelegate: CellMovementDelegate,
         cellBirthGivingDelegate: CellBirthGivingDelegate
     ) {
-        self.cellPositionDelegate = cellPositionDelegate
+        self.cellMovementDelegate = cellMovementDelegate
         self.cellBirthGivingDelegate = cellBirthGivingDelegate
     }
 
@@ -33,7 +33,7 @@ final class CellsList: DoublyLinkedList<Cell> {
         guard let parentCellNode = search(value: cell) else { return }
         let childNode = DoublyLinkedListNode(
             value: Cell(
-                cellPositionDelegate: cellPositionDelegate,
+                cellMovementDelegate: cellMovementDelegate,
                 cellBirthGivingDelegate: cellBirthGivingDelegate,
                 gridPosition: gridPosition,
                 energy: 100

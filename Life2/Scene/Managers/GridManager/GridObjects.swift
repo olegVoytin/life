@@ -10,31 +10,37 @@ import Cocoa
 import MetalKit
 
 struct SquareFootprint {
-    let position: CGPoint
+    let gridPosition: CGPoint
     let color: NSColor
 }
 
 @ProcessingActor
 final class SquareEntity {
 
-    let position: CGPoint
+    let gridPosition: CGPoint
     let size: CGSize
+    
     var type: SquareType
+
+    var energyLevel: Int
+    var organicLevel: Int
 
     var changed: Bool {
         return self.type != self.lastReadedType
     }
     private var lastReadedType: SquareType?
 
-    init(position: CGPoint, size: CGSize, type: SquareType) {
-        self.position = position
+    init(gridPosition: CGPoint, size: CGSize, type: SquareType, energyLevel: Int, organicLevel: Int) {
+        self.gridPosition = gridPosition
         self.size = size
         self.type = type
+        self.energyLevel = energyLevel
+        self.organicLevel = organicLevel
     }
 
     func read() -> SquareFootprint {
         lastReadedType = type
-        return SquareFootprint(position: position, color: type.texture)
+        return SquareFootprint(gridPosition: gridPosition, color: type.texture)
     }
 
     enum SquareType: Equatable {
@@ -53,6 +59,15 @@ final class SquareEntity {
 
                 case .transport:
                     return .lightGray.usingColorSpace(.sRGB)!
+
+                case .energyGetter:
+                    return .blue.usingColorSpace(.sRGB)!
+
+                case .organicGetter:
+                    return .red.usingColorSpace(.sRGB)!
+
+                case .leaf:
+                    return .green.usingColorSpace(.sRGB)!
                 }
             }
         }

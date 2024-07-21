@@ -21,7 +21,8 @@ final class CellsManager: CellsManagerProtocol {
 
     private lazy var cellsLinkedList = CellsList(
         cellMovementDelegate: self,
-        cellBirthGivingDelegate: self
+        cellBirthGivingDelegate: self,
+        cellHarvestDelegate: self
     )
 
     init(gridManager: GridManagerProtocol) {
@@ -35,7 +36,8 @@ final class CellsManager: CellsManagerProtocol {
     func addCell(to gridPosition: CGPoint) {
         let newCell = Cell(
             cellMovementDelegate: self,
-            cellBirthGivingDelegate: self,
+            cellBirthGivingDelegate: self, 
+            cellHarvestDelegate: self,
             gridPosition: gridPosition,
             energy: 100
         )

@@ -8,6 +8,7 @@
 import Foundation
 import GameplayKit
 
+@ProcessingActor
 final class Cell: Equatable, Identifiable, Hashable {
 
     // удалить Int если не нужно генерить рандомное направление
@@ -41,22 +42,28 @@ final class Cell: Equatable, Identifiable, Hashable {
 
     private weak var cellMovementDelegate: CellMovementDelegate?
     private weak var cellBirthGivingDelegate: CellBirthGivingDelegate?
+    private weak var cellHarvestDelegate: CellHarvestDelegate?
 
     var gridPosition: CGPoint
     var energy: Int
     var type: CellType = .cell
     var lookingDirection: Direction = .up
-    var children: [Cell] = []
+
+    var forwardChild: Cell?
+    var leftChild: Cell?
+    var rightChild: Cell?
     weak var parentCell: Cell?
 
     init(
         cellMovementDelegate: CellMovementDelegate?,
         cellBirthGivingDelegate: CellBirthGivingDelegate?,
+        cellHarvestDelegate: CellHarvestDelegate?,
         gridPosition: CGPoint,
         energy: Int
     ) {
         self.cellMovementDelegate = cellMovementDelegate
         self.cellBirthGivingDelegate = cellBirthGivingDelegate
+        self.cellHarvestDelegate = cellHarvestDelegate
         self.gridPosition = gridPosition
         self.energy = energy
     }
@@ -69,25 +76,54 @@ final class Cell: Equatable, Identifiable, Hashable {
         hasher.combine(id)
     }
 
-    @ProcessingActor
     func update() {
+        harvestEnergy()
         doRandomAction()
         sendEnergy()
+        energy = 0
     }
 
     private func rotate(to newDirection: Direction) {
         lookingDirection = newDirection
     }
 
+    private func harvestEnergy() {
+        switch type {
+        case .energyGetter:
+            cellHarvestDelegate?.harvestEnergy(self)
+
+        case .organicGetter:
+            cellHarvestDelegate?.harvestOrganic(self)
+
+        case .leaf:
+            cellHarvestDelegate?.harvestSol(self)
+
+        default:
+            break
+        }
+    }
+
     private func sendEnergy() {
         switch type {
         case .transport:
-            let childrenWantedEnergy = children.filter { $0.type.wantEnergy }
-            let energyToOneChild = energy / childrenWantedEnergy.count
-            childrenWantedEnergy.forEach {
-                $0.energy += energyToOneChild
-                energy -= energyToOneChild
+            var childrenCount = 0
+
+            if let forwardChild {
+                childrenCount += 1
             }
+
+            if let leftChild {
+                childrenCount += 1
+            }
+
+            if let rightChild {
+                childrenCount += 1
+            }
+
+            let energyForChild = energy / childrenCount
+            forwardChild?.energy += energyForChild
+            leftChild?.energy += energyForChild
+            rightChild?.energy += energyForChild
 
         case .energyGetter, .leaf, .organicGetter:
             parentCell?.energy += energy
@@ -102,8 +138,9 @@ final class Cell: Equatable, Identifiable, Hashable {
 
     let reandomizer = GKRandomDistribution(lowestValue: 0, highestValue: 4)
 
-    @ProcessingActor
     private func doRandomAction() {
+        guard case .cell = type else { return }
+
         let action = reandomizer.nextInt(upperBound: 2)
 
         switch action {
@@ -119,32 +156,24 @@ final class Cell: Equatable, Identifiable, Hashable {
         }
     }
 
-    @ProcessingActor
     private func giveBirthRandomly() {
-        switch type {
-        case .cell:
-            let direction = reandomizer.nextInt(upperBound: 3)
+        let direction = reandomizer.nextInt(upperBound: 3)
 
-            switch direction {
-            case 0:
-                cellBirthGivingDelegate?.giveBirthForward(self)
+        switch direction {
+        case 0:
+            cellBirthGivingDelegate?.giveBirthForward(self)
 
-            case 1:
-                cellBirthGivingDelegate?.giveBirthLeft(self)
+        case 1:
+            cellBirthGivingDelegate?.giveBirthLeft(self)
 
-            case 2:
-                cellBirthGivingDelegate?.giveBirthRight(self)
-
-            default:
-                break
-            }
+        case 2:
+            cellBirthGivingDelegate?.giveBirthRight(self)
 
         default:
             break
         }
     }
 
-    @ProcessingActor
     private func moveRandomly() {
         guard let direction = Direction(rawValue: reandomizer.nextInt()) else { return }
 

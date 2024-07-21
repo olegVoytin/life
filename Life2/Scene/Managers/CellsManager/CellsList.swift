@@ -12,13 +12,16 @@ final class CellsList: DoublyLinkedList<Cell> {
 
     private weak var cellMovementDelegate: CellMovementDelegate?
     private weak var cellBirthGivingDelegate: CellBirthGivingDelegate?
+    private weak var cellHarvestDelegate: CellHarvestDelegate?
 
     init(
         cellMovementDelegate: CellMovementDelegate,
-        cellBirthGivingDelegate: CellBirthGivingDelegate
+        cellBirthGivingDelegate: CellBirthGivingDelegate,
+        cellHarvestDelegate: CellHarvestDelegate
     ) {
         self.cellMovementDelegate = cellMovementDelegate
         self.cellBirthGivingDelegate = cellBirthGivingDelegate
+        self.cellHarvestDelegate = cellHarvestDelegate
     }
 
     func update() {
@@ -32,7 +35,8 @@ final class CellsList: DoublyLinkedList<Cell> {
     func addChild(of cell: Cell, to gridPosition: CGPoint) -> Cell {
         let newCell = Cell(
             cellMovementDelegate: cellMovementDelegate,
-            cellBirthGivingDelegate: cellBirthGivingDelegate,
+            cellBirthGivingDelegate: cellBirthGivingDelegate, 
+            cellHarvestDelegate: cellHarvestDelegate,
             gridPosition: gridPosition,
             energy: 100
         )

@@ -29,6 +29,7 @@
 		06B14C232C3B2C68002049B6 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B14C0F2C3B2C68002049B6 /* Array.swift */; };
 		06B14C242C3B2C68002049B6 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B14C102C3B2C68002049B6 /* CGPoint.swift */; };
 		06B14C262C3B2D47002049B6 /* Shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 06B14C252C3B2D47002049B6 /* Shader.metal */; };
+		06DB9B7B2C4D6D4600940B87 /* CellHarvestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DB9B7A2C4D6D4600940B87 /* CellHarvestDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		06B14C0F2C3B2C68002049B6 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		06B14C102C3B2C68002049B6 /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 		06B14C252C3B2D47002049B6 /* Shader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shader.metal; sourceTree = "<group>"; };
+		06DB9B7A2C4D6D4600940B87 /* CellHarvestDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellHarvestDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 			children = (
 				06B14BFF2C3B2C68002049B6 /* CellBirthGivingDelegate.swift */,
 				06B14C002C3B2C68002049B6 /* CellMovementDelegate.swift */,
+				06DB9B7A2C4D6D4600940B87 /* CellHarvestDelegate.swift */,
 			);
 			path = Delegates;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 				06B14C242C3B2C68002049B6 /* CGPoint.swift in Sources */,
 				06B14C132C3B2C68002049B6 /* Constants.swift in Sources */,
 				06B14C1F2C3B2C68002049B6 /* CameraManager.swift in Sources */,
+				06DB9B7B2C4D6D4600940B87 /* CellHarvestDelegate.swift in Sources */,
 				06B14C1C2C3B2C68002049B6 /* CellsManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

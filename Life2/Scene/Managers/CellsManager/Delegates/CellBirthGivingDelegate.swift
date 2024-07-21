@@ -136,7 +136,7 @@ extension CellsManager: CellBirthGivingDelegate {
         parentCell.type = .transport
 
         let child = self.addChild(of: parentCell, to: birthPosition)
-        parentCell.children.append(child)
+        parentCell.forwardChild = child
         child.parentCell = parentCell
 
         let square = gridManager.grid[Int(birthPosition.y)][Int(birthPosition.x)]

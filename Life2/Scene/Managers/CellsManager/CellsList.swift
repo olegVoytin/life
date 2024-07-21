@@ -30,23 +30,12 @@ final class CellsList: DoublyLinkedList<Cell> {
     }
 
     func addChild(of cell: Cell, to gridPosition: CGPoint) {
-        guard let parentCellNode = search(value: cell) else { return }
-        let childNode = DoublyLinkedListNode(
-            value: Cell(
-                cellMovementDelegate: cellMovementDelegate,
-                cellBirthGivingDelegate: cellBirthGivingDelegate,
-                gridPosition: gridPosition,
-                energy: 100
-            )
+        let newCell = Cell(
+            cellMovementDelegate: cellMovementDelegate,
+            cellBirthGivingDelegate: cellBirthGivingDelegate,
+            gridPosition: gridPosition,
+            energy: 100
         )
-
-        childNode.next = parentCellNode
-
-        if let parentPrevious = parentCellNode.previous {
-            nodeMap[childNode.value] = childNode
-            parentPrevious.next = childNode
-        } else {
-            prepend(childNode)
-        }
+        prependNode(with: cell, value: newCell)
     }
 }

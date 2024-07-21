@@ -23,7 +23,7 @@ final class DoublyLinkedListNode<T> {
 class DoublyLinkedList<T: Hashable> {
     private var head: DoublyLinkedListNode<T>?
     private var tail: DoublyLinkedListNode<T>?
-    var nodeMap = [T: DoublyLinkedListNode<T>]()
+    private var nodeMap = [T: DoublyLinkedListNode<T>]()
 
     // Проверка на пустоту списка
     var isEmpty: Bool {
@@ -55,18 +55,18 @@ class DoublyLinkedList<T: Hashable> {
         tail = newNode
     }
 
-    // Добавление нового элемента в начало списка
-    func prepend(_ newNode: DoublyLinkedListNode<T>) {
-        nodeMap[newNode.value] = newNode
+    // Добавление нового элемента перед искомым
+    func prependNode(with valueToPrepand: T, value: T) {
+        guard let parentCellNode = search(value: valueToPrepand) else { return }
 
-        if let headNode = head {
-            newNode.next = headNode
-            headNode.previous = newNode
+        if let parentPrevious = parentCellNode.previous {
+            let childNode = DoublyLinkedListNode(value: value)
+            childNode.next = parentCellNode
+            nodeMap[childNode.value] = childNode
+            parentPrevious.next = childNode
         } else {
-            tail = newNode
+            prepend(value: value)
         }
-        
-        head = newNode
     }
 
     // Добавление нового элемента в начало списка

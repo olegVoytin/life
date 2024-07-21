@@ -11,7 +11,7 @@ import Foundation
 protocol CellsManagerProtocol: AnyObject {
     func update()
     func addCell(to gridPosition: CGPoint)
-    func addChild(of cell: Cell, to gridPosition: CGPoint)
+    func addChild(of cell: Cell, to gridPosition: CGPoint) -> Cell
 }
 
 @ProcessingActor
@@ -42,7 +42,7 @@ final class CellsManager: CellsManagerProtocol {
         cellsLinkedList.append(value: newCell)
     }
 
-    func addChild(of cell: Cell, to gridPosition: CGPoint) {
+    func addChild(of cell: Cell, to gridPosition: CGPoint) -> Cell {
         cellsLinkedList.addChild(of: cell, to: gridPosition)
     }
 }

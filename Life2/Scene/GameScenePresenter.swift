@@ -44,8 +44,8 @@ final class GameScenePresenter: GameScenePresenterProtocol {
         Task { @MainActor in
             while true {
                 await updateChangedSquares()
-//                await Task.yield()
-                try? await Task.sleep(for: .seconds(1))
+                await Task.yield()
+//                try? await Task.sleep(for: .seconds(1))
             }
         }
     }

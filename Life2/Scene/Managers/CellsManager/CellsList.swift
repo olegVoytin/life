@@ -29,7 +29,7 @@ final class CellsList: DoublyLinkedList<Cell> {
         }
     }
 
-    func addChild(of cell: Cell, to gridPosition: CGPoint) {
+    func addChild(of cell: Cell, to gridPosition: CGPoint) -> Cell {
         let newCell = Cell(
             cellMovementDelegate: cellMovementDelegate,
             cellBirthGivingDelegate: cellBirthGivingDelegate,
@@ -37,5 +37,6 @@ final class CellsList: DoublyLinkedList<Cell> {
             energy: 100
         )
         prependNode(with: cell, value: newCell)
+        return newCell
     }
 }

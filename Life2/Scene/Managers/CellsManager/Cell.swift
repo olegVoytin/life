@@ -10,8 +10,6 @@ import GameplayKit
 
 final class Cell: Equatable, Identifiable, Hashable {
 
-    let reandomizer = GKRandomDistribution(lowestValue: 0, highestValue: 4)
-
     // удалить Int если не нужно генерить рандомное направление
     enum Direction: Int {
         case up = 0, down, left, right
@@ -23,6 +21,16 @@ final class Cell: Equatable, Identifiable, Hashable {
         case energyGetter
         case organicGetter
         case leaf
+
+        var wantEnergy: Bool {
+            switch self {
+            case .cell, .transport:
+                return true
+
+            default:
+                return false
+            }
+        }
     }
 
     enum Action {
@@ -38,6 +46,8 @@ final class Cell: Equatable, Identifiable, Hashable {
     var energy: Int
     var type: CellType = .cell
     var lookingDirection: Direction = .up
+    var children: [Cell] = []
+    weak var parentCell: Cell?
 
     init(
         cellMovementDelegate: CellMovementDelegate?,
@@ -51,8 +61,49 @@ final class Cell: Equatable, Identifiable, Hashable {
         self.energy = energy
     }
 
+    nonisolated static func == (lhs: Cell, rhs: Cell) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    nonisolated func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
     @ProcessingActor
     func update() {
+        doRandomAction()
+        sendEnergy()
+    }
+
+    private func rotate(to newDirection: Direction) {
+        lookingDirection = newDirection
+    }
+
+    private func sendEnergy() {
+        switch type {
+        case .transport:
+            let childrenWantedEnergy = children.filter { $0.type.wantEnergy }
+            let energyToOneChild = energy / childrenWantedEnergy.count
+            childrenWantedEnergy.forEach {
+                $0.energy += energyToOneChild
+                energy -= energyToOneChild
+            }
+
+        case .energyGetter, .leaf, .organicGetter:
+            parentCell?.energy += energy
+            energy = 0
+
+        case .cell:
+            break
+        }
+    }
+
+    // MARK: - Random
+
+    let reandomizer = GKRandomDistribution(lowestValue: 0, highestValue: 4)
+
+    @ProcessingActor
+    private func doRandomAction() {
         let action = reandomizer.nextInt(upperBound: 2)
 
         switch action {
@@ -66,14 +117,6 @@ final class Cell: Equatable, Identifiable, Hashable {
         default:
             break
         }
-    }
-
-    nonisolated static func == (lhs: Cell, rhs: Cell) -> Bool {
-        lhs.id == rhs.id
-    }
-
-    nonisolated func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
     }
 
     @ProcessingActor
@@ -118,9 +161,5 @@ final class Cell: Equatable, Identifiable, Hashable {
         case .right:
             cellMovementDelegate?.moveRight(self)
         }
-    }
-
-    private func rotate(to newDirection: Direction) {
-        lookingDirection = newDirection
     }
 }

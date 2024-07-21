@@ -44,14 +44,12 @@ extension CellsManager: CellBirthGivingDelegate {
 
         guard let birthPosition else { return }
 
-        let oldSquare = grid[y][x]
-        oldSquare.type = .cell(type: .transport)
-        cell.type = .transport
-
-        self.addChild(of: cell, to: birthPosition)
-
-        let square = gridManager.grid[Int(birthPosition.y)][Int(birthPosition.x)]
-        square.type = .cell(type: .cell)
+        giveBirth(
+            parentCell: cell,
+            parentPositionX: x,
+            parentPositionY: y,
+            birthPosition: birthPosition
+        )
     }
 
     func giveBirthLeft(_ cell: Cell) {
@@ -82,14 +80,12 @@ extension CellsManager: CellBirthGivingDelegate {
 
         guard let birthPosition else { return }
 
-        let oldSquare = grid[y][x]
-        oldSquare.type = .cell(type: .transport)
-        cell.type = .transport
-
-        self.addChild(of: cell, to: birthPosition)
-
-        let square = gridManager.grid[Int(birthPosition.y)][Int(birthPosition.x)]
-        square.type = .cell(type: .cell)
+        giveBirth(
+            parentCell: cell,
+            parentPositionX: x,
+            parentPositionY: y,
+            birthPosition: birthPosition
+        )
     }
 
     func giveBirthRight(_ cell: Cell) {
@@ -120,11 +116,28 @@ extension CellsManager: CellBirthGivingDelegate {
 
         guard let birthPosition else { return }
 
-        let oldSquare = grid[y][x]
-        oldSquare.type = .cell(type: .transport)
-        cell.type = .transport
+        giveBirth(
+            parentCell: cell,
+            parentPositionX: x,
+            parentPositionY: y,
+            birthPosition: birthPosition
+        )
+    }
 
-        self.addChild(of: cell, to: birthPosition)
+    private func giveBirth(
+        parentCell: Cell,
+        parentPositionX: Int,
+        parentPositionY: Int,
+        birthPosition: CGPoint
+    ) {
+        let grid = gridManager.grid
+        let oldSquare = grid[parentPositionY][parentPositionX]
+        oldSquare.type = .cell(type: .transport)
+        parentCell.type = .transport
+
+        let child = self.addChild(of: parentCell, to: birthPosition)
+        parentCell.children.append(child)
+        child.parentCell = parentCell
 
         let square = gridManager.grid[Int(birthPosition.y)][Int(birthPosition.x)]
         square.type = .cell(type: .cell)

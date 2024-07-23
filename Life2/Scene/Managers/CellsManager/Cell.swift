@@ -43,6 +43,7 @@ final class Cell: Equatable, Identifiable, Hashable {
     private weak var cellMovementDelegate: CellMovementDelegate?
     private weak var cellBirthGivingDelegate: CellBirthGivingDelegate?
     private weak var cellHarvestDelegate: CellHarvestDelegate?
+    private weak var cellDeathDelegate: CellDeathDelegate?
 
     var gridPosition: CGPoint
     var energy: Int
@@ -58,12 +59,14 @@ final class Cell: Equatable, Identifiable, Hashable {
         cellMovementDelegate: CellMovementDelegate?,
         cellBirthGivingDelegate: CellBirthGivingDelegate?,
         cellHarvestDelegate: CellHarvestDelegate?,
+        cellDeathDelegate: CellDeathDelegate?,
         gridPosition: CGPoint,
         energy: Int
     ) {
         self.cellMovementDelegate = cellMovementDelegate
         self.cellBirthGivingDelegate = cellBirthGivingDelegate
         self.cellHarvestDelegate = cellHarvestDelegate
+        self.cellDeathDelegate = cellDeathDelegate
         self.gridPosition = gridPosition
         self.energy = energy
     }
@@ -80,11 +83,54 @@ final class Cell: Equatable, Identifiable, Hashable {
         harvestEnergy()
         doRandomAction()
         sendEnergy()
-        energy = 0
+
+        energy -= 5
+
+        if energy <= 0 {
+            death()
+        }
+    }
+
+    func death() {
+        if let forwardChild {
+            forwardChild.parentCell = nil
+            self.forwardChild = nil
+        }
+
+        if let leftChild {
+            leftChild.parentCell = nil
+            self.leftChild = nil
+        }
+
+        if let rightChild {
+            rightChild.parentCell = nil
+            self.rightChild = nil
+        }
+
+        if let parentCell {
+            if parentCell.forwardChild == self {
+                parentCell.forwardChild = nil
+            }
+
+            if parentCell.leftChild == self {
+                parentCell.leftChild = nil
+            }
+
+            if parentCell.rightChild == self {
+                parentCell.rightChild = nil
+            }
+        }
+
+        cellDeathDelegate?.death(self)
     }
 
     private func rotate(to newDirection: Direction) {
+        let energyCost = 5
+        guard energy >= energyCost else { return }
+
         lookingDirection = newDirection
+
+        energy -= energyCost
     }
 
     private func harvestEnergy() {
@@ -125,6 +171,7 @@ final class Cell: Equatable, Identifiable, Hashable {
                 forwardChild?.energy += energyForChild
                 leftChild?.energy += energyForChild
                 rightChild?.energy += energyForChild
+                energy -= energyForChild * 3
             } else if let parentCell {
                 parentCell.energy += energy
                 energy = 0
@@ -142,37 +189,6 @@ final class Cell: Equatable, Identifiable, Hashable {
 
         case .cell:
             break
-        }
-    }
-
-    private func death() {
-        if let forwardChild {
-            forwardChild.parentCell = nil
-            self.forwardChild = nil
-        }
-
-        if let leftChild {
-            leftChild.parentCell = nil
-            self.leftChild = nil
-        }
-
-        if let rightChild {
-            rightChild.parentCell = nil
-            self.rightChild = nil
-        }
-
-        if let parentCell {
-            if parentCell.forwardChild == self {
-                parentCell.forwardChild = nil
-            }
-
-            if parentCell.leftChild == self {
-                parentCell.leftChild = nil
-            }
-
-            if parentCell.rightChild == self {
-                parentCell.rightChild = nil
-            }
         }
     }
 
@@ -199,6 +215,9 @@ final class Cell: Equatable, Identifiable, Hashable {
     }
 
     private func giveBirthRandomly() {
+        let energyCost = 10
+        guard energy >= energyCost else { return }
+
         let direction = reandomizer.nextInt(upperBound: 3)
 
         switch direction {
@@ -214,9 +233,14 @@ final class Cell: Equatable, Identifiable, Hashable {
         default:
             break
         }
+
+        energy -= energyCost
     }
 
     private func moveRandomly() {
+        let energyCost = 10
+        guard energy >= energyCost else { return }
+
         guard let direction = Direction(rawValue: reandomizer.nextInt()) else { return }
 
         switch direction {
@@ -232,5 +256,7 @@ final class Cell: Equatable, Identifiable, Hashable {
         case .right:
             cellMovementDelegate?.moveRight(self)
         }
+
+        energy -= energyCost
     }
 }

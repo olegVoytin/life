@@ -92,7 +92,7 @@ class DoublyLinkedList<T: Hashable> {
     }
 
     // Удаление узла
-    func remove(node: DoublyLinkedListNode<T>) -> T {
+    func remove(node: DoublyLinkedListNode<T>) {
         nodeMap.removeValue(forKey: node.value)
 
         let prev = node.previous
@@ -112,8 +112,6 @@ class DoublyLinkedList<T: Hashable> {
 
         node.previous = nil
         node.next = nil
-
-        return node.value
     }
 
     // Функция поиска элемента по значению

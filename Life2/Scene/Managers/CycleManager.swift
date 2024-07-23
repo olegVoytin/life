@@ -52,7 +52,7 @@ final class CycleManager: CycleManagerProtocol {
         }
     }
 
-    private var speed: Speed = .max
+    private var speed: Speed = .slow
     private var isRunning = true
 
     private var frameCicle: Task<Void, Never>?
@@ -92,7 +92,7 @@ final class CycleManager: CycleManagerProtocol {
     }
 
     private func countIterations() {
-        print(iterations)
+        print("Iterations count: \(iterations)")
         iterations = 0
     }
 

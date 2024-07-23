@@ -47,8 +47,8 @@ final class GridManager: GridManagerProtocol {
                     gridPosition: gridPosition,
                     size: CGSize(width: Constants.blockSide, height: Constants.blockSide),
                     type: .empty,
-                    energyLevel: 100,
-                    organicLevel: 100
+                    energyLevel: 0,
+                    organicLevel: 0
                 )
 
                 row.append(square)

@@ -11,7 +11,7 @@ import Foundation
 protocol CellsManagerProtocol: AnyObject {
     func update()
     func addCell(to gridPosition: CGPoint)
-    func addChild(of cell: Cell, to gridPosition: CGPoint) -> Cell
+    func addChild(of cell: Cell, to gridPosition: CGPoint, energy: Int) -> Cell
 }
 
 @ProcessingActor
@@ -19,10 +19,11 @@ final class CellsManager: CellsManagerProtocol {
 
     let gridManager: GridManagerProtocol
 
-    private lazy var cellsLinkedList = CellsList(
+    lazy var cellsLinkedList = CellsList(
         cellMovementDelegate: self,
         cellBirthGivingDelegate: self,
-        cellHarvestDelegate: self
+        cellHarvestDelegate: self, 
+        cellDeathDelegate: self
     )
 
     init(gridManager: GridManagerProtocol) {
@@ -37,14 +38,15 @@ final class CellsManager: CellsManagerProtocol {
         let newCell = Cell(
             cellMovementDelegate: self,
             cellBirthGivingDelegate: self, 
-            cellHarvestDelegate: self,
+            cellHarvestDelegate: self, 
+            cellDeathDelegate: self,
             gridPosition: gridPosition,
-            energy: 100
+            energy: 200
         )
         cellsLinkedList.append(value: newCell)
     }
 
-    func addChild(of cell: Cell, to gridPosition: CGPoint) -> Cell {
-        cellsLinkedList.addChild(of: cell, to: gridPosition)
+    func addChild(of cell: Cell, to gridPosition: CGPoint, energy: Int) -> Cell {
+        cellsLinkedList.addChild(of: cell, to: gridPosition, energy: energy)
     }
 }

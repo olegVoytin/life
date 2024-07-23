@@ -135,7 +135,10 @@ extension CellsManager: CellBirthGivingDelegate {
         oldSquare.type = .cell(type: .transport)
         parentCell.type = .transport
 
-        let child = self.addChild(of: parentCell, to: birthPosition)
+        let energyToSend = 30
+        let child = self.addChild(of: parentCell, to: birthPosition, energy: energyToSend)
+        parentCell.energy -= energyToSend
+
         parentCell.forwardChild = child
         child.parentCell = parentCell
 

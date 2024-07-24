@@ -72,19 +72,14 @@ final class CycleManager: CycleManagerProtocol {
                     try? await Task.sleep(for: speed.limitDuration)
                 }
                 
-                await Task.yield()
+//                await Task.yield()
             }
         }
 
         Task { @MainActor in
             while true {
-                async let limit: ()? = try? await Task.sleep(for: .seconds(1))
-                async let cycle: () = countIterations()
-
-                _ = await (
-                    limit,
-                    cycle
-                )
+                countIterations()
+                try? await Task.sleep(for: .seconds(1))
             }
         }
     }

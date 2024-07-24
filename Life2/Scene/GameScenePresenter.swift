@@ -23,15 +23,18 @@ final class GameScenePresenter: GameScenePresenterProtocol {
     // MARK: - Setup
 
     func start() {
-        Task { @MainActor in
-            for _ in 1...2 {
-                let randomX = Int.random(in: 0..<Constants.gridSide)
-                let randomY = Int.random(in: 0..<Constants.gridSide)
-                cellsManager.addCell(to: CGPoint(x: randomX, y: randomY))
-            }
+//        Task { @MainActor in
+//            for _ in 1...2 {
+//                let randomX = Int.random(in: 0..<Constants.gridSide)
+//                let randomY = Int.random(in: 0..<Constants.gridSide)
+//                cellsManager.addCell(to: CGPoint(x: randomX, y: randomY))
+//            }
+
+            cellsManager.addCell(to: CGPoint(x: 4, y: 0))
+            cellsManager.addCell(to: CGPoint(x: 5, y: 0))
 
             cycleManager.startCycle()
-        }
+//        }
 
         Task { @MainActor in
             while true {

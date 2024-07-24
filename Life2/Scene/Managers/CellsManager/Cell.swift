@@ -124,13 +124,11 @@ final class Cell: Equatable, Identifiable, Hashable {
             return
         }
 
-        doRandomAction()
+        cellBirthGivingDelegate?.giveBirthForward(self)
         sendEnergy(energyPhase: energyPhase)
     }
 
     func death() {
-        cellDeathDelegate?.death(self)
-
         if let forwardChild {
             forwardChild.parentCell = nil
             self.forwardChild = nil
@@ -160,7 +158,7 @@ final class Cell: Equatable, Identifiable, Hashable {
             }
         }
 
-
+        cellDeathDelegate?.death(self)
     }
 
     private func rotate(to newDirection: Direction) {

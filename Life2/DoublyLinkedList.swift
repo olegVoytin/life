@@ -60,9 +60,13 @@ class DoublyLinkedList<T: Hashable> {
 
         if let parentPrevious = parentCellNode.previous {
             let childNode = DoublyLinkedListNode(value: value)
-            childNode.next = parentCellNode
-            nodeMap[childNode.value] = childNode
+
             parentPrevious.next = childNode
+            childNode.previous = parentPrevious
+            childNode.next = parentCellNode
+            parentCellNode.previous = childNode
+
+            nodeMap[childNode.value] = childNode
         } else {
             prepend(value: value)
         }
@@ -114,7 +118,7 @@ class DoublyLinkedList<T: Hashable> {
     }
 
     // Функция поиска элемента по значению
-    func search(value: T) -> DoublyLinkedListNode<T>? where T: Equatable {
+    func search(value: T) -> DoublyLinkedListNode<T>? {
         return nodeMap[value]
     }
 }

@@ -24,14 +24,14 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
     func start() {
 //        Task { @MainActor in
-//            for _ in 1...2 {
-//                let randomX = Int.random(in: 0..<Constants.gridSide)
-//                let randomY = Int.random(in: 0..<Constants.gridSide)
-//                cellsManager.addCell(to: CGPoint(x: randomX, y: randomY))
-//            }
+            for _ in 1...100 {
+                let randomX = Int.random(in: 0..<Constants.gridSide)
+                let randomY = Int.random(in: 0..<Constants.gridSide)
+                cellsManager.addCell(to: CGPoint(x: randomX, y: randomY))
+            }
 
-            cellsManager.addCell(to: CGPoint(x: 4, y: 0))
-            cellsManager.addCell(to: CGPoint(x: 5, y: 0))
+//            cellsManager.addCell(to: CGPoint(x: 4, y: 0))
+//            cellsManager.addCell(to: CGPoint(x: 5, y: 0))
 
             cycleManager.startCycle()
 //        }
@@ -39,8 +39,8 @@ final class GameScenePresenter: GameScenePresenterProtocol {
         Task { @MainActor in
             while true {
                 updateChangedSquares()
-                await Task.yield()
-//                try? await Task.sleep(for: .seconds(0.1))
+//                await Task.yield()
+                try? await Task.sleep(for: .seconds(0.1))
             }
         }
     }

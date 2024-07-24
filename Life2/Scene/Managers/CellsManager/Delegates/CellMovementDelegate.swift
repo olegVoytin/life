@@ -7,6 +7,7 @@
 
 import Foundation
 
+@ProcessingActor
 protocol CellMovementDelegate: AnyObject {
     func moveUp(_ cell: Cell)
     func moveDown(_ cell: Cell)

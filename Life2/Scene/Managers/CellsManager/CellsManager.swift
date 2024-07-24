@@ -7,12 +7,14 @@
 
 import Foundation
 
+@ProcessingActor
 protocol CellsManagerProtocol: AnyObject {
     func update()
     func addCell(to gridPosition: CGPoint)
     func addChild(of cell: Cell, to gridPosition: CGPoint, energy: Int) -> Cell
 }
 
+@ProcessingActor
 final class CellsManager: CellsManagerProtocol {
 
     var energyPhase: EnergyPhase = .a
@@ -41,7 +43,7 @@ final class CellsManager: CellsManagerProtocol {
             cellHarvestDelegate: self, 
             cellDeathDelegate: self,
             gridPosition: gridPosition,
-            energy: 30
+            energy: 1000000
         )
         cellsLinkedList.append(value: newCell)
 

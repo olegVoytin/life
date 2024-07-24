@@ -14,6 +14,7 @@ struct SquareFootprint {
     let color: NSColor
 }
 
+@ProcessingActor
 final class SquareEntity {
 
     let gridPosition: CGPoint

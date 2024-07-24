@@ -7,12 +7,14 @@
 
 import Foundation
 
+@ProcessingActor
 protocol CycleManagerProtocol {
     func startCycle()
     func setCycleSpeed(_ newSpeed: CycleManager.Speed)
     func onNewFrame()
 }
 
+@ProcessingActor
 final class CycleManager: CycleManagerProtocol {
 
     enum Speed {
@@ -50,7 +52,7 @@ final class CycleManager: CycleManagerProtocol {
         }
     }
 
-    private var speed: Speed = .slow
+    private var speed: Speed = .max
     private var isRunning = true
 
     private var frameCicle: Task<Void, Never>?
@@ -64,27 +66,27 @@ final class CycleManager: CycleManagerProtocol {
     }
 
     func startCycle() {
-        Task { @MainActor in
+        Task { @ProcessingActor in
             while isRunning {
                 doCycle()
 
                 if speed != .max {
                     try? await Task.sleep(for: speed.limitDuration)
                 }
-                
-//                await Task.yield()
+
+                await Task.yield()
             }
         }
 
         Task { @MainActor in
             while true {
-                countIterations()
+                await countIterations()
                 try? await Task.sleep(for: .seconds(1))
             }
         }
     }
 
-    private func countIterations() {
+    private func countIterations() async {
         print("Iterations count: \(iterations)")
         iterations = 0
     }
@@ -121,9 +123,9 @@ final class CycleManager: CycleManagerProtocol {
             frameCicle == nil
         else { return }
 
-        frameCicle = Task { @MainActor [weak self] in
+        frameCicle = Task { @ProcessingActor [weak self] in
             guard let self else { return }
-            self.doCycle()
+            await self.doCycle()
             self.frameCicle = nil
         }
     }

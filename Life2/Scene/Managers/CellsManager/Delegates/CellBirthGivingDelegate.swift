@@ -7,6 +7,7 @@
 
 import Foundation
 
+@ProcessingActor
 protocol CellBirthGivingDelegate: AnyObject {
     func giveBirthForward(_ cell: Cell)
     func giveBirthLeft(_ cell: Cell)

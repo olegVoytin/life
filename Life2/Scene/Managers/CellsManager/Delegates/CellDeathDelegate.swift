@@ -7,6 +7,7 @@
 
 import Foundation
 
+@ProcessingActor
 protocol CellDeathDelegate: AnyObject {
     func death(_ cell: Cell)
 }

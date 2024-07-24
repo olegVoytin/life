@@ -8,6 +8,7 @@
 import Foundation
 import GameplayKit
 
+@ProcessingActor
 final class Cell: Equatable, Identifiable, Hashable {
 
     // удалить Int если не нужно генерить рандомное направление
@@ -124,7 +125,7 @@ final class Cell: Equatable, Identifiable, Hashable {
             return
         }
 
-        cellBirthGivingDelegate?.giveBirthForward(self)
+        doRandomAction()
         sendEnergy(energyPhase: energyPhase)
     }
 

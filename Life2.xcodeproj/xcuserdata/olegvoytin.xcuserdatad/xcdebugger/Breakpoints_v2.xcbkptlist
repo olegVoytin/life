@@ -7,32 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "58E42F21-B378-4EA2-A1E3-D3349160751B"
+            uuid = "5C742FD9-8602-46DC-8436-BC6336EB26A5"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Life2/DoublyLinkedList.swift"
+            filePath = "Life2/Scene/Managers/CycleManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
-            landmarkName = "remove(node:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "974592D6-AF9D-4D7B-AB90-58B50DECA7E0"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Life2/DoublyLinkedList.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
-            landmarkName = "remove(node:)"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "startCycle()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -7,46 +7,51 @@
 
 import Foundation
 
+@globalActor
+actor ProcessingActor {
+    static let shared = ProcessingActor()
+    private init() {}
+}
+
+@MainActor
 protocol GameScenePresenterProtocol: AnyObject {
     func start()
     func onTap(position: CGPoint)
 }
 
+@MainActor
 final class GameScenePresenter: GameScenePresenterProtocol {
     
     weak var scene: GameSceneProtocol?
 
-    private lazy var gridManager: GridManagerProtocol = GridManager()
-    private lazy var cellsManager: CellsManagerProtocol = CellsManager(gridManager: gridManager)
-    private lazy var cycleManager: CycleManagerProtocol = CycleManager(cellsManager: cellsManager)
+    @ProcessingActor private lazy var gridManager: GridManagerProtocol = GridManager()
+    @ProcessingActor private lazy var cellsManager: CellsManagerProtocol = CellsManager(gridManager: gridManager)
+    @ProcessingActor private lazy var cycleManager: CycleManagerProtocol = CycleManager(cellsManager: cellsManager)
 
     // MARK: - Setup
 
     func start() {
-//        Task { @MainActor in
-            for _ in 1...100 {
+        Task { @ProcessingActor in
+            for _ in 1...1000 {
                 let randomX = Int.random(in: 0..<Constants.gridSide)
                 let randomY = Int.random(in: 0..<Constants.gridSide)
                 cellsManager.addCell(to: CGPoint(x: randomX, y: randomY))
             }
 
-//            cellsManager.addCell(to: CGPoint(x: 4, y: 0))
-//            cellsManager.addCell(to: CGPoint(x: 5, y: 0))
-
             cycleManager.startCycle()
-//        }
+        }
 
         Task { @MainActor in
             while true {
-                updateChangedSquares()
+                await updateChangedSquares()
 //                await Task.yield()
                 try? await Task.sleep(for: .seconds(0.1))
             }
         }
     }
 
-    private func updateChangedSquares() {
-        let changedSquaresFootprints = gridManager.changedSquaresFootprints
+    private func updateChangedSquares() async {
+        let changedSquaresFootprints = await gridManager.changedSquaresFootprints
         guard !changedSquaresFootprints.isEmpty else { return }
 
         changedSquaresFootprints.forEach {
@@ -61,7 +66,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
     // MARK: - Actions
 
     func onTap(position: CGPoint) {
-        Task { @MainActor in
+        Task { @ProcessingActor in
             let grid = gridManager.grid
 
             let gridPosition = position.toGridPosition()

@@ -40,13 +40,47 @@ final class Cell: Equatable, Identifiable, Hashable {
         case rotate
     }
 
+    final class EnergyHolder {
+        var aBuffer = 0
+        var bBuffer = 0
+        var energy: Int
+
+        init(energy: Int) {
+            self.energy = energy
+        }
+
+        func useBuffer(energyPhase: EnergyPhase) {
+            switch energyPhase {
+            case .a:
+                let energy = aBuffer
+                aBuffer = 0
+                self.energy += energy
+
+            case .b:
+                let energy = bBuffer
+                bBuffer = 0
+                self.energy += energy
+            }
+        }
+
+        func getEnergy(_ energy: Int, energyPhase: EnergyPhase) {
+            switch energyPhase {
+            case .a:
+                aBuffer += energy
+
+            case .b:
+                bBuffer += energy
+            }
+        }
+    }
+
     private weak var cellMovementDelegate: CellMovementDelegate?
     private weak var cellBirthGivingDelegate: CellBirthGivingDelegate?
     private weak var cellHarvestDelegate: CellHarvestDelegate?
     private weak var cellDeathDelegate: CellDeathDelegate?
 
     var gridPosition: CGPoint
-    var energy: Int
+    var energyHolder: EnergyHolder
     var type: CellType = .cell
     var lookingDirection: Direction = .up
 
@@ -68,7 +102,7 @@ final class Cell: Equatable, Identifiable, Hashable {
         self.cellHarvestDelegate = cellHarvestDelegate
         self.cellDeathDelegate = cellDeathDelegate
         self.gridPosition = gridPosition
-        self.energy = energy
+        self.energyHolder = EnergyHolder(energy: energy)
     }
 
     nonisolated static func == (lhs: Cell, rhs: Cell) -> Bool {
@@ -79,19 +113,28 @@ final class Cell: Equatable, Identifiable, Hashable {
         hasher.combine(id)
     }
 
-    func update() {
+    func update(energyPhase: EnergyPhase) {
+        energyHolder.useBuffer(energyPhase: energyPhase)
+
+//        energyHolder.energy -= 5
+
         harvestEnergy()
-        doRandomAction()
-        sendEnergy()
 
-        energy -= 5
-
-        if energy <= 0 {
+        if energyHolder.energy <= 0 {
             death()
         }
+
+        doRandomAction()
+        sendEnergy(energyPhase: energyPhase)
+
+
     }
 
     func death() {
+        if case .cell = type {
+            print(1)
+        }
+
         if let forwardChild {
             forwardChild.parentCell = nil
             self.forwardChild = nil
@@ -126,11 +169,11 @@ final class Cell: Equatable, Identifiable, Hashable {
 
     private func rotate(to newDirection: Direction) {
         let energyCost = 5
-        guard energy >= energyCost else { return }
+        guard energyHolder.energy >= energyCost else { return }
 
         lookingDirection = newDirection
 
-        energy -= energyCost
+        energyHolder.energy -= energyCost
     }
 
     private func harvestEnergy() {
@@ -149,7 +192,7 @@ final class Cell: Equatable, Identifiable, Hashable {
         }
     }
 
-    private func sendEnergy() {
+    private func sendEnergy(energyPhase: EnergyPhase) {
         switch type {
         case .transport:
             var childrenCount = 0
@@ -167,14 +210,16 @@ final class Cell: Equatable, Identifiable, Hashable {
             }
 
             if childrenCount > 0 {
-                let energyForChild = energy / childrenCount
-                forwardChild?.energy += energyForChild
-                leftChild?.energy += energyForChild
-                rightChild?.energy += energyForChild
-                energy -= energyForChild * 3
+                let energyForChild = energyHolder.energy / childrenCount
+
+                forwardChild?.energyHolder.getEnergy(energyForChild, energyPhase: energyPhase)
+                leftChild?.energyHolder.getEnergy(energyForChild, energyPhase: energyPhase)
+                rightChild?.energyHolder.getEnergy(energyForChild, energyPhase: energyPhase)
+
+                energyHolder.energy -= energyForChild * childrenCount
             } else if let parentCell {
-                parentCell.energy += energy
-                energy = 0
+                parentCell.energyHolder.getEnergy(energyHolder.energy, energyPhase: energyPhase)
+                energyHolder.energy = 0
             } else {
                 death()
             }
@@ -184,8 +229,8 @@ final class Cell: Equatable, Identifiable, Hashable {
                 death()
                 return
             }
-            parentCell.energy += energy
-            energy = 0
+            parentCell.energyHolder.getEnergy(energyHolder.energy, energyPhase: energyPhase)
+            energyHolder.energy = 0
 
         case .cell:
             break
@@ -216,30 +261,34 @@ final class Cell: Equatable, Identifiable, Hashable {
 
     private func giveBirthRandomly() {
         let energyCost = 10
-        guard energy >= energyCost else { return }
+        guard energyHolder.energy >= energyCost else { return }
 
         let direction = reandomizer.nextInt(upperBound: 3)
 
-        switch direction {
-        case 0:
-            cellBirthGivingDelegate?.giveBirthForward(self)
+        let result: Bool = {
+            switch direction {
+            case 0:
+                return cellBirthGivingDelegate?.giveBirthForward(self) ?? false
 
-        case 1:
-            cellBirthGivingDelegate?.giveBirthLeft(self)
+            case 1:
+                return cellBirthGivingDelegate?.giveBirthLeft(self) ?? false
 
-        case 2:
-            cellBirthGivingDelegate?.giveBirthRight(self)
+            case 2:
+                return cellBirthGivingDelegate?.giveBirthRight(self) ?? false
 
-        default:
-            break
+            default:
+                return false
+            }
+        }()
+
+        if result {
+            energyHolder.energy -= energyCost
         }
-
-        energy -= energyCost
     }
 
     private func moveRandomly() {
         let energyCost = 10
-        guard energy >= energyCost else { return }
+        guard energyHolder.energy >= energyCost else { return }
 
         guard let direction = Direction(rawValue: reandomizer.nextInt()) else { return }
 
@@ -257,6 +306,6 @@ final class Cell: Equatable, Identifiable, Hashable {
             cellMovementDelegate?.moveRight(self)
         }
 
-        energy -= energyCost
+        energyHolder.energy -= energyCost
     }
 }

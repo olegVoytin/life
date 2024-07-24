@@ -7,10 +7,17 @@
 
 import Foundation
 
+enum EnergyPhase {
+    case a
+    case b
+}
+
 @ProcessingActor
 final class CellsList: DoublyLinkedList<Cell> {
 
     private var cellsCount = 0
+
+    private var energyPhase: EnergyPhase = .a
 
     private weak var cellMovementDelegate: CellMovementDelegate?
     private weak var cellBirthGivingDelegate: CellBirthGivingDelegate?
@@ -37,7 +44,15 @@ final class CellsList: DoublyLinkedList<Cell> {
             let updatingNode = currentNode
             currentNode = currentNode?.next
 
-            updatingNode?.value.update()
+            updatingNode?.value.update(energyPhase: energyPhase)
+        }
+
+        switch energyPhase {
+        case .a:
+            energyPhase = .b
+
+        case .b:
+            energyPhase = .a
         }
 
         print("Cells count: \(cellsCount)")

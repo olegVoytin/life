@@ -26,7 +26,7 @@ extension CellsManager: CellHarvestDelegate {
         guard square.energyLevel > 0 else { return }
 
         square.energyLevel -= 1
-        cell.energy += 1
+        cell.energyHolder.energy += 1
     }
 
     func harvestOrganic(_ cell: Cell) {
@@ -39,10 +39,10 @@ extension CellsManager: CellHarvestDelegate {
         guard square.organicLevel > 0 else { return }
 
         square.organicLevel -= 1
-        cell.energy += 1
+        cell.energyHolder.energy += 1
     }
 
     func harvestSol(_ cell: Cell) {
-        cell.energy += 1
+        cell.energyHolder.energy += 1
     }
 }

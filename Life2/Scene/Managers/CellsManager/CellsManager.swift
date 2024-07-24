@@ -17,7 +17,7 @@ protocol CellsManagerProtocol: AnyObject {
 @ProcessingActor
 final class CellsManager: CellsManagerProtocol {
 
-    let gridManager: GridManagerProtocol
+    var energyPhase: EnergyPhase = .a
 
     lazy var cellsLinkedList = CellsList(
         cellMovementDelegate: self,
@@ -25,6 +25,8 @@ final class CellsManager: CellsManagerProtocol {
         cellHarvestDelegate: self, 
         cellDeathDelegate: self
     )
+
+    let gridManager: GridManagerProtocol
 
     init(gridManager: GridManagerProtocol) {
         self.gridManager = gridManager
@@ -41,7 +43,7 @@ final class CellsManager: CellsManagerProtocol {
             cellHarvestDelegate: self, 
             cellDeathDelegate: self,
             gridPosition: gridPosition,
-            energy: 200
+            energy: 100
         )
         cellsLinkedList.append(value: newCell)
     }

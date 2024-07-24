@@ -9,14 +9,14 @@ import Foundation
 
 @ProcessingActor
 protocol CellBirthGivingDelegate: AnyObject {
-    func giveBirthForward(_ cell: Cell)
-    func giveBirthLeft(_ cell: Cell)
-    func giveBirthRight(_ cell: Cell)
+    func giveBirthForward(_ cell: Cell) -> Bool
+    func giveBirthLeft(_ cell: Cell) -> Bool
+    func giveBirthRight(_ cell: Cell) -> Bool
 }
 
 extension CellsManager: CellBirthGivingDelegate {
 
-    func giveBirthForward(_ cell: Cell) {
+    func giveBirthForward(_ cell: Cell) -> Bool {
         let grid = gridManager.grid
 
         let x = Int(cell.gridPosition.x)
@@ -25,7 +25,7 @@ extension CellsManager: CellBirthGivingDelegate {
         guard
             grid.count - 1 >= y,
             grid[y].count - 1 >= x
-        else { return }
+        else { return false }
 
         var birthPosition: CGPoint?
         switch cell.lookingDirection {
@@ -42,9 +42,9 @@ extension CellsManager: CellBirthGivingDelegate {
             birthPosition = birthPositionRight(grid: grid, x: x, y: y)
         }
 
-        guard let birthPosition else { return }
+        guard let birthPosition else { return false }
 
-        giveBirth(
+        return giveBirth(
             parentCell: cell,
             parentPositionX: x,
             parentPositionY: y,
@@ -52,7 +52,7 @@ extension CellsManager: CellBirthGivingDelegate {
         )
     }
 
-    func giveBirthLeft(_ cell: Cell) {
+    func giveBirthLeft(_ cell: Cell) -> Bool {
         let grid = gridManager.grid
 
         let x = Int(cell.gridPosition.x)
@@ -61,7 +61,7 @@ extension CellsManager: CellBirthGivingDelegate {
         guard
             grid.count - 1 >= y,
             grid[y].count - 1 >= x
-        else { return }
+        else { return false }
 
         var birthPosition: CGPoint?
         switch cell.lookingDirection {
@@ -78,9 +78,9 @@ extension CellsManager: CellBirthGivingDelegate {
             birthPosition = birthPositionUp(grid: grid, x: x, y: y)
         }
 
-        guard let birthPosition else { return }
+        guard let birthPosition else { return false }
 
-        giveBirth(
+        return giveBirth(
             parentCell: cell,
             parentPositionX: x,
             parentPositionY: y,
@@ -88,7 +88,7 @@ extension CellsManager: CellBirthGivingDelegate {
         )
     }
 
-    func giveBirthRight(_ cell: Cell) {
+    func giveBirthRight(_ cell: Cell) -> Bool {
         let grid = gridManager.grid
 
         let x = Int(cell.gridPosition.x)
@@ -97,7 +97,7 @@ extension CellsManager: CellBirthGivingDelegate {
         guard
             grid.count - 1 >= y,
             grid[y].count - 1 >= x
-        else { return }
+        else { return false }
 
         var birthPosition: CGPoint?
         switch cell.lookingDirection {
@@ -114,9 +114,9 @@ extension CellsManager: CellBirthGivingDelegate {
             birthPosition = birthPositionDown(grid: grid, x: x, y: y)
         }
 
-        guard let birthPosition else { return }
+        guard let birthPosition else { return false }
 
-        giveBirth(
+        return giveBirth(
             parentCell: cell,
             parentPositionX: x,
             parentPositionY: y,
@@ -129,21 +129,25 @@ extension CellsManager: CellBirthGivingDelegate {
         parentPositionX: Int,
         parentPositionY: Int,
         birthPosition: CGPoint
-    ) {
+    ) -> Bool {
         let grid = gridManager.grid
         let oldSquare = grid[parentPositionY][parentPositionX]
         oldSquare.type = .cell(type: .transport)
         parentCell.type = .transport
 
         let energyToSend = 30
+        guard parentCell.energyHolder.energy >= energyToSend else { return false }
+
         let child = self.addChild(of: parentCell, to: birthPosition, energy: energyToSend)
-        parentCell.energy -= energyToSend
+        parentCell.energyHolder.energy -= energyToSend
 
         parentCell.forwardChild = child
         child.parentCell = parentCell
 
         let square = gridManager.grid[Int(birthPosition.y)][Int(birthPosition.x)]
         square.type = .cell(type: .cell)
+
+        return true
     }
 
     private func birthPositionUp(grid: [[SquareEntity]], x: Int, y: Int) -> CGPoint? {

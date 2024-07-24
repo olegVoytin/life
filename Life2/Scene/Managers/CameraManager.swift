@@ -8,7 +8,6 @@
 import Foundation
 import MetalKit
 
-@MainActor
 final class CameraManager {
 
     private var lastPanTranslation: CGPoint?

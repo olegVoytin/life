@@ -8,7 +8,6 @@
 import Foundation
 import GameplayKit
 
-@ProcessingActor
 final class Cell: Equatable, Identifiable, Hashable {
 
     // удалить Int если не нужно генерить рандомное направление
@@ -259,21 +258,19 @@ final class Cell: Equatable, Identifiable, Hashable {
     private func giveBirthRandomly() {
         let direction = reandomizer.nextInt(upperBound: 3)
 
-        let result: Bool = {
-            switch direction {
-            case 0:
-                return cellBirthGivingDelegate?.giveBirthForward(self) ?? false
+        switch direction {
+        case 0:
+            cellBirthGivingDelegate?.giveBirthForward(self)
 
-            case 1:
-                return cellBirthGivingDelegate?.giveBirthLeft(self) ?? false
+        case 1:
+            cellBirthGivingDelegate?.giveBirthLeft(self)
 
-            case 2:
-                return cellBirthGivingDelegate?.giveBirthRight(self) ?? false
+        case 2:
+            cellBirthGivingDelegate?.giveBirthRight(self)
 
-            default:
-                return false
-            }
-        }()
+        default:
+            break
+        }
     }
 
     private func moveRandomly() {

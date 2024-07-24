@@ -7,14 +7,12 @@
 
 import Foundation
 
-@ProcessingActor
 protocol CycleManagerProtocol {
     func startCycle()
     func setCycleSpeed(_ newSpeed: CycleManager.Speed)
     func onNewFrame()
 }
 
-@ProcessingActor
 final class CycleManager: CycleManagerProtocol {
 
     enum Speed {
@@ -66,19 +64,19 @@ final class CycleManager: CycleManagerProtocol {
     }
 
     func startCycle() {
-        Task { @ProcessingActor in
+        Task { @MainActor in
             while isRunning {
-                async let limit: ()? = speed == .max ? nil : try? await Task.sleep(for: speed.limitDuration)
-                async let cycle: () = doCycle()
+                doCycle()
 
-                _ = await (
-                    limit,
-                    cycle
-                )
+                if speed != .max {
+                    try? await Task.sleep(for: speed.limitDuration)
+                }
+                
+                await Task.yield()
             }
         }
 
-        Task { @ProcessingActor in
+        Task { @MainActor in
             while true {
                 async let limit: ()? = try? await Task.sleep(for: .seconds(1))
                 async let cycle: () = countIterations()
@@ -96,11 +94,9 @@ final class CycleManager: CycleManagerProtocol {
         iterations = 0
     }
 
-    private func doCycle() async {
+    private func doCycle() {
         iterations += 1
-        
         cellsManager.update()
-        await Task.yield()
     }
 
     func setCycleSpeed(_ newSpeed: Speed) {
@@ -130,9 +126,9 @@ final class CycleManager: CycleManagerProtocol {
             frameCicle == nil
         else { return }
 
-        frameCicle = Task { @ProcessingActor [weak self] in
+        frameCicle = Task { @MainActor [weak self] in
             guard let self else { return }
-            await self.doCycle()
+            self.doCycle()
             self.frameCicle = nil
         }
     }

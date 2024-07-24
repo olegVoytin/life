@@ -7,31 +7,23 @@
 
 import Foundation
 
-@globalActor
-actor ProcessingActor {
-    static let shared = ProcessingActor()
-    private init() {}
-}
-
-@MainActor
 protocol GameScenePresenterProtocol: AnyObject {
     func start()
     func onTap(position: CGPoint)
 }
 
-@MainActor
 final class GameScenePresenter: GameScenePresenterProtocol {
     
     weak var scene: GameSceneProtocol?
 
-    @ProcessingActor private lazy var gridManager: GridManagerProtocol = GridManager()
-    @ProcessingActor private lazy var cellsManager: CellsManagerProtocol = CellsManager(gridManager: gridManager)
-    @ProcessingActor private lazy var cycleManager: CycleManagerProtocol = CycleManager(cellsManager: cellsManager)
+    private lazy var gridManager: GridManagerProtocol = GridManager()
+    private lazy var cellsManager: CellsManagerProtocol = CellsManager(gridManager: gridManager)
+    private lazy var cycleManager: CycleManagerProtocol = CycleManager(cellsManager: cellsManager)
 
     // MARK: - Setup
 
     func start() {
-        Task { @ProcessingActor in
+        Task { @MainActor in
             for _ in 1...2 {
                 let randomX = Int.random(in: 0..<Constants.gridSide)
                 let randomY = Int.random(in: 0..<Constants.gridSide)
@@ -43,15 +35,15 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
         Task { @MainActor in
             while true {
-                await updateChangedSquares()
+                updateChangedSquares()
                 await Task.yield()
 //                try? await Task.sleep(for: .seconds(0.1))
             }
         }
     }
 
-    private func updateChangedSquares() async {
-        let changedSquaresFootprints = await gridManager.changedSquaresFootprints
+    private func updateChangedSquares() {
+        let changedSquaresFootprints = gridManager.changedSquaresFootprints
         guard !changedSquaresFootprints.isEmpty else { return }
 
         changedSquaresFootprints.forEach {
@@ -66,7 +58,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
     // MARK: - Actions
 
     func onTap(position: CGPoint) {
-        Task { @ProcessingActor in
+        Task { @MainActor in
             let grid = gridManager.grid
 
             let gridPosition = position.toGridPosition()

@@ -7,7 +7,6 @@
 
 import Foundation
 
-@ProcessingActor
 protocol CellHarvestDelegate: AnyObject {
     func harvestEnergy(_ cell: Cell)
     func harvestOrganic(_ cell: Cell)

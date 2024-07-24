@@ -7,13 +7,11 @@
 
 import Foundation
 
-@ProcessingActor
-protocol GridManagerProtocol: AnyObject, Sendable {
+protocol GridManagerProtocol: AnyObject {
     var grid: [[SquareEntity]] { get }
     var changedSquaresFootprints: [SquareFootprint] { get }
 }
 
-@ProcessingActor
 final class GridManager: GridManagerProtocol {
 
     var grid: [[SquareEntity]] = []

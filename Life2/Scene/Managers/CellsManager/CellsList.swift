@@ -12,7 +12,6 @@ enum EnergyPhase {
     case b
 }
 
-@ProcessingActor
 final class CellsList: DoublyLinkedList<Cell> {
 
     private var cellsCount = 0

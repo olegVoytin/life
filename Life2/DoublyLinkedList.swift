@@ -19,7 +19,6 @@ final class DoublyLinkedListNode<T> {
 }
 
 // Класс для двусвязного списка
-@ProcessingActor
 class DoublyLinkedList<T: Hashable> {
     private var head: DoublyLinkedListNode<T>?
     private var tail: DoublyLinkedListNode<T>?

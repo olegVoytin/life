@@ -8,7 +8,6 @@
 import Cocoa
 import MetalKit
 
-@MainActor
 protocol GameSceneProtocol: AnyObject {
     func changeColorOfSquare(atRow row: Int, column: Int, toColor color: vector_float4)
 }

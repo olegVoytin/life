@@ -116,24 +116,21 @@ final class Cell: Equatable, Identifiable, Hashable {
     func update(energyPhase: EnergyPhase) {
         energyHolder.useBuffer(energyPhase: energyPhase)
 
-//        energyHolder.energy -= 5
+        energyHolder.energy -= 5
 
         harvestEnergy()
 
         if energyHolder.energy <= 0 {
             death()
+            return
         }
 
         doRandomAction()
         sendEnergy(energyPhase: energyPhase)
-
-
     }
 
     func death() {
-        if case .cell = type {
-            print(1)
-        }
+        cellDeathDelegate?.death(self)
 
         if let forwardChild {
             forwardChild.parentCell = nil
@@ -164,7 +161,7 @@ final class Cell: Equatable, Identifiable, Hashable {
             }
         }
 
-        cellDeathDelegate?.death(self)
+
     }
 
     private func rotate(to newDirection: Direction) {
@@ -260,9 +257,6 @@ final class Cell: Equatable, Identifiable, Hashable {
     }
 
     private func giveBirthRandomly() {
-        let energyCost = 10
-        guard energyHolder.energy >= energyCost else { return }
-
         let direction = reandomizer.nextInt(upperBound: 3)
 
         let result: Bool = {
@@ -280,10 +274,6 @@ final class Cell: Equatable, Identifiable, Hashable {
                 return false
             }
         }()
-
-        if result {
-            energyHolder.energy -= energyCost
-        }
     }
 
     private func moveRandomly() {

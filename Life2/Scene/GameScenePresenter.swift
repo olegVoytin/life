@@ -32,7 +32,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
     func start() {
         Task { @ProcessingActor in
-            for _ in 1...100 {
+            for _ in 1...2 {
                 let randomX = Int.random(in: 0..<Constants.gridSide)
                 let randomY = Int.random(in: 0..<Constants.gridSide)
                 cellsManager.addCell(to: CGPoint(x: randomX, y: randomY))

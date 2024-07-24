@@ -23,7 +23,7 @@ final class GridManager: GridManagerProtocol {
         footprints.reserveCapacity(grid.count * (grid.first?.count ?? 0)) // Pre-allocate capacity if possible
 
         for row in grid {
-            for square in row where square.changed {
+            for square in row /*where square.changed */{
                 footprints.append(square.read())
             }
         }

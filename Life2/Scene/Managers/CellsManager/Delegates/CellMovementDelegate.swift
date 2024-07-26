@@ -9,27 +9,28 @@ import Foundation
 
 @ProcessingActor
 protocol CellMovementDelegate: AnyObject {
-    func moveUp(_ cell: Cell)
-    func moveDown(_ cell: Cell)
-    func moveLeft(_ cell: Cell)
-    func moveRight(_ cell: Cell)
+    func move(_ cell: Cell, direction: Direction)
 }
 
 extension CellsManager: CellMovementDelegate {
 
-    func moveUp(_ cell: Cell) {
+    func move(_ cell: Cell, direction: Direction) {
         let grid = gridManager.grid
 
         let x = cell.gridPosition.x
         let y = cell.gridPosition.y
 
+        let newX = x + direction.deltaX
+        let newY = y + direction.deltaY
+
         guard
             grid.rows - 1 >= y,
             grid.cols - 1 >= x,
-            grid.cols - 1 >= y + 1
+            newX >= 0, newX < grid.cols,
+            newY >= 0, newY < grid.rows
         else { return }
 
-        let newSquare = grid[y + 1, x]
+        let newSquare = grid[newY, newX]
 
         guard newSquare.type == .empty else { return }
 
@@ -38,78 +39,27 @@ extension CellsManager: CellMovementDelegate {
 
         newSquare.type = .cell(type: .cell)
 
-        cell.gridPosition = GridPosition(x: x, y: y + 1)
+        cell.gridPosition = GridPosition(x: newX, y: newY)
+    }
+}
+
+private extension Direction {
+
+    var deltaX: Int {
+        switch self {
+        case .up: 0
+        case .down: 0
+        case .left: -1
+        case .right: 1
+        }
     }
 
-    func moveDown(_ cell: Cell) {
-        let grid = gridManager.grid
-
-        let x = cell.gridPosition.x
-        let y = cell.gridPosition.y
-
-        guard
-            grid.rows - 1 >= y,
-            grid.cols - 1 >= x,
-            y - 1 >= 0
-        else { return }
-
-        let newSquare = grid[y - 1, x]
-
-        guard newSquare.type == .empty else { return }
-
-        let oldSquare = grid[y, x]
-        oldSquare.type = .empty
-
-        newSquare.type = .cell(type: .cell)
-
-        cell.gridPosition = GridPosition(x: x, y: y - 1)
-    }
-
-    func moveLeft(_ cell: Cell) {
-        let grid = gridManager.grid
-
-        let x = cell.gridPosition.x
-        let y = cell.gridPosition.y
-
-        guard
-            grid.rows - 1 >= y,
-            grid.cols - 1 >= x,
-            x - 1 >= 0
-        else { return }
-
-        let newSquare = grid[y, x - 1]
-
-        guard newSquare.type == .empty else { return }
-
-        let oldSquare = grid[y, x]
-        oldSquare.type = .empty
-
-        newSquare.type = .cell(type: .cell)
-
-        cell.gridPosition = GridPosition(x: x - 1, y: y)
-    }
-
-    func moveRight(_ cell: Cell) {
-        let grid = gridManager.grid
-
-        let x = cell.gridPosition.x
-        let y = cell.gridPosition.y
-
-        guard
-            grid.rows - 1 >= y,
-            grid.cols - 1 >= x,
-            grid.cols - 1 >= x + 1
-        else { return }
-
-        let newSquare = grid[y, x + 1]
-
-        guard newSquare.type == .empty else { return }
-
-        let oldSquare = grid[y, x]
-        oldSquare.type = .empty
-
-        newSquare.type = .cell(type: .cell)
-
-        cell.gridPosition = GridPosition(x: x + 1, y: y)
+    var deltaY: Int {
+        switch self {
+        case .up: 1
+        case .down: -1
+        case .left: 0
+        case .right: 0
+        }
     }
 }

@@ -56,7 +56,7 @@ final class Cell: Equatable, Identifiable, Hashable {
             return
         }
 
-        doRandomAction()
+        moveRandomly()
         sendEnergy(energyPhase: energyPhase)
     }
 
@@ -201,16 +201,16 @@ final class Cell: Equatable, Identifiable, Hashable {
 
         switch direction {
         case .up:
-            cellMovementDelegate?.moveUp(self)
+            cellMovementDelegate?.move(self, direction: .up)
 
         case .down:
-            cellMovementDelegate?.moveDown(self)
+            cellMovementDelegate?.move(self, direction: .down)
 
         case .left:
-            cellMovementDelegate?.moveLeft(self)
+            cellMovementDelegate?.move(self, direction: .left)
 
         case .right:
-            cellMovementDelegate?.moveRight(self)
+            cellMovementDelegate?.move(self, direction: .right)
         }
 
         energyHolder.energy -= energyCost

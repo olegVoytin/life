@@ -7,17 +7,17 @@
 
 import Foundation
 
+// удалить Int если не нужно генерить рандомное направление
+enum Direction: Int {
+    case up = 0, down, left, right
+}
+
 extension Cell {
 
     enum BirthDirection {
         case forward
         case left
         case right
-    }
-
-    // удалить Int если не нужно генерить рандомное направление
-    enum Direction: Int {
-        case up = 0, down, left, right
     }
 
     // удалить Int если не нужно генерить рандомный тип

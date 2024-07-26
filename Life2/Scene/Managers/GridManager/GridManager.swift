@@ -11,6 +11,8 @@ import Foundation
 protocol GridManagerProtocol: AnyObject, Sendable {
     var grid: Grid<SquareEntity> { get }
     var changedSquaresFootprints: [SquareFootprint] { get }
+
+    func newPosition(direction: Direction, oldPosition: GridPosition) -> GridPosition?
 }
 
 @ProcessingActor
@@ -64,6 +66,41 @@ final class GridManager: GridManagerProtocol {
             }
 
             return grid
+        }
+    }
+
+    func newPosition(direction: Direction, oldPosition: GridPosition) -> GridPosition? {
+        let x = oldPosition.x
+        let y = oldPosition.y
+
+        switch direction {
+        case .up:
+            guard
+                grid.rows - 1 >= y + 1,
+                grid[y + 1, x].type == .empty
+            else { return nil }
+            return GridPosition(x: x, y: y + 1)
+
+        case .down:
+            guard
+                y - 1 >= 0,
+                grid[y - 1, x].type == .empty
+            else { return nil }
+            return GridPosition(x: x, y: y - 1)
+
+        case .left:
+            guard
+                x - 1 >= 0,
+                grid[y, x - 1].type == .empty
+            else { return nil }
+            return GridPosition(x: x - 1, y: y)
+
+        case .right:
+            guard
+                grid.cols - 1 >= x + 1,
+                grid[y, x + 1].type == .empty
+            else { return nil }
+            return GridPosition(x: x + 1, y: y)
         }
     }
 }

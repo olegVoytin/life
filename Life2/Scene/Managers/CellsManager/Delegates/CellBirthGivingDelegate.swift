@@ -58,67 +58,27 @@ extension CellsManager: CellBirthGivingDelegate {
 
         switch birthDirection {
         case .forward:
-            return positionBasedOnDirection(cell.lookingDirection, x: x, y: y)
+            return gridManager.newPosition(
+                direction: cell.lookingDirection,
+                oldPosition: cell.gridPosition
+            )
         case .left:
-            return positionBasedOnDirection(cell.lookingDirection.leftDirection(), x: x, y: y)
+            return gridManager.newPosition(
+                direction: cell.lookingDirection.leftDirection(),
+                oldPosition: cell.gridPosition
+            )
         case .right:
-            return positionBasedOnDirection(cell.lookingDirection.rightDirection(), x: x, y: y)
+            return gridManager.newPosition(
+                direction: cell.lookingDirection.rightDirection(),
+                oldPosition: cell.gridPosition
+            )
         }
-    }
-
-    private func positionBasedOnDirection(
-        _ direction: Cell.Direction,
-        x: Int,
-        y: Int
-    ) -> GridPosition? {
-        switch direction {
-        case .up:
-            return birthPositionUp(x: x, y: y)
-        case .down:
-            return birthPositionDown(x: x, y: y)
-        case .left:
-            return birthPositionLeft(x: x, y: y)
-        case .right:
-            return birthPositionRight(x: x, y: y)
-        }
-    }
-
-    private func birthPositionUp(x: Int, y: Int) -> GridPosition? {
-        guard
-            gridManager.grid.rows - 1 >= y + 1,
-            gridManager.grid[y + 1, x].type == .empty
-        else { return nil }
-        return GridPosition(x: x, y: y + 1)
-    }
-
-    private func birthPositionDown(x: Int, y: Int) -> GridPosition? {
-        guard
-            y - 1 >= 0,
-            gridManager.grid[y - 1, x].type == .empty
-        else { return nil }
-        return GridPosition(x: x, y: y - 1)
-    }
-
-    private func birthPositionLeft(x: Int, y: Int) -> GridPosition? {
-        guard
-            x - 1 >= 0,
-            gridManager.grid[y, x - 1].type == .empty
-        else { return nil }
-        return GridPosition(x: x - 1, y: y)
-    }
-
-    private func birthPositionRight(x: Int, y: Int) -> GridPosition? {
-        guard
-            gridManager.grid.cols - 1 >= x + 1,
-            gridManager.grid[y, x + 1].type == .empty
-        else { return nil }
-        return GridPosition(x: x + 1, y: y)
     }
 }
 
 // Extension for LookingDirection to support left and right directions
-private extension Cell.Direction {
-    func leftDirection() -> Cell.Direction {
+private extension Direction {
+    func leftDirection() -> Direction {
         switch self {
         case .up: return .left
         case .down: return .right
@@ -127,7 +87,7 @@ private extension Cell.Direction {
         }
     }
 
-    func rightDirection() -> Cell.Direction {
+    func rightDirection() -> Direction {
         switch self {
         case .up: return .right
         case .down: return .left

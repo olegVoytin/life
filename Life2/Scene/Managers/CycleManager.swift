@@ -78,15 +78,15 @@ final class CycleManager: CycleManagerProtocol {
             }
         }
 
-        Task { @MainActor in
+        Task { @ProcessingActor in
             while true {
-                await countIterations()
+                countIterations()
                 try? await Task.sleep(for: .seconds(1))
             }
         }
     }
 
-    private func countIterations() async {
+    private func countIterations() {
         print("Iterations count: \(iterations)")
         iterations = 0
     }

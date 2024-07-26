@@ -34,12 +34,27 @@ final class CellsList: DoublyLinkedList<Cell> {
         self.cellBirthGivingDelegate = cellBirthGivingDelegate
         self.cellHarvestDelegate = cellHarvestDelegate
         self.cellDeathDelegate = cellDeathDelegate
+
+        super.init()
+
+        Task { @ProcessingActor in
+            while true {
+                countCells()
+                try? await Task.sleep(for: .seconds(1))
+            }
+        }
+    }
+
+    private func countCells() {
+        print("Cells count: \(cellsCount)")
     }
 
     func update() {
+        var cellsCounter = 0
+
         var currentNode = first
         while currentNode != nil {
-            cellsCount += 1
+            cellsCounter += 1
 
             let updatingNode = currentNode
             currentNode = currentNode?.next
@@ -55,8 +70,7 @@ final class CellsList: DoublyLinkedList<Cell> {
             energyPhase = .a
         }
 
-//        print("Cells count: \(cellsCount)")
-        cellsCount = 0
+        cellsCount = cellsCounter
     }
 
     func addChild(

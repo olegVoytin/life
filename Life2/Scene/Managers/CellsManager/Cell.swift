@@ -85,7 +85,7 @@ final class Cell: Equatable, Identifiable, Hashable {
     func update(energyPhase: EnergyPhase) {
         energyHolder.useBuffer(energyPhase: energyPhase)
 
-        energyHolder.energy -= 5
+        energyHolder.energy -= 1
 
         harvestEnergy()
 
@@ -173,6 +173,8 @@ final class Cell: Equatable, Identifiable, Hashable {
     // MARK: - Genome
 
     private func readGenome() {
+        guard case .cell = type else { return }
+
         let gens = genome[activeGen]
 
         // левый отросток

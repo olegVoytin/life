@@ -50,7 +50,7 @@ final class CellsManager: CellsManagerProtocol {
             cellHarvestDelegate: self, 
             cellDeathDelegate: self,
             gridPosition: gridPosition,
-            energy: 1000, 
+            energy: 100000, 
             genome: nil,
             activeGen: nil
         )

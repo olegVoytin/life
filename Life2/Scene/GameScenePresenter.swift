@@ -32,10 +32,10 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
     func start() {
         Task { @ProcessingActor in
-            for _ in 1...10000 {
+            for _ in 1...1000 {
                 let randomX = Int.random(in: 0..<Constants.gridSide)
                 let randomY = Int.random(in: 0..<Constants.gridSide)
-                cellsManager.addCell(to: CGPoint(x: randomX, y: randomY))
+                cellsManager.addCell(to: CGPoint(x: randomX, y: randomY), type: .cell)
             }
 
             cycleManager.startCycle()
@@ -82,7 +82,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
             let square = grid[y][x]
             square.type = .cell(type: .cell)
 
-            cellsManager.addCell(to: gridPosition)
+            cellsManager.addCell(to: gridPosition, type: .cell)
         }
     }
 }

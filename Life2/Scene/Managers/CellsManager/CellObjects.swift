@@ -14,8 +14,9 @@ extension Cell {
         case up = 0, down, left, right
     }
 
-    enum CellType {
-        case cell
+    // удалить Int если не нужно генерить рандомный тип
+    enum CellType: Int {
+        case cell = 0
         case transport
         case energyGetter
         case organicGetter
@@ -61,7 +62,7 @@ extension Cell {
             }
         }
 
-        func getEnergy(_ energy: Int, energyPhase: EnergyPhase) {
+        func takeEnergy(_ energy: Int, energyPhase: EnergyPhase) {
             switch energyPhase {
             case .a:
                 aBuffer += energy

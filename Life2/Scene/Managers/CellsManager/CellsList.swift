@@ -59,10 +59,11 @@ final class CellsList: DoublyLinkedList<Cell> {
         cellsCount = 0
     }
 
-    func addChild(of cell: Cell, to gridPosition: CGPoint, energy: Int) -> Cell {
+    func addChild(of cell: Cell, to gridPosition: CGPoint, energy: Int, type: Cell.CellType) -> Cell {
         let newCell = Cell(
+            type: type,
             cellMovementDelegate: cellMovementDelegate,
-            cellBirthGivingDelegate: cellBirthGivingDelegate, 
+            cellBirthGivingDelegate: cellBirthGivingDelegate,
             cellHarvestDelegate: cellHarvestDelegate, 
             cellDeathDelegate: cellDeathDelegate,
             gridPosition: gridPosition,

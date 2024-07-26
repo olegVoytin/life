@@ -18,7 +18,7 @@ final class Cell: Equatable, Identifiable, Hashable {
 
     var gridPosition: CGPoint
     var energyHolder: EnergyHolder
-    var type: CellType = .cell
+    var type: CellType
     var lookingDirection: Direction = .up
 
     var forwardChild: Cell?
@@ -27,6 +27,7 @@ final class Cell: Equatable, Identifiable, Hashable {
     weak var parentCell: Cell?
 
     init(
+        type: CellType,
         cellMovementDelegate: CellMovementDelegate?,
         cellBirthGivingDelegate: CellBirthGivingDelegate?,
         cellHarvestDelegate: CellHarvestDelegate?,
@@ -34,6 +35,7 @@ final class Cell: Equatable, Identifiable, Hashable {
         gridPosition: CGPoint,
         energy: Int
     ) {
+        self.type = type
         self.cellMovementDelegate = cellMovementDelegate
         self.cellBirthGivingDelegate = cellBirthGivingDelegate
         self.cellHarvestDelegate = cellHarvestDelegate
@@ -103,13 +105,13 @@ final class Cell: Equatable, Identifiable, Hashable {
             if childrenCount > 0 {
                 let energyForChild = energyHolder.energy / childrenCount
 
-                forwardChild?.energyHolder.getEnergy(energyForChild, energyPhase: energyPhase)
-                leftChild?.energyHolder.getEnergy(energyForChild, energyPhase: energyPhase)
-                rightChild?.energyHolder.getEnergy(energyForChild, energyPhase: energyPhase)
+                forwardChild?.energyHolder.takeEnergy(energyForChild, energyPhase: energyPhase)
+                leftChild?.energyHolder.takeEnergy(energyForChild, energyPhase: energyPhase)
+                rightChild?.energyHolder.takeEnergy(energyForChild, energyPhase: energyPhase)
 
                 energyHolder.energy -= energyForChild * childrenCount
             } else if let parentCell {
-                parentCell.energyHolder.getEnergy(energyHolder.energy, energyPhase: energyPhase)
+                parentCell.energyHolder.takeEnergy(energyHolder.energy, energyPhase: energyPhase)
                 energyHolder.energy = 0
             } else {
                 cellDeathDelegate?.death(self)
@@ -120,7 +122,7 @@ final class Cell: Equatable, Identifiable, Hashable {
                 cellDeathDelegate?.death(self)
                 return
             }
-            parentCell.energyHolder.getEnergy(energyHolder.energy, energyPhase: energyPhase)
+            parentCell.energyHolder.takeEnergy(energyHolder.energy, energyPhase: energyPhase)
             energyHolder.energy = 0
 
         case .cell:
@@ -139,7 +141,7 @@ final class Cell: Equatable, Identifiable, Hashable {
 
         switch action {
         case 0:
-            guard let direction = Direction(rawValue: reandomizer.nextInt()) else { return }
+            guard let direction = Direction(rawValue: reandomizer.nextInt(upperBound: 4)) else { return }
             rotate(to: direction)
 
         case 1:
@@ -152,16 +154,19 @@ final class Cell: Equatable, Identifiable, Hashable {
 
     private func giveBirthRandomly() {
         let direction = reandomizer.nextInt(upperBound: 3)
+        let cellType = reandomizer.nextInt()
+
+        guard cellType != 1 else { return }
 
         switch direction {
         case 0:
-            cellBirthGivingDelegate?.giveBirthForward(self)
+            cellBirthGivingDelegate?.giveBirthForward(self, childType: Cell.CellType(rawValue: cellType)!)
 
         case 1:
-            cellBirthGivingDelegate?.giveBirthLeft(self)
+            cellBirthGivingDelegate?.giveBirthLeft(self, childType: Cell.CellType(rawValue: cellType)!)
 
         case 2:
-            cellBirthGivingDelegate?.giveBirthRight(self)
+            cellBirthGivingDelegate?.giveBirthRight(self, childType: Cell.CellType(rawValue: cellType)!)
 
         default:
             break

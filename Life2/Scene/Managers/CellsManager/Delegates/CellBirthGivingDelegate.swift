@@ -9,14 +9,14 @@ import Foundation
 
 @ProcessingActor
 protocol CellBirthGivingDelegate: AnyObject {
-    func giveBirthForward(_ cell: Cell)
-    func giveBirthLeft(_ cell: Cell)
-    func giveBirthRight(_ cell: Cell)
+    func giveBirthForward(_ cell: Cell, childType: Cell.CellType)
+    func giveBirthLeft(_ cell: Cell, childType: Cell.CellType)
+    func giveBirthRight(_ cell: Cell, childType: Cell.CellType)
 }
 
 extension CellsManager: CellBirthGivingDelegate {
 
-    func giveBirthForward(_ cell: Cell) {
+    func giveBirthForward(_ cell: Cell, childType: Cell.CellType) {
         let grid = gridManager.grid
 
         let x = Int(cell.gridPosition.x)
@@ -30,16 +30,16 @@ extension CellsManager: CellBirthGivingDelegate {
         var birthPosition: CGPoint?
         switch cell.lookingDirection {
         case .up:
-            birthPosition = birthPositionUp(grid: grid, x: x, y: y)
+            birthPosition = birthPositionUp(x: x, y: y)
 
         case .down:
-            birthPosition = birthPositionDown(grid: grid, x: x, y: y)
+            birthPosition = birthPositionDown(x: x, y: y)
 
         case .left:
-            birthPosition = birthPositionLeft(grid: grid, x: x, y: y)
+            birthPosition = birthPositionLeft(x: x, y: y)
 
         case .right:
-            birthPosition = birthPositionRight(grid: grid, x: x, y: y)
+            birthPosition = birthPositionRight(x: x, y: y)
         }
 
         guard let birthPosition else { return }
@@ -48,11 +48,12 @@ extension CellsManager: CellBirthGivingDelegate {
             parentCell: cell,
             parentPositionX: x,
             parentPositionY: y,
-            birthPosition: birthPosition
+            birthPosition: birthPosition,
+            childType: childType
         )
     }
 
-    func giveBirthLeft(_ cell: Cell) {
+    func giveBirthLeft(_ cell: Cell, childType: Cell.CellType) {
         let grid = gridManager.grid
 
         let x = Int(cell.gridPosition.x)
@@ -66,16 +67,16 @@ extension CellsManager: CellBirthGivingDelegate {
         var birthPosition: CGPoint?
         switch cell.lookingDirection {
         case .up:
-            birthPosition = birthPositionLeft(grid: grid, x: x, y: y)
+            birthPosition = birthPositionLeft(x: x, y: y)
 
         case .down:
-            birthPosition = birthPositionRight(grid: grid, x: x, y: y)
+            birthPosition = birthPositionRight(x: x, y: y)
 
         case .left:
-            birthPosition = birthPositionDown(grid: grid, x: x, y: y)
+            birthPosition = birthPositionDown(x: x, y: y)
 
         case .right:
-            birthPosition = birthPositionUp(grid: grid, x: x, y: y)
+            birthPosition = birthPositionUp(x: x, y: y)
         }
 
         guard let birthPosition else { return }
@@ -84,11 +85,12 @@ extension CellsManager: CellBirthGivingDelegate {
             parentCell: cell,
             parentPositionX: x,
             parentPositionY: y,
-            birthPosition: birthPosition
+            birthPosition: birthPosition,
+            childType: childType
         )
     }
 
-    func giveBirthRight(_ cell: Cell) {
+    func giveBirthRight(_ cell: Cell, childType: Cell.CellType) {
         let grid = gridManager.grid
 
         let x = Int(cell.gridPosition.x)
@@ -102,16 +104,16 @@ extension CellsManager: CellBirthGivingDelegate {
         var birthPosition: CGPoint?
         switch cell.lookingDirection {
         case .up:
-            birthPosition = birthPositionRight(grid: grid, x: x, y: y)
+            birthPosition = birthPositionRight(x: x, y: y)
 
         case .down:
-            birthPosition = birthPositionLeft(grid: grid, x: x, y: y)
+            birthPosition = birthPositionLeft(x: x, y: y)
 
         case .left:
-            birthPosition = birthPositionUp(grid: grid, x: x, y: y)
+            birthPosition = birthPositionUp(x: x, y: y)
 
         case .right:
-            birthPosition = birthPositionDown(grid: grid, x: x, y: y)
+            birthPosition = birthPositionDown(x: x, y: y)
         }
 
         guard let birthPosition else { return }
@@ -120,60 +122,78 @@ extension CellsManager: CellBirthGivingDelegate {
             parentCell: cell,
             parentPositionX: x,
             parentPositionY: y,
-            birthPosition: birthPosition
+            birthPosition: birthPosition,
+            childType: childType
         )
     }
 
-    func giveBirth(
+    // MARK: - Birth giving
+
+    private func giveBirth(
         parentCell: Cell,
         parentPositionX: Int,
         parentPositionY: Int,
-        birthPosition: CGPoint
+        birthPosition: CGPoint,
+        childType: Cell.CellType
     ) {
-        let grid = gridManager.grid
-        let oldSquare = grid[parentPositionY][parentPositionX]
+        let oldSquare = gridManager.grid[parentPositionY][parentPositionX]
         oldSquare.type = .cell(type: .transport)
         parentCell.type = .transport
 
-        let energyToSend = parentCell.energyHolder.energy
-        let child = self.addChild(of: parentCell, to: birthPosition, energy: energyToSend)
-        parentCell.energyHolder.energy = 0
+        let energyToSend: Int = {
+            switch childType {
+            case .cell:
+                return parentCell.energyHolder.energy
+
+            default:
+                return 0
+            }
+        }()
+        let child = self.addChild(
+            of: parentCell,
+            to: birthPosition,
+            energy: energyToSend,
+            type: childType
+        )
+        parentCell.energyHolder.energy -= energyToSend
 
         parentCell.forwardChild = child
         child.parentCell = parentCell
 
         let square = gridManager.grid[Int(birthPosition.y)][Int(birthPosition.x)]
-        square.type = .cell(type: .cell)
+        square.type = .cell(type: childType)
     }
 
-    private func birthPositionUp(grid: [[SquareEntity]], x: Int, y: Int) -> CGPoint? {
+    // MARK: - Position
+
+    private func birthPositionUp(x: Int, y: Int) -> CGPoint? {
         guard
-            grid.count - 1 >= y + 1,
-            grid[y + 1][x].type == .empty
+            gridManager.grid.count - 1 >= y + 1,
+            gridManager.grid[y + 1][x].type == .empty
         else { return nil }
         return CGPoint(x: x, y: y + 1)
     }
 
-    private func birthPositionDown(grid: [[SquareEntity]], x: Int, y: Int) -> CGPoint? {
+    private func birthPositionDown(x: Int, y: Int) -> CGPoint? {
         guard
             y - 1 >= 0,
-            grid[y - 1][x].type == .empty
+            gridManager.grid[y - 1][x].type == .empty
         else { return nil }
         return CGPoint(x: x, y: y - 1)
     }
 
-    private func birthPositionLeft(grid: [[SquareEntity]], x: Int, y: Int) -> CGPoint? {
+    private func birthPositionLeft(x: Int, y: Int) -> CGPoint? {
         guard
             x - 1 >= 0,
-            grid[y][x - 1].type == .empty
+            gridManager.grid[y][x - 1].type == .empty
         else { return nil }
         return CGPoint(x: x - 1, y: y)
     }
 
-    private func birthPositionRight(grid: [[SquareEntity]], x: Int, y: Int) -> CGPoint? {
+    private func birthPositionRight(x: Int, y: Int) -> CGPoint? {
         guard
-            grid[y].count - 1 >= x + 1,
-            grid[y][x + 1].type == .empty
+            gridManager.grid[y].count - 1 >= x + 1,
+            gridManager.grid[y][x + 1].type == .empty
         else { return nil }
         return CGPoint(x: x + 1, y: y)
     }

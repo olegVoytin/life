@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5C742FD9-8602-46DC-8436-BC6336EB26A5"
+            uuid = "3CA161CF-8457-4F2D-B8AC-508D3EC2D714"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Life2/Scene/Managers/CycleManager.swift"
+            filePath = "Life2/Scene/Managers/CellsManager/Cell.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "countIterations()"
+            startingLineNumber = "161"
+            endingLineNumber = "161"
+            landmarkName = "giveBirthRandomly()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

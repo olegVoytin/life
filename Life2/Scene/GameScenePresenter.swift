@@ -51,8 +51,6 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
     private func updateChangedSquares() async {
         let changedSquaresFootprints = await gridManager.changedSquaresFootprints
-        guard !changedSquaresFootprints.isEmpty else { return }
-
         changedSquaresFootprints.forEach {
             scene?.changeColorOfSquare(
                 atRow: $0.gridPosition.y,

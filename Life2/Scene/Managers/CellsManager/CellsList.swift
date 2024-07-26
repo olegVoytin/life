@@ -55,7 +55,7 @@ final class CellsList: DoublyLinkedList<Cell> {
             energyPhase = .a
         }
 
-        print("Cells count: \(cellsCount)")
+//        print("Cells count: \(cellsCount)")
         cellsCount = 0
     }
 

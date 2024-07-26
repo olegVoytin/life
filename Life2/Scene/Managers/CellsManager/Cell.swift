@@ -168,13 +168,25 @@ final class Cell: Equatable, Identifiable, Hashable {
 
         switch direction {
         case 0:
-            cellBirthGivingDelegate?.giveBirthForward(self, childType: Cell.CellType(rawValue: cellType)!)
+            cellBirthGivingDelegate?.giveBirth(
+                self,
+                childType: Cell.CellType(rawValue: cellType)!,
+                birthDirection: .forward
+            )
 
         case 1:
-            cellBirthGivingDelegate?.giveBirthLeft(self, childType: Cell.CellType(rawValue: cellType)!)
+            cellBirthGivingDelegate?.giveBirth(
+                self,
+                childType: Cell.CellType(rawValue: cellType)!,
+                birthDirection: .left
+            )
 
         case 2:
-            cellBirthGivingDelegate?.giveBirthRight(self, childType: Cell.CellType(rawValue: cellType)!)
+            cellBirthGivingDelegate?.giveBirth(
+                self,
+                childType: Cell.CellType(rawValue: cellType)!,
+                birthDirection: .right
+            )
 
         default:
             break

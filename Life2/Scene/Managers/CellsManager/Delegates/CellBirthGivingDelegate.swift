@@ -9,134 +9,20 @@ import Foundation
 
 @ProcessingActor
 protocol CellBirthGivingDelegate: AnyObject {
-    func giveBirthForward(_ cell: Cell, childType: Cell.CellType)
-    func giveBirthLeft(_ cell: Cell, childType: Cell.CellType)
-    func giveBirthRight(_ cell: Cell, childType: Cell.CellType)
+    func giveBirth(_ parentCell: Cell, childType: Cell.CellType, birthDirection: Cell.BirthDirection)
 }
 
 extension CellsManager: CellBirthGivingDelegate {
 
-    func giveBirthForward(_ cell: Cell, childType: Cell.CellType) {
+    func giveBirth(_ parentCell: Cell, childType: Cell.CellType, birthDirection: Cell.BirthDirection) {
         let grid = gridManager.grid
+        let x = parentCell.gridPosition.x
+        let y = parentCell.gridPosition.y
 
-        let x = cell.gridPosition.x
-        let y = cell.gridPosition.y
+        guard grid.rows - 1 >= y, grid.cols - 1 >= x,
+            let birthPosition = birthPosition(for: parentCell, birthDirection: birthDirection) else { return }
 
-        guard
-            grid.rows - 1 >= y,
-            grid.cols - 1 >= x
-        else { return }
-
-        var birthPosition: GridPosition?
-        switch cell.lookingDirection {
-        case .up:
-            birthPosition = birthPositionUp(x: x, y: y)
-
-        case .down:
-            birthPosition = birthPositionDown(x: x, y: y)
-
-        case .left:
-            birthPosition = birthPositionLeft(x: x, y: y)
-
-        case .right:
-            birthPosition = birthPositionRight(x: x, y: y)
-        }
-
-        guard let birthPosition else { return }
-
-        giveBirth(
-            parentCell: cell,
-            parentPositionX: x,
-            parentPositionY: y,
-            birthPosition: birthPosition,
-            childType: childType
-        )
-    }
-
-    func giveBirthLeft(_ cell: Cell, childType: Cell.CellType) {
-        let grid = gridManager.grid
-
-        let x = cell.gridPosition.x
-        let y = cell.gridPosition.y
-
-        guard
-            grid.rows - 1 >= y,
-            grid.cols - 1 >= x
-        else { return }
-
-        var birthPosition: GridPosition?
-        switch cell.lookingDirection {
-        case .up:
-            birthPosition = birthPositionLeft(x: x, y: y)
-
-        case .down:
-            birthPosition = birthPositionRight(x: x, y: y)
-
-        case .left:
-            birthPosition = birthPositionDown(x: x, y: y)
-
-        case .right:
-            birthPosition = birthPositionUp(x: x, y: y)
-        }
-
-        guard let birthPosition else { return }
-
-        giveBirth(
-            parentCell: cell,
-            parentPositionX: x,
-            parentPositionY: y,
-            birthPosition: birthPosition,
-            childType: childType
-        )
-    }
-
-    func giveBirthRight(_ cell: Cell, childType: Cell.CellType) {
-        let grid = gridManager.grid
-
-        let x = cell.gridPosition.x
-        let y = cell.gridPosition.y
-
-        guard
-            grid.rows - 1 >= y,
-            grid.cols - 1 >= x
-        else { return }
-
-        var birthPosition: GridPosition?
-        switch cell.lookingDirection {
-        case .up:
-            birthPosition = birthPositionRight(x: x, y: y)
-
-        case .down:
-            birthPosition = birthPositionLeft(x: x, y: y)
-
-        case .left:
-            birthPosition = birthPositionUp(x: x, y: y)
-
-        case .right:
-            birthPosition = birthPositionDown(x: x, y: y)
-        }
-
-        guard let birthPosition else { return }
-
-        giveBirth(
-            parentCell: cell,
-            parentPositionX: x,
-            parentPositionY: y,
-            birthPosition: birthPosition,
-            childType: childType
-        )
-    }
-
-    // MARK: - Birth giving
-
-    private func giveBirth(
-        parentCell: Cell,
-        parentPositionX: Int,
-        parentPositionY: Int,
-        birthPosition: GridPosition,
-        childType: Cell.CellType
-    ) {
-        let oldSquare = gridManager.grid[parentPositionY, parentPositionX]
+        let oldSquare = grid[y, x]
         oldSquare.type = .cell(type: .transport)
         parentCell.type = .transport
 
@@ -160,11 +46,42 @@ extension CellsManager: CellBirthGivingDelegate {
         parentCell.forwardChild = child
         child.parentCell = parentCell
 
-        let square = gridManager.grid[birthPosition.y, birthPosition.x]
+        let square = grid[birthPosition.y, birthPosition.x]
         square.type = .cell(type: childType)
     }
 
-    // MARK: - Position
+    // MARK: - Helper Methods
+
+    private func birthPosition(for cell: Cell, birthDirection: Cell.BirthDirection) -> GridPosition? {
+        let x = cell.gridPosition.x
+        let y = cell.gridPosition.y
+
+        switch birthDirection {
+        case .forward:
+            return positionBasedOnDirection(cell.lookingDirection, x: x, y: y)
+        case .left:
+            return positionBasedOnDirection(cell.lookingDirection.leftDirection(), x: x, y: y)
+        case .right:
+            return positionBasedOnDirection(cell.lookingDirection.rightDirection(), x: x, y: y)
+        }
+    }
+
+    private func positionBasedOnDirection(
+        _ direction: Cell.Direction,
+        x: Int,
+        y: Int
+    ) -> GridPosition? {
+        switch direction {
+        case .up:
+            return birthPositionUp(x: x, y: y)
+        case .down:
+            return birthPositionDown(x: x, y: y)
+        case .left:
+            return birthPositionLeft(x: x, y: y)
+        case .right:
+            return birthPositionRight(x: x, y: y)
+        }
+    }
 
     private func birthPositionUp(x: Int, y: Int) -> GridPosition? {
         guard
@@ -196,5 +113,26 @@ extension CellsManager: CellBirthGivingDelegate {
             gridManager.grid[y, x + 1].type == .empty
         else { return nil }
         return GridPosition(x: x + 1, y: y)
+    }
+}
+
+// Extension for LookingDirection to support left and right directions
+private extension Cell.Direction {
+    func leftDirection() -> Cell.Direction {
+        switch self {
+        case .up: return .left
+        case .down: return .right
+        case .left: return .down
+        case .right: return .up
+        }
+    }
+
+    func rightDirection() -> Cell.Direction {
+        switch self {
+        case .up: return .right
+        case .down: return .left
+        case .left: return .up
+        case .right: return .down
+        }
     }
 }

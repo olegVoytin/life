@@ -16,7 +16,7 @@ final class Cell: Equatable, Identifiable, Hashable {
     private weak var cellHarvestDelegate: CellHarvestDelegate?
     private weak var cellDeathDelegate: CellDeathDelegate?
 
-    var gridPosition: CGPoint
+    var gridPosition: GridPosition
     var energyHolder: EnergyHolder
     var type: CellType
     var lookingDirection: Direction = .up
@@ -32,7 +32,7 @@ final class Cell: Equatable, Identifiable, Hashable {
         cellBirthGivingDelegate: CellBirthGivingDelegate?,
         cellHarvestDelegate: CellHarvestDelegate?,
         cellDeathDelegate: CellDeathDelegate?,
-        gridPosition: CGPoint,
+        gridPosition: GridPosition,
         energy: Int
     ) {
         self.type = type

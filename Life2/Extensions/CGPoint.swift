@@ -9,10 +9,10 @@ import Foundation
 
 extension CGPoint {
 
-    func toGridPosition() -> CGPoint {
+    func toGridPosition() -> GridPosition {
         let y = Int(floor(self.y / CGFloat(Constants.blockSide))) + (Constants.gridSide / 2)
         let x = Int(floor(self.x / CGFloat(Constants.blockSide))) + (Constants.gridSide / 2)
-        return CGPoint(x: x, y: y)
+        return GridPosition(x: x, y: y)
     }
 
     func fromGridPosition() -> CGPoint {

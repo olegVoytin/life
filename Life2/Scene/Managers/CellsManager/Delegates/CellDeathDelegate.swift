@@ -58,11 +58,7 @@ extension CellsManager: CellDeathDelegate {
     }
 
     private func deleteCellFromGrid(cell: Cell) {
-        let grid = gridManager.grid
-        let x = Int(cell.gridPosition.x)
-        let y = Int(cell.gridPosition.y)
-
-        let square = grid[y, x]
+        let square = gridManager.grid[cell.gridPosition.y, cell.gridPosition.x]
         square.type = .empty
     }
 }

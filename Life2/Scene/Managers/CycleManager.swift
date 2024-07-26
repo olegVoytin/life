@@ -125,7 +125,7 @@ final class CycleManager: CycleManagerProtocol {
 
         frameCicle = Task { @ProcessingActor [weak self] in
             guard let self else { return }
-            await self.doCycle()
+            self.doCycle()
             self.frameCicle = nil
         }
     }

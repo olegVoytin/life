@@ -10,8 +10,13 @@ import Foundation
 @ProcessingActor
 protocol CellsManagerProtocol: AnyObject {
     func update()
-    func addCell(to gridPosition: CGPoint, type: Cell.CellType)
-    func addChild(of cell: Cell, to gridPosition: CGPoint, energy: Int, type: Cell.CellType) -> Cell
+    func addCell(to gridPosition: GridPosition, type: Cell.CellType)
+    func addChild(
+        of cell: Cell,
+        to gridPosition: GridPosition,
+        energy: Int,
+        type: Cell.CellType
+    ) -> Cell
 }
 
 @ProcessingActor
@@ -36,7 +41,7 @@ final class CellsManager: CellsManagerProtocol {
         cellsLinkedList.update()
     }
 
-    func addCell(to gridPosition: CGPoint, type: Cell.CellType) {
+    func addCell(to gridPosition: GridPosition, type: Cell.CellType) {
         let newCell = Cell(
             type: type,
             cellMovementDelegate: self,
@@ -48,11 +53,16 @@ final class CellsManager: CellsManagerProtocol {
         )
         cellsLinkedList.append(value: newCell)
 
-        let square = gridManager.grid[Int(gridPosition.y), Int(gridPosition.x)]
+        let square = gridManager.grid[gridPosition.y, gridPosition.x]
         square.type = .cell(type: .cell)
     }
 
-    func addChild(of cell: Cell, to gridPosition: CGPoint, energy: Int, type: Cell.CellType) -> Cell {
+    func addChild(
+        of cell: Cell,
+        to gridPosition: GridPosition,
+        energy: Int,
+        type: Cell.CellType
+    ) -> Cell {
         cellsLinkedList.addChild(of: cell, to: gridPosition, energy: energy, type: type)
     }
 }

@@ -19,15 +19,15 @@ extension CellsManager: CellBirthGivingDelegate {
     func giveBirthForward(_ cell: Cell, childType: Cell.CellType) {
         let grid = gridManager.grid
 
-        let x = Int(cell.gridPosition.x)
-        let y = Int(cell.gridPosition.y)
+        let x = cell.gridPosition.x
+        let y = cell.gridPosition.y
 
         guard
             grid.rows - 1 >= y,
             grid.cols - 1 >= x
         else { return }
 
-        var birthPosition: CGPoint?
+        var birthPosition: GridPosition?
         switch cell.lookingDirection {
         case .up:
             birthPosition = birthPositionUp(x: x, y: y)
@@ -56,15 +56,15 @@ extension CellsManager: CellBirthGivingDelegate {
     func giveBirthLeft(_ cell: Cell, childType: Cell.CellType) {
         let grid = gridManager.grid
 
-        let x = Int(cell.gridPosition.x)
-        let y = Int(cell.gridPosition.y)
+        let x = cell.gridPosition.x
+        let y = cell.gridPosition.y
 
         guard
             grid.rows - 1 >= y,
             grid.cols - 1 >= x
         else { return }
 
-        var birthPosition: CGPoint?
+        var birthPosition: GridPosition?
         switch cell.lookingDirection {
         case .up:
             birthPosition = birthPositionLeft(x: x, y: y)
@@ -93,15 +93,15 @@ extension CellsManager: CellBirthGivingDelegate {
     func giveBirthRight(_ cell: Cell, childType: Cell.CellType) {
         let grid = gridManager.grid
 
-        let x = Int(cell.gridPosition.x)
-        let y = Int(cell.gridPosition.y)
+        let x = cell.gridPosition.x
+        let y = cell.gridPosition.y
 
         guard
             grid.rows - 1 >= y,
             grid.cols - 1 >= x
         else { return }
 
-        var birthPosition: CGPoint?
+        var birthPosition: GridPosition?
         switch cell.lookingDirection {
         case .up:
             birthPosition = birthPositionRight(x: x, y: y)
@@ -133,7 +133,7 @@ extension CellsManager: CellBirthGivingDelegate {
         parentCell: Cell,
         parentPositionX: Int,
         parentPositionY: Int,
-        birthPosition: CGPoint,
+        birthPosition: GridPosition,
         childType: Cell.CellType
     ) {
         let oldSquare = gridManager.grid[parentPositionY, parentPositionX]
@@ -160,41 +160,41 @@ extension CellsManager: CellBirthGivingDelegate {
         parentCell.forwardChild = child
         child.parentCell = parentCell
 
-        let square = gridManager.grid[Int(birthPosition.y), Int(birthPosition.x)]
+        let square = gridManager.grid[birthPosition.y, birthPosition.x]
         square.type = .cell(type: childType)
     }
 
     // MARK: - Position
 
-    private func birthPositionUp(x: Int, y: Int) -> CGPoint? {
+    private func birthPositionUp(x: Int, y: Int) -> GridPosition? {
         guard
             gridManager.grid.rows - 1 >= y + 1,
             gridManager.grid[y + 1, x].type == .empty
         else { return nil }
-        return CGPoint(x: x, y: y + 1)
+        return GridPosition(x: x, y: y + 1)
     }
 
-    private func birthPositionDown(x: Int, y: Int) -> CGPoint? {
+    private func birthPositionDown(x: Int, y: Int) -> GridPosition? {
         guard
             y - 1 >= 0,
             gridManager.grid[y - 1, x].type == .empty
         else { return nil }
-        return CGPoint(x: x, y: y - 1)
+        return GridPosition(x: x, y: y - 1)
     }
 
-    private func birthPositionLeft(x: Int, y: Int) -> CGPoint? {
+    private func birthPositionLeft(x: Int, y: Int) -> GridPosition? {
         guard
             x - 1 >= 0,
             gridManager.grid[y, x - 1].type == .empty
         else { return nil }
-        return CGPoint(x: x - 1, y: y)
+        return GridPosition(x: x - 1, y: y)
     }
 
-    private func birthPositionRight(x: Int, y: Int) -> CGPoint? {
+    private func birthPositionRight(x: Int, y: Int) -> GridPosition? {
         guard
             gridManager.grid.cols - 1 >= x + 1,
             gridManager.grid[y, x + 1].type == .empty
         else { return nil }
-        return CGPoint(x: x + 1, y: y)
+        return GridPosition(x: x + 1, y: y)
     }
 }

@@ -40,7 +40,7 @@ final class GridManager: GridManagerProtocol {
         func createGrid() -> Grid<SquareEntity> {
             let gridSide = Constants.gridSide
             let initialValue = SquareEntity(
-                gridPosition: CGPoint(x: 0, y: 0),
+                gridPosition: GridPosition(x: 0, y: 0),
                 size: CGSize(width: Constants.blockSide, height: Constants.blockSide),
                 type: .empty,
                 energyLevel: 0,
@@ -51,7 +51,7 @@ final class GridManager: GridManagerProtocol {
 
             for rowIndex in 0..<gridSide {
                 for colIndex in 0..<gridSide {
-                    let gridPosition = CGPoint(x: colIndex, y: rowIndex)
+                    let gridPosition = GridPosition(x: colIndex, y: rowIndex)
                     let square = SquareEntity(
                         gridPosition: gridPosition,
                         size: CGSize(width: Constants.blockSide, height: Constants.blockSide),

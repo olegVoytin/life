@@ -35,7 +35,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
             for _ in 1...1000 {
                 let randomX = Int.random(in: 0..<Constants.gridSide)
                 let randomY = Int.random(in: 0..<Constants.gridSide)
-                cellsManager.addCell(to: CGPoint(x: randomX, y: randomY), type: .cell)
+                cellsManager.addCell(to: GridPosition(x: randomX, y: randomY), type: .cell)
             }
 
             cycleManager.startCycle()
@@ -55,8 +55,8 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
         changedSquaresFootprints.forEach {
             scene?.changeColorOfSquare(
-                atRow: Int($0.gridPosition.y),
-                column: Int($0.gridPosition.x),
+                atRow: $0.gridPosition.y,
+                column: $0.gridPosition.x,
                 toColor: $0.color.vector
             )
         }
@@ -69,8 +69,8 @@ final class GameScenePresenter: GameScenePresenterProtocol {
             let grid = gridManager.grid
 
             let gridPosition = position.toGridPosition()
-            let x = Int(gridPosition.x)
-            let y = Int(gridPosition.y)
+            let x = gridPosition.x
+            let y = gridPosition.y
 
             guard
                 x >= 0,

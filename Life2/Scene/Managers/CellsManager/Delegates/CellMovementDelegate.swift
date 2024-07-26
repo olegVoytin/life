@@ -20,8 +20,8 @@ extension CellsManager: CellMovementDelegate {
     func moveUp(_ cell: Cell) {
         let grid = gridManager.grid
 
-        let x = Int(cell.gridPosition.x)
-        let y = Int(cell.gridPosition.y)
+        let x = cell.gridPosition.x
+        let y = cell.gridPosition.y
 
         guard
             grid.rows - 1 >= y,
@@ -38,14 +38,14 @@ extension CellsManager: CellMovementDelegate {
 
         newSquare.type = .cell(type: .cell)
 
-        cell.gridPosition = CGPoint(x: x, y: y + 1)
+        cell.gridPosition = GridPosition(x: x, y: y + 1)
     }
 
     func moveDown(_ cell: Cell) {
         let grid = gridManager.grid
 
-        let x = Int(cell.gridPosition.x)
-        let y = Int(cell.gridPosition.y)
+        let x = cell.gridPosition.x
+        let y = cell.gridPosition.y
 
         guard
             grid.rows - 1 >= y,
@@ -62,14 +62,14 @@ extension CellsManager: CellMovementDelegate {
 
         newSquare.type = .cell(type: .cell)
 
-        cell.gridPosition = CGPoint(x: x, y: y - 1)
+        cell.gridPosition = GridPosition(x: x, y: y - 1)
     }
 
     func moveLeft(_ cell: Cell) {
         let grid = gridManager.grid
 
-        let x = Int(cell.gridPosition.x)
-        let y = Int(cell.gridPosition.y)
+        let x = cell.gridPosition.x
+        let y = cell.gridPosition.y
 
         guard
             grid.rows - 1 >= y,
@@ -86,14 +86,14 @@ extension CellsManager: CellMovementDelegate {
 
         newSquare.type = .cell(type: .cell)
 
-        cell.gridPosition = CGPoint(x: x - 1, y: y)
+        cell.gridPosition = GridPosition(x: x - 1, y: y)
     }
 
     func moveRight(_ cell: Cell) {
         let grid = gridManager.grid
 
-        let x = Int(cell.gridPosition.x)
-        let y = Int(cell.gridPosition.y)
+        let x = cell.gridPosition.x
+        let y = cell.gridPosition.y
 
         guard
             grid.rows - 1 >= y,
@@ -110,6 +110,6 @@ extension CellsManager: CellMovementDelegate {
 
         newSquare.type = .cell(type: .cell)
 
-        cell.gridPosition = CGPoint(x: x + 1, y: y)
+        cell.gridPosition = GridPosition(x: x + 1, y: y)
     }
 }

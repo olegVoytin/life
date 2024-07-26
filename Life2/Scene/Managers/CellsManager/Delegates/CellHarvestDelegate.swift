@@ -19,8 +19,8 @@ extension CellsManager: CellHarvestDelegate {
     func harvestEnergy(_ cell: Cell) {
         let grid = gridManager.grid
 
-        let x = Int(cell.gridPosition.x)
-        let y = Int(cell.gridPosition.y)
+        let x = cell.gridPosition.x
+        let y = cell.gridPosition.y
         let square = grid[y, x]
 
         guard square.energyLevel > 0 else { return }
@@ -32,8 +32,8 @@ extension CellsManager: CellHarvestDelegate {
     func harvestOrganic(_ cell: Cell) {
         let grid = gridManager.grid
 
-        let x = Int(cell.gridPosition.x)
-        let y = Int(cell.gridPosition.y)
+        let x = cell.gridPosition.x
+        let y = cell.gridPosition.y
         let square = grid[y, x]
 
         guard square.organicLevel > 0 else { return }

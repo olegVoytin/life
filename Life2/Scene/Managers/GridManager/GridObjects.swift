@@ -32,15 +32,20 @@ struct Grid<T> {
     }
 }
 
+struct GridPosition {
+    let x: Int
+    let y: Int
+}
+
 struct SquareFootprint {
-    let gridPosition: CGPoint
+    let gridPosition: GridPosition
     let color: NSColor
 }
 
 @ProcessingActor
 final class SquareEntity {
 
-    let gridPosition: CGPoint
+    let gridPosition: GridPosition
     let size: CGSize
     
     var type: SquareType
@@ -53,7 +58,7 @@ final class SquareEntity {
     }
     private var lastReadedType: SquareType?
 
-    init(gridPosition: CGPoint, size: CGSize, type: SquareType, energyLevel: Int, organicLevel: Int) {
+    init(gridPosition: GridPosition, size: CGSize, type: SquareType, energyLevel: Int, organicLevel: Int) {
         self.gridPosition = gridPosition
         self.size = size
         self.type = type

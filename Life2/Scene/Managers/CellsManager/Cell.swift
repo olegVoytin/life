@@ -11,69 +11,6 @@ import GameplayKit
 @ProcessingActor
 final class Cell: Equatable, Identifiable, Hashable {
 
-    // удалить Int если не нужно генерить рандомное направление
-    enum Direction: Int {
-        case up = 0, down, left, right
-    }
-
-    enum CellType {
-        case cell
-        case transport
-        case energyGetter
-        case organicGetter
-        case leaf
-
-        var wantEnergy: Bool {
-            switch self {
-            case .cell, .transport:
-                return true
-
-            default:
-                return false
-            }
-        }
-    }
-
-    enum Action {
-        case move
-        case giveBirth
-        case rotate
-    }
-
-    final class EnergyHolder {
-        var aBuffer = 0
-        var bBuffer = 0
-        var energy: Int
-
-        init(energy: Int) {
-            self.energy = energy
-        }
-
-        func useBuffer(energyPhase: EnergyPhase) {
-            switch energyPhase {
-            case .a:
-                let energy = aBuffer
-                aBuffer = 0
-                self.energy += energy
-
-            case .b:
-                let energy = bBuffer
-                bBuffer = 0
-                self.energy += energy
-            }
-        }
-
-        func getEnergy(_ energy: Int, energyPhase: EnergyPhase) {
-            switch energyPhase {
-            case .a:
-                aBuffer += energy
-
-            case .b:
-                bBuffer += energy
-            }
-        }
-    }
-
     private weak var cellMovementDelegate: CellMovementDelegate?
     private weak var cellBirthGivingDelegate: CellBirthGivingDelegate?
     private weak var cellHarvestDelegate: CellHarvestDelegate?
@@ -105,14 +42,6 @@ final class Cell: Equatable, Identifiable, Hashable {
         self.energyHolder = EnergyHolder(energy: energy)
     }
 
-    nonisolated static func == (lhs: Cell, rhs: Cell) -> Bool {
-        lhs.id == rhs.id
-    }
-
-    nonisolated func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-
     func update(energyPhase: EnergyPhase) {
         energyHolder.useBuffer(energyPhase: energyPhase)
 
@@ -121,45 +50,12 @@ final class Cell: Equatable, Identifiable, Hashable {
         harvestEnergy()
 
         if energyHolder.energy <= 0 {
-            death()
+            cellDeathDelegate?.death(self)
             return
         }
 
         doRandomAction()
         sendEnergy(energyPhase: energyPhase)
-    }
-
-    func death() {
-        if let forwardChild {
-            forwardChild.parentCell = nil
-            self.forwardChild = nil
-        }
-
-        if let leftChild {
-            leftChild.parentCell = nil
-            self.leftChild = nil
-        }
-
-        if let rightChild {
-            rightChild.parentCell = nil
-            self.rightChild = nil
-        }
-
-        if let parentCell {
-            if parentCell.forwardChild == self {
-                parentCell.forwardChild = nil
-            }
-
-            if parentCell.leftChild == self {
-                parentCell.leftChild = nil
-            }
-
-            if parentCell.rightChild == self {
-                parentCell.rightChild = nil
-            }
-        }
-
-        cellDeathDelegate?.death(self)
     }
 
     private func rotate(to newDirection: Direction) {
@@ -216,12 +112,12 @@ final class Cell: Equatable, Identifiable, Hashable {
                 parentCell.energyHolder.getEnergy(energyHolder.energy, energyPhase: energyPhase)
                 energyHolder.energy = 0
             } else {
-                death()
+                cellDeathDelegate?.death(self)
             }
 
         case .energyGetter, .leaf, .organicGetter:
             guard let parentCell else {
-                death()
+                cellDeathDelegate?.death(self)
                 return
             }
             parentCell.energyHolder.getEnergy(energyHolder.energy, energyPhase: energyPhase)
@@ -293,5 +189,13 @@ final class Cell: Equatable, Identifiable, Hashable {
         }
 
         energyHolder.energy -= energyCost
+    }
+
+    nonisolated static func == (lhs: Cell, rhs: Cell) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    nonisolated func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }

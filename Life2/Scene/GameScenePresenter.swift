@@ -32,7 +32,7 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
     func start() {
         Task { @ProcessingActor in
-            for _ in 1...1000 {
+            for _ in 1...10000 {
                 let randomX = Int.random(in: 0..<Constants.gridSide)
                 let randomY = Int.random(in: 0..<Constants.gridSide)
                 cellsManager.addCell(to: CGPoint(x: randomX, y: randomY))
@@ -44,7 +44,6 @@ final class GameScenePresenter: GameScenePresenterProtocol {
         Task { @MainActor in
             while true {
                 await updateChangedSquares()
-//                await Task.yield()
                 try? await Task.sleep(for: .seconds(0.1))
             }
         }

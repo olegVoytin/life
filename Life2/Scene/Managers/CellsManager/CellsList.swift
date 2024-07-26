@@ -39,7 +39,7 @@ final class CellsList: DoublyLinkedList<Cell> {
     func update() {
         var currentNode = first
         while currentNode != nil {
-//            cellsCount += 1
+            cellsCount += 1
 
             let updatingNode = currentNode
             currentNode = currentNode?.next
@@ -55,8 +55,8 @@ final class CellsList: DoublyLinkedList<Cell> {
             energyPhase = .a
         }
 
-//        print("Cells count: \(cellsCount)")
-//        cellsCount = 0
+        print("Cells count: \(cellsCount)")
+        cellsCount = 0
     }
 
     func addChild(of cell: Cell, to gridPosition: CGPoint, energy: Int) -> Cell {

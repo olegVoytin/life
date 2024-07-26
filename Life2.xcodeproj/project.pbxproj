@@ -30,6 +30,7 @@
 		06B14C232C3B2C68002049B6 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B14C0F2C3B2C68002049B6 /* Array.swift */; };
 		06B14C242C3B2C68002049B6 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B14C102C3B2C68002049B6 /* CGPoint.swift */; };
 		06B14C262C3B2D47002049B6 /* Shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 06B14C252C3B2D47002049B6 /* Shader.metal */; };
+		06D316172C53A2CE007832EA /* CellObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D316162C53A2CE007832EA /* CellObjects.swift */; };
 		06DB9B7B2C4D6D4600940B87 /* CellHarvestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DB9B7A2C4D6D4600940B87 /* CellHarvestDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +60,7 @@
 		06B14C0F2C3B2C68002049B6 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		06B14C102C3B2C68002049B6 /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 		06B14C252C3B2D47002049B6 /* Shader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shader.metal; sourceTree = "<group>"; };
+		06D316162C53A2CE007832EA /* CellObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellObjects.swift; sourceTree = "<group>"; };
 		06DB9B7A2C4D6D4600940B87 /* CellHarvestDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellHarvestDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -150,6 +152,7 @@
 				06B14C022C3B2C68002049B6 /* Cell.swift */,
 				06B14C032C3B2C68002049B6 /* CellsList.swift */,
 				06B14C042C3B2C68002049B6 /* CellsManager.swift */,
+				06D316162C53A2CE007832EA /* CellObjects.swift */,
 			);
 			path = CellsManager;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 				06B14C1D2C3B2C68002049B6 /* GridManager.swift in Sources */,
 				06B14C202C3B2C68002049B6 /* CycleManager.swift in Sources */,
 				06B14C192C3B2C68002049B6 /* CellMovementDelegate.swift in Sources */,
+				06D316172C53A2CE007832EA /* CellObjects.swift in Sources */,
 				06B14C222C3B2C68002049B6 /* GameViewController.swift in Sources */,
 				06B14C262C3B2D47002049B6 /* Shader.metal in Sources */,
 				066C7C072C4EDFF6000A0BB6 /* CellDeathDelegate.swift in Sources */,

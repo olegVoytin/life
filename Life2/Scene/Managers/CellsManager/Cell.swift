@@ -18,7 +18,7 @@ final class Cell: Equatable, Identifiable, Hashable {
 
     let genomeReandomizer: GKRandomDistribution
     let genome: [[UInt8]]
-    lazy var activeGen = genomeReandomizer.nextInt()
+    var activeGen: Int
 
     var gridPosition: GridPosition
     var energyHolder: EnergyHolder
@@ -38,7 +38,8 @@ final class Cell: Equatable, Identifiable, Hashable {
         cellDeathDelegate: CellDeathDelegate?,
         gridPosition: GridPosition,
         energy: Int,
-        genome: [[UInt8]]?
+        genome: [[UInt8]]?,
+        activeGen: Int?
     ) {
         self.type = type
         self.cellMovementDelegate = cellMovementDelegate
@@ -57,13 +58,19 @@ final class Cell: Equatable, Identifiable, Hashable {
             self.genome = createRandomGenome()
         }
 
-        func createRandomGenome() -> [[UInt8]] {
-            var grid: [[UInt8]] = [[]]
+        if let activeGen {
+            self.activeGen = activeGen
+        } else {
+            self.activeGen = genomeReandomizer.nextInt() % 32
+        }
 
-            for rowIndex in 0...32 {
+        func createRandomGenome() -> [[UInt8]] {
+            var grid: [[UInt8]] = []
+
+            for _ in 0..<32 {
                 var row: [UInt8] = []
 
-                for colIndex in 0...21 {
+                for _ in 0..<21 {
                     let col: UInt8 = UInt8(genomeReandomizer.nextInt())
                     row.append(col)
                 }
@@ -87,7 +94,7 @@ final class Cell: Equatable, Identifiable, Hashable {
             return
         }
 
-        moveRandomly()
+        readGenome()
         sendEnergy(energyPhase: energyPhase)
     }
 
@@ -99,6 +106,8 @@ final class Cell: Equatable, Identifiable, Hashable {
 
         energyHolder.energy -= energyCost
     }
+
+    // MARK: - Energy
 
     private func harvestEnergy() {
         switch type {
@@ -161,12 +170,103 @@ final class Cell: Equatable, Identifiable, Hashable {
         }
     }
 
-    nonisolated static func == (lhs: Cell, rhs: Cell) -> Bool {
-        lhs.id == rhs.id
-    }
+    // MARK: - Genome
 
-    nonisolated func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
+    private func readGenome() {
+        let gens = genome[activeGen]
+
+        // левый отросток
+        if gens[0].inRange(lowerBound: 0, upperBound: 63) {
+            cellBirthGivingDelegate?.giveBirth(
+                self,
+                childType: .cell,
+                birthDirection: .left,
+                activeGen: Int(gens[0]) % 32
+            )
+        } else if gens[0].inRange(lowerBound: 64, upperBound: 75) {
+            cellBirthGivingDelegate?.giveBirth(
+                self,
+                childType: .leaf,
+                birthDirection: .left,
+                activeGen: Int(gens[0]) % 32
+            )
+        } else if gens[0].inRange(lowerBound: 76, upperBound: 85) {
+            cellBirthGivingDelegate?.giveBirth(
+                self,
+                childType: .energyGetter,
+                birthDirection: .left,
+                activeGen: Int(gens[0]) % 32
+            )
+        } else if gens[0].inRange(lowerBound: 86, upperBound: 95) {
+            cellBirthGivingDelegate?.giveBirth(
+                self,
+                childType: .organicGetter,
+                birthDirection: .left,
+                activeGen: Int(gens[0]) % 32
+            )
+        }
+
+        // передний отросток
+        if gens[1].inRange(lowerBound: 0, upperBound: 63) {
+            cellBirthGivingDelegate?.giveBirth(
+                self,
+                childType: .cell,
+                birthDirection: .forward,
+                activeGen: Int(gens[1]) % 32
+            )
+        } else if gens[1].inRange(lowerBound: 64, upperBound: 75) {
+            cellBirthGivingDelegate?.giveBirth(
+                self,
+                childType: .leaf,
+                birthDirection: .forward,
+                activeGen: Int(gens[1]) % 32
+            )
+        } else if gens[1].inRange(lowerBound: 76, upperBound: 85) {
+            cellBirthGivingDelegate?.giveBirth(
+                self,
+                childType: .energyGetter,
+                birthDirection: .forward,
+                activeGen: Int(gens[1]) % 32
+            )
+        } else if gens[1].inRange(lowerBound: 86, upperBound: 95) {
+            cellBirthGivingDelegate?.giveBirth(
+                self,
+                childType: .organicGetter,
+                birthDirection: .forward,
+                activeGen: Int(gens[1]) % 32
+            )
+        }
+
+        // правый отросток
+        if gens[2].inRange(lowerBound: 0, upperBound: 63) {
+            cellBirthGivingDelegate?.giveBirth(
+                self,
+                childType: .cell,
+                birthDirection: .right,
+                activeGen: Int(gens[2]) % 32
+            )
+        } else if gens[2].inRange(lowerBound: 64, upperBound: 75) {
+            cellBirthGivingDelegate?.giveBirth(
+                self,
+                childType: .leaf,
+                birthDirection: .right,
+                activeGen: Int(gens[2]) % 32
+            )
+        } else if gens[2].inRange(lowerBound: 76, upperBound: 85) {
+            cellBirthGivingDelegate?.giveBirth(
+                self,
+                childType: .energyGetter,
+                birthDirection: .right,
+                activeGen: Int(gens[2]) % 32
+            )
+        } else if gens[2].inRange(lowerBound: 86, upperBound: 95) {
+            cellBirthGivingDelegate?.giveBirth(
+                self,
+                childType: .organicGetter,
+                birthDirection: .right,
+                activeGen: Int(gens[2]) % 32
+            )
+        }
     }
 
     // MARK: - Random
@@ -202,21 +302,24 @@ final class Cell: Equatable, Identifiable, Hashable {
             cellBirthGivingDelegate?.giveBirth(
                 self,
                 childType: Cell.CellType(rawValue: cellType)!,
-                birthDirection: .forward
+                birthDirection: .forward, 
+                activeGen: 0
             )
 
         case 1:
             cellBirthGivingDelegate?.giveBirth(
                 self,
                 childType: Cell.CellType(rawValue: cellType)!,
-                birthDirection: .left
+                birthDirection: .left,
+                activeGen: 0
             )
 
         case 2:
             cellBirthGivingDelegate?.giveBirth(
                 self,
                 childType: Cell.CellType(rawValue: cellType)!,
-                birthDirection: .right
+                birthDirection: .right,
+                activeGen: 0
             )
 
         default:
@@ -245,5 +348,20 @@ final class Cell: Equatable, Identifiable, Hashable {
         }
 
         energyHolder.energy -= energyCost
+    }
+
+    nonisolated static func == (lhs: Cell, rhs: Cell) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    nonisolated func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
+extension UInt8 {
+
+    func inRange(lowerBound: UInt8, upperBound: UInt8) -> Bool {
+        return self >= lowerBound && self <= upperBound
     }
 }

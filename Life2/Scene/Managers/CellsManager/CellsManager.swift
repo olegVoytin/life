@@ -15,7 +15,8 @@ protocol CellsManagerProtocol: AnyObject {
         of cell: Cell,
         to gridPosition: GridPosition,
         energy: Int,
-        type: Cell.CellType
+        type: Cell.CellType,
+        activeGen: Int
     ) -> Cell
 }
 
@@ -50,7 +51,8 @@ final class CellsManager: CellsManagerProtocol {
             cellDeathDelegate: self,
             gridPosition: gridPosition,
             energy: 1000, 
-            genome: nil
+            genome: nil,
+            activeGen: nil
         )
         cellsLinkedList.append(value: newCell)
 
@@ -62,8 +64,15 @@ final class CellsManager: CellsManagerProtocol {
         of cell: Cell,
         to gridPosition: GridPosition,
         energy: Int,
-        type: Cell.CellType
+        type: Cell.CellType,
+        activeGen: Int
     ) -> Cell {
-        cellsLinkedList.addChild(of: cell, to: gridPosition, energy: energy, type: type)
+        cellsLinkedList.addChild(
+            of: cell,
+            to: gridPosition,
+            energy: energy,
+            type: type,
+            activeGen: activeGen
+        )
     }
 }

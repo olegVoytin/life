@@ -59,7 +59,13 @@ final class CellsList: DoublyLinkedList<Cell> {
         cellsCount = 0
     }
 
-    func addChild(of cell: Cell, to gridPosition: GridPosition, energy: Int, type: Cell.CellType) -> Cell {
+    func addChild(
+        of cell: Cell,
+        to gridPosition: GridPosition,
+        energy: Int,
+        type: Cell.CellType,
+        activeGen: Int
+    ) -> Cell {
         let newCell = Cell(
             type: type,
             cellMovementDelegate: cellMovementDelegate,
@@ -68,7 +74,8 @@ final class CellsList: DoublyLinkedList<Cell> {
             cellDeathDelegate: cellDeathDelegate,
             gridPosition: gridPosition,
             energy: energy, 
-            genome: cell.genome
+            genome: cell.genome, 
+            activeGen: activeGen
         )
         prependNode(with: cell, value: newCell)
         return newCell

@@ -9,12 +9,22 @@ import Foundation
 
 @ProcessingActor
 protocol CellBirthGivingDelegate: AnyObject {
-    func giveBirth(_ parentCell: Cell, childType: Cell.CellType, birthDirection: Cell.BirthDirection)
+    func giveBirth(
+        _ parentCell: Cell,
+        childType: Cell.CellType,
+        birthDirection: Cell.BirthDirection,
+        activeGen: Int
+    )
 }
 
 extension CellsManager: CellBirthGivingDelegate {
 
-    func giveBirth(_ parentCell: Cell, childType: Cell.CellType, birthDirection: Cell.BirthDirection) {
+    func giveBirth(
+        _ parentCell: Cell,
+        childType: Cell.CellType,
+        birthDirection: Cell.BirthDirection,
+        activeGen: Int
+    ) {
         let grid = gridManager.grid
         let x = parentCell.gridPosition.x
         let y = parentCell.gridPosition.y
@@ -39,7 +49,8 @@ extension CellsManager: CellBirthGivingDelegate {
             of: parentCell,
             to: birthPosition,
             energy: energyToSend,
-            type: childType
+            type: childType, 
+            activeGen: activeGen
         )
         parentCell.energyHolder.energy -= energyToSend
 

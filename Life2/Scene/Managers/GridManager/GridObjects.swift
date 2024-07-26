@@ -9,6 +9,29 @@ import Foundation
 import Cocoa
 import MetalKit
 
+struct Grid<T> {
+    private var data: ContiguousArray<T>
+    let rows: Int
+    let cols: Int
+
+    init(rows: Int, cols: Int, initialValue: T) {
+        self.rows = rows
+        self.cols = cols
+        self.data = ContiguousArray(repeating: initialValue, count: rows * cols)
+    }
+
+    subscript(row: Int, col: Int) -> T {
+        get {
+            precondition(row < rows && col < cols, "Index out of bounds")
+            return data[(row * cols) + col]
+        }
+        set {
+            precondition(row < rows && col < cols, "Index out of bounds")
+            data[(row * cols) + col] = newValue
+        }
+    }
+}
+
 struct SquareFootprint {
     let gridPosition: CGPoint
     let color: NSColor

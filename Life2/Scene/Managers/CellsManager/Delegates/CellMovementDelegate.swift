@@ -24,16 +24,16 @@ extension CellsManager: CellMovementDelegate {
         let y = Int(cell.gridPosition.y)
 
         guard
-            grid.count - 1 >= y,
-            grid[y].count - 1 >= x,
-            grid.count - 1 >= y + 1
+            grid.rows - 1 >= y,
+            grid.cols - 1 >= x,
+            grid.cols - 1 >= y + 1
         else { return }
 
-        let newSquare = grid[y + 1][x]
+        let newSquare = grid[y + 1, x]
 
         guard newSquare.type == .empty else { return }
 
-        let oldSquare = grid[y][x]
+        let oldSquare = grid[y, x]
         oldSquare.type = .empty
 
         newSquare.type = .cell(type: .cell)
@@ -48,16 +48,16 @@ extension CellsManager: CellMovementDelegate {
         let y = Int(cell.gridPosition.y)
 
         guard
-            grid.count - 1 >= y,
-            grid[y].count - 1 >= x,
+            grid.rows - 1 >= y,
+            grid.cols - 1 >= x,
             y - 1 >= 0
         else { return }
 
-        let newSquare = grid[y - 1][x]
+        let newSquare = grid[y - 1, x]
 
         guard newSquare.type == .empty else { return }
 
-        let oldSquare = grid[y][x]
+        let oldSquare = grid[y, x]
         oldSquare.type = .empty
 
         newSquare.type = .cell(type: .cell)
@@ -72,16 +72,16 @@ extension CellsManager: CellMovementDelegate {
         let y = Int(cell.gridPosition.y)
 
         guard
-            grid.count - 1 >= y,
-            grid[y].count - 1 >= x,
+            grid.rows - 1 >= y,
+            grid.cols - 1 >= x,
             x - 1 >= 0
         else { return }
 
-        let newSquare = grid[y][x - 1]
+        let newSquare = grid[y, x - 1]
 
         guard newSquare.type == .empty else { return }
 
-        let oldSquare = grid[y][x]
+        let oldSquare = grid[y, x]
         oldSquare.type = .empty
 
         newSquare.type = .cell(type: .cell)
@@ -96,16 +96,16 @@ extension CellsManager: CellMovementDelegate {
         let y = Int(cell.gridPosition.y)
 
         guard
-            grid.count - 1 >= y,
-            grid[y].count - 1 >= x,
-            grid[y].count - 1 >= x + 1
+            grid.rows - 1 >= y,
+            grid.cols - 1 >= x,
+            grid.cols - 1 >= x + 1
         else { return }
 
-        let newSquare = grid[y][x + 1]
+        let newSquare = grid[y, x + 1]
 
         guard newSquare.type == .empty else { return }
 
-        let oldSquare = grid[y][x]
+        let oldSquare = grid[y, x]
         oldSquare.type = .empty
 
         newSquare.type = .cell(type: .cell)

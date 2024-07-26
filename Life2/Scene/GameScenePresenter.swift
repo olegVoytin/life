@@ -74,12 +74,10 @@ final class GameScenePresenter: GameScenePresenterProtocol {
 
             guard
                 x >= 0,
-                y >= 0,
-                grid.count - 1 >= y,
-                grid[y].count - 1 >= x
+                y >= 0
             else { return }
 
-            let square = grid[y][x]
+            let square = grid[y, x]
             square.type = .cell(type: .cell)
 
             cellsManager.addCell(to: gridPosition, type: .cell)

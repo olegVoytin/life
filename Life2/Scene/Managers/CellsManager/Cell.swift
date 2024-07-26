@@ -130,6 +130,14 @@ final class Cell: Equatable, Identifiable, Hashable {
         }
     }
 
+    nonisolated static func == (lhs: Cell, rhs: Cell) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    nonisolated func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
     // MARK: - Random
 
     let reandomizer = GKRandomDistribution(lowestValue: 0, highestValue: 4)
@@ -194,13 +202,5 @@ final class Cell: Equatable, Identifiable, Hashable {
         }
 
         energyHolder.energy -= energyCost
-    }
-
-    nonisolated static func == (lhs: Cell, rhs: Cell) -> Bool {
-        lhs.id == rhs.id
-    }
-
-    nonisolated func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
     }
 }

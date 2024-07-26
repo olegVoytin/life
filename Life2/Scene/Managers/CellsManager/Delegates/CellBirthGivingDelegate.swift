@@ -23,8 +23,8 @@ extension CellsManager: CellBirthGivingDelegate {
         let y = Int(cell.gridPosition.y)
 
         guard
-            grid.count - 1 >= y,
-            grid[y].count - 1 >= x
+            grid.rows - 1 >= y,
+            grid.cols - 1 >= x
         else { return }
 
         var birthPosition: CGPoint?
@@ -60,8 +60,8 @@ extension CellsManager: CellBirthGivingDelegate {
         let y = Int(cell.gridPosition.y)
 
         guard
-            grid.count - 1 >= y,
-            grid[y].count - 1 >= x
+            grid.rows - 1 >= y,
+            grid.cols - 1 >= x
         else { return }
 
         var birthPosition: CGPoint?
@@ -97,8 +97,8 @@ extension CellsManager: CellBirthGivingDelegate {
         let y = Int(cell.gridPosition.y)
 
         guard
-            grid.count - 1 >= y,
-            grid[y].count - 1 >= x
+            grid.rows - 1 >= y,
+            grid.cols - 1 >= x
         else { return }
 
         var birthPosition: CGPoint?
@@ -136,7 +136,7 @@ extension CellsManager: CellBirthGivingDelegate {
         birthPosition: CGPoint,
         childType: Cell.CellType
     ) {
-        let oldSquare = gridManager.grid[parentPositionY][parentPositionX]
+        let oldSquare = gridManager.grid[parentPositionY, parentPositionX]
         oldSquare.type = .cell(type: .transport)
         parentCell.type = .transport
 
@@ -160,7 +160,7 @@ extension CellsManager: CellBirthGivingDelegate {
         parentCell.forwardChild = child
         child.parentCell = parentCell
 
-        let square = gridManager.grid[Int(birthPosition.y)][Int(birthPosition.x)]
+        let square = gridManager.grid[Int(birthPosition.y), Int(birthPosition.x)]
         square.type = .cell(type: childType)
     }
 
@@ -168,8 +168,8 @@ extension CellsManager: CellBirthGivingDelegate {
 
     private func birthPositionUp(x: Int, y: Int) -> CGPoint? {
         guard
-            gridManager.grid.count - 1 >= y + 1,
-            gridManager.grid[y + 1][x].type == .empty
+            gridManager.grid.rows - 1 >= y + 1,
+            gridManager.grid[y + 1, x].type == .empty
         else { return nil }
         return CGPoint(x: x, y: y + 1)
     }
@@ -177,7 +177,7 @@ extension CellsManager: CellBirthGivingDelegate {
     private func birthPositionDown(x: Int, y: Int) -> CGPoint? {
         guard
             y - 1 >= 0,
-            gridManager.grid[y - 1][x].type == .empty
+            gridManager.grid[y - 1, x].type == .empty
         else { return nil }
         return CGPoint(x: x, y: y - 1)
     }
@@ -185,15 +185,15 @@ extension CellsManager: CellBirthGivingDelegate {
     private func birthPositionLeft(x: Int, y: Int) -> CGPoint? {
         guard
             x - 1 >= 0,
-            gridManager.grid[y][x - 1].type == .empty
+            gridManager.grid[y, x - 1].type == .empty
         else { return nil }
         return CGPoint(x: x - 1, y: y)
     }
 
     private func birthPositionRight(x: Int, y: Int) -> CGPoint? {
         guard
-            gridManager.grid[y].count - 1 >= x + 1,
-            gridManager.grid[y][x + 1].type == .empty
+            gridManager.grid.cols - 1 >= x + 1,
+            gridManager.grid[y, x + 1].type == .empty
         else { return nil }
         return CGPoint(x: x + 1, y: y)
     }

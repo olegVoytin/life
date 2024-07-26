@@ -62,7 +62,7 @@ extension CellsManager: CellDeathDelegate {
         let x = Int(cell.gridPosition.x)
         let y = Int(cell.gridPosition.y)
 
-        let square = grid[y][x]
+        let square = grid[y, x]
         square.type = .empty
     }
 }

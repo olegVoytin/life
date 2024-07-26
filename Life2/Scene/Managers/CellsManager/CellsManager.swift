@@ -48,7 +48,7 @@ final class CellsManager: CellsManagerProtocol {
         )
         cellsLinkedList.append(value: newCell)
 
-        let square = gridManager.grid[Int(gridPosition.y)][Int(gridPosition.x)]
+        let square = gridManager.grid[Int(gridPosition.y), Int(gridPosition.x)]
         square.type = .cell(type: .cell)
     }
 

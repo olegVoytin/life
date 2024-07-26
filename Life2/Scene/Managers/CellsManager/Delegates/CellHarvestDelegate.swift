@@ -21,7 +21,7 @@ extension CellsManager: CellHarvestDelegate {
 
         let x = Int(cell.gridPosition.x)
         let y = Int(cell.gridPosition.y)
-        let square = grid[y][x]
+        let square = grid[y, x]
 
         guard square.energyLevel > 0 else { return }
 
@@ -34,7 +34,7 @@ extension CellsManager: CellHarvestDelegate {
 
         let x = Int(cell.gridPosition.x)
         let y = Int(cell.gridPosition.y)
-        let square = grid[y][x]
+        let square = grid[y, x]
 
         guard square.organicLevel > 0 else { return }
 

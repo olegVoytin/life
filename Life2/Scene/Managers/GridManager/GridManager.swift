@@ -9,22 +9,25 @@ import Foundation
 
 @ProcessingActor
 protocol GridManagerProtocol: AnyObject, Sendable {
-    var grid: [[SquareEntity]] { get }
+    var grid: Grid<SquareEntity> { get }
     var changedSquaresFootprints: [SquareFootprint] { get }
 }
 
 @ProcessingActor
 final class GridManager: GridManagerProtocol {
 
-    var grid: [[SquareEntity]] = []
+    let grid: Grid<SquareEntity>
 
     var changedSquaresFootprints: [SquareFootprint] {
         var footprints = [SquareFootprint]()
-        footprints.reserveCapacity(grid.count * (grid.first?.count ?? 0)) // Pre-allocate capacity if possible
+        footprints.reserveCapacity(grid.rows * grid.cols) // Pre-allocate capacity if possible
 
-        for row in grid {
-            for square in row where square.changed {
-                footprints.append(square.read())
+        for rowIndex in 0..<grid.rows {
+            for colIndex in 0..<grid.cols {
+                let square = grid[rowIndex, colIndex]
+                if square.changed {
+                    footprints.append(square.read())
+                }
             }
         }
 
@@ -32,31 +35,35 @@ final class GridManager: GridManagerProtocol {
     }
 
     init() {
-        self.grid = createGrid()
-    }
+        grid = createGrid()
 
-    private func createGrid() -> [[SquareEntity]] {
-        var grid: [[SquareEntity]] = []
+        func createGrid() -> Grid<SquareEntity> {
+            let gridSide = Constants.gridSide
+            let initialValue = SquareEntity(
+                gridPosition: CGPoint(x: 0, y: 0),
+                size: CGSize(width: Constants.blockSide, height: Constants.blockSide),
+                type: .empty,
+                energyLevel: 0,
+                organicLevel: 0
+            )
 
-        for rowIndex in 0..<Constants.gridSide {
-            var row: [SquareEntity] = []
+            var grid = Grid(rows: gridSide, cols: gridSide, initialValue: initialValue)
 
-            for colIndex in 0..<Constants.gridSide {
-                let gridPosition = CGPoint(x: colIndex, y: rowIndex)
-                let square = SquareEntity(
-                    gridPosition: gridPosition,
-                    size: CGSize(width: Constants.blockSide, height: Constants.blockSide),
-                    type: .empty,
-                    energyLevel: 0,
-                    organicLevel: 0
-                )
-
-                row.append(square)
+            for rowIndex in 0..<gridSide {
+                for colIndex in 0..<gridSide {
+                    let gridPosition = CGPoint(x: colIndex, y: rowIndex)
+                    let square = SquareEntity(
+                        gridPosition: gridPosition,
+                        size: CGSize(width: Constants.blockSide, height: Constants.blockSide),
+                        type: .empty,
+                        energyLevel: 0,
+                        organicLevel: 0
+                    )
+                    grid[rowIndex, colIndex] = square
+                }
             }
 
-            grid.append(row)
+            return grid
         }
-
-        return grid
     }
 }

@@ -67,7 +67,8 @@ final class CellsList: DoublyLinkedList<Cell> {
             cellHarvestDelegate: cellHarvestDelegate, 
             cellDeathDelegate: cellDeathDelegate,
             gridPosition: gridPosition,
-            energy: energy
+            energy: energy, 
+            genome: cell.genome
         )
         prependNode(with: cell, value: newCell)
         return newCell

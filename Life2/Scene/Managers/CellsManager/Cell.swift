@@ -16,6 +16,10 @@ final class Cell: Equatable, Identifiable, Hashable {
     private weak var cellHarvestDelegate: CellHarvestDelegate?
     private weak var cellDeathDelegate: CellDeathDelegate?
 
+    let genomeReandomizer: GKRandomDistribution
+    let genome: [[UInt8]]
+    lazy var activeGen = genomeReandomizer.nextInt()
+
     var gridPosition: GridPosition
     var energyHolder: EnergyHolder
     var type: CellType
@@ -33,7 +37,8 @@ final class Cell: Equatable, Identifiable, Hashable {
         cellHarvestDelegate: CellHarvestDelegate?,
         cellDeathDelegate: CellDeathDelegate?,
         gridPosition: GridPosition,
-        energy: Int
+        energy: Int,
+        genome: [[UInt8]]?
     ) {
         self.type = type
         self.cellMovementDelegate = cellMovementDelegate
@@ -42,6 +47,32 @@ final class Cell: Equatable, Identifiable, Hashable {
         self.cellDeathDelegate = cellDeathDelegate
         self.gridPosition = gridPosition
         self.energyHolder = EnergyHolder(energy: energy)
+
+        let genomeReandomizer = GKRandomDistribution(lowestValue: 0, highestValue: 255)
+        self.genomeReandomizer = genomeReandomizer
+
+        if let genome {
+            self.genome = genome
+        } else {
+            self.genome = createRandomGenome()
+        }
+
+        func createRandomGenome() -> [[UInt8]] {
+            var grid: [[UInt8]] = [[]]
+
+            for rowIndex in 0...32 {
+                var row: [UInt8] = []
+
+                for colIndex in 0...21 {
+                    let col: UInt8 = UInt8(genomeReandomizer.nextInt())
+                    row.append(col)
+                }
+
+                grid.append(row)
+            }
+
+            return grid
+        }
     }
 
     func update(energyPhase: EnergyPhase) {

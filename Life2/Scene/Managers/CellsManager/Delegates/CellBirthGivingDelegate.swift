@@ -53,9 +53,6 @@ extension CellsManager: CellBirthGivingDelegate {
     // MARK: - Helper Methods
 
     private func birthPosition(for cell: Cell, birthDirection: Cell.BirthDirection) -> GridPosition? {
-        let x = cell.gridPosition.x
-        let y = cell.gridPosition.y
-
         switch birthDirection {
         case .forward:
             return gridManager.newPosition(

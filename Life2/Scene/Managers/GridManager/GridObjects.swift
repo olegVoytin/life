@@ -58,7 +58,13 @@ final class SquareEntity {
     }
     private var lastReadedType: SquareType?
 
-    init(gridPosition: GridPosition, size: CGSize, type: SquareType, energyLevel: Int, organicLevel: Int) {
+    init(
+        gridPosition: GridPosition,
+        size: CGSize,
+        type: SquareType,
+        energyLevel: Int,
+        organicLevel: Int
+    ) {
         self.gridPosition = gridPosition
         self.size = size
         self.type = type

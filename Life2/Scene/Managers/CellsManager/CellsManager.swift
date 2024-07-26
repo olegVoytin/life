@@ -49,7 +49,8 @@ final class CellsManager: CellsManagerProtocol {
             cellHarvestDelegate: self, 
             cellDeathDelegate: self,
             gridPosition: gridPosition,
-            energy: 1000
+            energy: 1000, 
+            genome: nil
         )
         cellsLinkedList.append(value: newCell)
 
